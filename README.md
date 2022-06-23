@@ -1,2 +1,1 @@
-# discord
-Fishstick Bot
+# Fishstick Discord Bot
