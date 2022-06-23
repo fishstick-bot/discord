@@ -46,6 +46,15 @@ const CosmeticSchema = new Schema<ICosmetic>({
     type: Buffer,
     required: true,
   },
+  variants: {
+    type: [{
+      ...objectId,
+      ref: 'CosmeticVariant',
+      autopopulate: true,
+    }],
+    required: false,
+    default: [],
+  },
   searchTags: stringArray,
   gameplayTags: stringArray,
   metaTags: stringArray,

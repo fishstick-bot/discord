@@ -5,4 +5,5 @@ export {
   ICosmeticRarity,
   ICosmeticSet,
   ICosmeticType,
+  ICosmeticVariant,
 } from './Cosmetic/typings';
