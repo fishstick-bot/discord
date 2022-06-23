@@ -24,16 +24,16 @@ class CosmeticService {
   public async start() {
     let items : any[] = [];
 
-    items = await this._getCosmetics();
-    await this._saveCosmetics(items);
+    items = await this.getCosmetics();
+    await this.saveCosmetics(items);
 
     setInterval(async () => {
-      items = await this._getCosmetics();
-      await this._saveCosmetics(items);
+      items = await this.getCosmetics();
+      await this.saveCosmetics(items);
     }, 60 * 60 * 1000);
   }
 
-  private async _getCosmetics() : Promise<any[]> {
+  public async getCosmetics() : Promise<any[]> {
     try {
       const start = Date.now();
       const items = (await axios.get(
@@ -46,78 +46,82 @@ class CosmeticService {
     }
   }
 
-  private async _saveCosmetics(items: any[]) : Promise<void> {
-    const cosmeticsModel = this.bot.cosmeticModel;
-
+  public async saveCosmetics(items: any[]) : Promise<void> {
     await Promise.all(items.map(async (item) => {
-      try {
-        const cosmetic = await cosmeticsModel.findOne({
-          id: item.id,
-        }).lean().exec();
-
-        if (!cosmetic) {
-          this.bot.logger.warn(`${item.name} not found in database.`);
-
-          await cosmeticsModel.create({
-            id: item.id,
-            name: item.name,
-            description: item.description,
-            type: await this.getCosmeticType({
-              value: item.type.value,
-              displayValue: item.type.displayValue,
-              backendValue: item.type.backendValue,
-            }),
-            rarity: await this.getCosmeticRarity({
-              value: item.rarity.value,
-              displayValue: item.rarity.displayValue,
-              backendValue: item.rarity.backendValue,
-            }),
-            series: item.series ? await this.getCosmeticSeries({
-              value: item.series.value,
-              displayValue: item.series.displayValue,
-              backendValue: item.series.backendValue,
-            }) : null,
-            set: item.set ? await this.getCosmeticSet({
-              value: item.set.value,
-              text: item.set.text,
-              backendValue: item.set.backendValue,
-            }) : null,
-            introduction: item.introduction ? await this.getCosmeticIntroducedIn({
-              chapter: item.introduction.chapter,
-              season: item.introduction.season,
-              text: item.introduction.text,
-              seasonNumber: item.introduction.backendValue,
-            }) : null,
-            image: await this._getCosmeticImage(item.images.icon ?? item.images.smallIcon),
-            searchTags: item.searchTags ?? [],
-            gameplayTags: item.gameplayTags ?? [],
-            metaTags: item.metaTags ?? [],
-            showcaseVideo: item.showcaseVideo ?? null,
-            path: item.path,
-            addedAt: item.added,
-            shopHistory: item.shopHistory ? item.shopHistory : [],
-          });
-
-          const created = await cosmeticsModel.findOne({
-            id: item.id,
-          }).lean().exec();
-          this.cosmetics.set(created!.id.toLowerCase(), {
-            ...created!,
-            image: undefined,
-          });
-        } else {
-          this.cosmetics.set(cosmetic.id.toLowerCase(), {
-            ...cosmetic,
-            image: undefined,
-          });
-        }
-      } catch (e) {
-        this.bot.logger.error(e);
-      }
+      await this.saveCosmetic(item);
     }));
   }
 
-  private async getCosmeticType(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
+  public async saveCosmetic(item: any) : Promise<void> {
+    const cosmeticsModel = this.bot.cosmeticModel;
+
+    try {
+      const cosmetic = await cosmeticsModel.findOne({
+        id: item.id,
+      }).lean().exec();
+
+      if (!cosmetic) {
+        this.bot.logger.warn(`${item.name} not found in database.`);
+
+        await cosmeticsModel.create({
+          id: item.id,
+          name: item.name,
+          description: item.description,
+          type: await this._getCosmeticType({
+            value: item.type.value,
+            displayValue: item.type.displayValue,
+            backendValue: item.type.backendValue,
+          }),
+          rarity: await this._getCosmeticRarity({
+            value: item.rarity.value,
+            displayValue: item.rarity.displayValue,
+            backendValue: item.rarity.backendValue,
+          }),
+          series: item.series ? await this._getCosmeticSeries({
+            value: item.series.value,
+            displayValue: item.series.displayValue,
+            backendValue: item.series.backendValue,
+          }) : null,
+          set: item.set ? await this._getCosmeticSet({
+            value: item.set.value,
+            text: item.set.text,
+            backendValue: item.set.backendValue,
+          }) : null,
+          introduction: item.introduction ? await this._getCosmeticIntroducedIn({
+            chapter: item.introduction.chapter,
+            season: item.introduction.season,
+            text: item.introduction.text,
+            seasonNumber: item.introduction.backendValue,
+          }) : null,
+          image: await this.__getCosmeticImage(item.images.icon ?? item.images.smallIcon),
+          searchTags: item.searchTags ?? [],
+          gameplayTags: item.gameplayTags ?? [],
+          metaTags: item.metaTags ?? [],
+          showcaseVideo: item.showcaseVideo ?? null,
+          path: item.path,
+          addedAt: item.added,
+          shopHistory: item.shopHistory ? item.shopHistory : [],
+        });
+
+        const created = await cosmeticsModel.findOne({
+          id: item.id,
+        }).lean().exec();
+        this.cosmetics.set(created!.id.toLowerCase(), {
+          ...created!,
+          image: undefined,
+        });
+      } else {
+        this.cosmetics.set(cosmetic.id.toLowerCase(), {
+          ...cosmetic,
+          image: undefined,
+        });
+      }
+    } catch (e) {
+      this.bot.logger.error(e);
+    }
+  }
+
+  private async _getCosmeticType(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
     const typesModel = this.bot.cosmeticTypeModel;
 
     const type = await typesModel.findOne({
@@ -130,7 +134,7 @@ class CosmeticService {
         this.bot.logger.error(e);
 
         if (retry) {
-          return this.getCosmeticType(value, false);
+          return this._getCosmeticType(value, false);
         }
       }
     }
@@ -138,7 +142,7 @@ class CosmeticService {
     return type!._id;
   }
 
-  private async getCosmeticRarity(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
+  private async _getCosmeticRarity(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
     const raritiesModel = this.bot.cosmeticRarityModel;
 
     const rarity = await raritiesModel.findOne({
@@ -151,7 +155,7 @@ class CosmeticService {
         this.bot.logger.error(e);
 
         if (retry) {
-          return this.getCosmeticRarity(value, false);
+          return this._getCosmeticRarity(value, false);
         }
       }
     }
@@ -159,7 +163,7 @@ class CosmeticService {
     return rarity!._id;
   }
 
-  private async getCosmeticSeries(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
+  private async _getCosmeticSeries(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
     const seriesModel = this.bot.cosmeticSeriesModel;
 
     const series = await seriesModel.findOne({
@@ -172,7 +176,7 @@ class CosmeticService {
         this.bot.logger.error(e);
 
         if (retry) {
-          return this.getCosmeticSeries(value, false);
+          return this._getCosmeticSeries(value, false);
         }
       }
     }
@@ -180,7 +184,7 @@ class CosmeticService {
     return series!._id;
   }
 
-  private async getCosmeticSet(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
+  private async _getCosmeticSet(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
     const setsModel = this.bot.cosmeticSetModel;
 
     const set = await setsModel.findOne({
@@ -193,7 +197,7 @@ class CosmeticService {
         this.bot.logger.error(e);
 
         if (retry) {
-          return this.getCosmeticSet(value, false);
+          return this._getCosmeticSet(value, false);
         }
       }
     }
@@ -201,7 +205,7 @@ class CosmeticService {
     return set!._id;
   }
 
-  private async getCosmeticIntroducedIn(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
+  private async _getCosmeticIntroducedIn(value: KeyValuePair, retry = true) : Promise<Types.ObjectId> {
     const introducedInModel = this.bot.cosmeticIntroducedInModel;
 
     const introducedIn = await introducedInModel.findOne({
@@ -214,7 +218,7 @@ class CosmeticService {
         this.bot.logger.error(e);
 
         if (retry) {
-          return this.getCosmeticIntroducedIn(value, false);
+          return this._getCosmeticIntroducedIn(value, false);
         }
       }
     }
@@ -222,12 +226,12 @@ class CosmeticService {
     return introducedIn!._id;
   }
 
-  private async _getCosmeticImage(img : string) : Promise<Buffer> {
+  private async __getCosmeticImage(img : string) : Promise<Buffer> {
     try {
       return Buffer.from((await axios.get(img, { responseType: 'arraybuffer' })).data);
     } catch (e) {
       await wait(30 * 1000);
-      return this._getCosmeticImage(img);
+      return this.__getCosmeticImage(img);
     }
   }
 }

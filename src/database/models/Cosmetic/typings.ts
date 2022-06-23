@@ -47,4 +47,5 @@ export interface ICosmetic {
     path: string;
     addedAt: Date;
     shopHistory: Date[];
+    isExclusive: boolean;
   }

@@ -63,6 +63,10 @@ const CosmeticSchema = new Schema<ICosmetic>({
     required: false,
     default: [],
   },
+  isExclusive: {
+    type: Boolean,
+    default: false,
+  },
 },
 {
   timestamps: true,
