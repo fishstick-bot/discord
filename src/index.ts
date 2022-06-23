@@ -1,1 +1,1 @@
-console.log('FISHSTICK');
+console.log('FISHSTICK BOT');
