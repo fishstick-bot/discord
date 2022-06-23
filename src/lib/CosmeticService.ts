@@ -36,6 +36,7 @@ class CosmeticService {
     setInterval(async () => {
       items = await this.getCosmetics();
       await this.saveCosmetics(items);
+      items = [];
     }, 60 * 60 * 1000);
   }
 
