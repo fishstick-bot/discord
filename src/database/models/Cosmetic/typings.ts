@@ -19,6 +19,13 @@ export interface ICosmeticSeries {
 
 export interface ICosmeticSet extends ISimpleValueType {}
 
+export interface ICosmeticIntroducedIn {
+  chapter: number;
+  season: number;
+  text: string;
+  seasonNumber: number;
+}
+
 export interface ICosmetic {
     id: string;
     name: string;
@@ -27,12 +34,7 @@ export interface ICosmetic {
     rarity: Schema.Types.ObjectId | ICosmeticRarity;
     series?: Schema.Types.ObjectId | ICosmeticSeries;
     set?: Schema.Types.ObjectId | ICosmeticSet;
-    introduction?: {
-      chapter: number;
-      season: number;
-      text: string;
-      seasonNumber: number;
-    };
+    introduction?: ICosmeticIntroducedIn;
     image: Buffer;
     searchTags: string[];
     gameplayTags: string[];

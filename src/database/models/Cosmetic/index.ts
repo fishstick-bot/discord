@@ -4,7 +4,6 @@ import autopopulate from 'mongoose-autopopulate';
 import {
   requiredString,
   uniqueRequiredString,
-  requiredNumber,
   objectId,
   requiredObjectId,
   stringArray,
@@ -37,12 +36,9 @@ const CosmeticSchema = new Schema<ICosmetic>(
       autopopulate: true,
     },
     introduction: {
-      type: Object,
-      required: false,
-      chapter: requiredNumber,
-      season: requiredNumber,
-      text: requiredString,
-      seasonNumber: requiredNumber,
+      ...objectId,
+      ref: 'CosmeticIntroducedIn',
+      autopopulate: true,
     },
     image: {
       type: Buffer,
