@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { Collection } from 'discord.js';
-import { Types } from 'mongoose';
+import type { Types } from 'mongoose';
+import sharp from 'sharp';
 import { promisify } from 'util';
+import { promises } from 'fs';
 
 import Bot from '../client/Client';
 import { ICosmetic } from '../database/models/typings';
@@ -26,6 +28,14 @@ class CosmeticService {
 
     items = await this.getCosmetics();
     await this.saveCosmetics(items);
+
+    console.log({
+      ...this.cosmetics.first()!,
+      image: 'VANXH',
+    });
+    console.log(this.cosmetics.size);
+    console.log(process.memoryUsage().heapUsed / 1024 / 1024);
+    await promises.writeFile('h.jpeg', Buffer.from(this.cosmetics.first()!.image.buffer));
 
     setInterval(async () => {
       items = await this.getCosmetics();
@@ -58,7 +68,11 @@ class CosmeticService {
     try {
       const cosmetic = await cosmeticsModel.findOne({
         id: item.id,
-      }).lean().exec();
+      }).populate('type').populate('rarity').populate('series')
+        .populate('set')
+        .populate('introduction')
+        .lean()
+        .exec();
 
       if (!cosmetic) {
         this.bot.logger.warn(`${item.name} not found in database.`);
@@ -83,8 +97,8 @@ class CosmeticService {
             backendValue: item.series.backendValue,
           }) : null,
           set: item.set ? await this._getCosmeticSet({
-            value: item.set.value,
-            text: item.set.text,
+            value: item.set.value ?? item.set.backendValue,
+            text: item.set.text ?? item.set.backendValue,
             backendValue: item.set.backendValue,
           }) : null,
           introduction: item.introduction ? await this._getCosmeticIntroducedIn({
@@ -93,7 +107,7 @@ class CosmeticService {
             text: item.introduction.text,
             seasonNumber: item.introduction.backendValue,
           }) : null,
-          image: await this.__getCosmeticImage(item.images.icon ?? item.images.smallIcon),
+          image: await this._getCosmeticImage(item.images.icon ?? item.images.smallIcon),
           searchTags: item.searchTags ?? [],
           gameplayTags: item.gameplayTags ?? [],
           metaTags: item.metaTags ?? [],
@@ -105,16 +119,14 @@ class CosmeticService {
 
         const created = await cosmeticsModel.findOne({
           id: item.id,
-        }).lean().exec();
-        this.cosmetics.set(created!.id.toLowerCase(), {
-          ...created!,
-          image: undefined,
-        });
+        }).populate('type').populate('rarity').populate('series')
+          .populate('set')
+          .populate('introduction')
+          .lean()
+          .exec();
+        this.cosmetics.set(created!.id.toLowerCase(), created!);
       } else {
-        this.cosmetics.set(cosmetic.id.toLowerCase(), {
-          ...cosmetic,
-          image: undefined,
-        });
+        this.cosmetics.set(cosmetic.id.toLowerCase(), cosmetic);
       }
     } catch (e) {
       this.bot.logger.error(e);
@@ -226,12 +238,12 @@ class CosmeticService {
     return introducedIn!._id;
   }
 
-  private async __getCosmeticImage(img : string) : Promise<Buffer> {
+  private async _getCosmeticImage(img : string) : Promise<Buffer> {
     try {
-      return Buffer.from((await axios.get(img, { responseType: 'arraybuffer' })).data);
+      return sharp(Buffer.from((await axios.get(img, { responseType: 'arraybuffer' })).data)).resize(256, 256).toFormat('jpeg').toBuffer();
     } catch (e) {
       await wait(30 * 1000);
-      return this.__getCosmeticImage(img);
+      return this._getCosmeticImage(img);
     }
   }
 }

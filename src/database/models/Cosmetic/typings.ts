@@ -39,7 +39,7 @@ export interface ICosmetic {
     series?: Schema.Types.ObjectId | ICosmeticSeries;
     set?: Schema.Types.ObjectId | ICosmeticSet;
     introduction?: ICosmeticIntroducedIn;
-    image?: Buffer;
+    image: Buffer;
     searchTags: string[];
     gameplayTags: string[];
     metaTags: string[];
