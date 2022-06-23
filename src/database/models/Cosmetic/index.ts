@@ -11,7 +11,10 @@ import {
 import { ICosmetic } from './typings';
 
 const CosmeticSchema = new Schema<ICosmetic>({
-  id: uniqueRequiredString,
+  id: {
+    ...uniqueRequiredString,
+    index: true,
+  },
   name: requiredString,
   description: requiredString,
   type: {

@@ -4,7 +4,6 @@ export const requiredString = { type: String, required: true };
 export const uniqueRequiredString = {
   ...requiredString,
   unique: true,
-  index: true,
 };
 export const requiredNumber = { type: Number, required: true };
 export const uniqueRequiredNumber = {
