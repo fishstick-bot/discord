@@ -29,13 +29,12 @@ class CosmeticService {
     items = await this.getCosmetics();
     await this.saveCosmetics(items);
 
-    console.log({
-      ...this.cosmetics.first()!,
-      image: 'VANXH',
-    });
-    console.log(this.cosmetics.size);
     console.log(process.memoryUsage().heapUsed / 1024 / 1024);
     await promises.writeFile('h.jpeg', Buffer.from(this.cosmetics.first()!.image.buffer));
+    console.log(process.memoryUsage().heapUsed / 1024 / 1024);
+
+    await wait(10 * 1000);
+    console.log(process.memoryUsage().heapUsed / 1024 / 1024);
 
     setInterval(async () => {
       items = await this.getCosmetics();
@@ -240,7 +239,7 @@ class CosmeticService {
 
   private async _getCosmeticImage(img : string) : Promise<Buffer> {
     try {
-      return sharp(Buffer.from((await axios.get(img, { responseType: 'arraybuffer' })).data)).resize(256, 256).toFormat('jpeg').toBuffer();
+      return sharp(Buffer.from((await axios.get(img, { responseType: 'arraybuffer' })).data)).resize(125, 125).toFormat('jpeg').toBuffer();
     } catch (e) {
       await wait(30 * 1000);
       return this._getCosmeticImage(img);
