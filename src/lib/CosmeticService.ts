@@ -3,7 +3,6 @@ import { Collection } from 'discord.js';
 import type { Types } from 'mongoose';
 import sharp from 'sharp';
 import { promisify } from 'util';
-import { promises } from 'fs';
 
 import Bot from '../client/Client';
 import { ICosmetic } from '../database/models/typings';
@@ -29,12 +28,10 @@ class CosmeticService {
     items = await this.getCosmetics();
     await this.saveCosmetics(items);
 
-    console.log(process.memoryUsage().heapUsed / 1024 / 1024);
-    await promises.writeFile('h.jpeg', Buffer.from(this.cosmetics.first()!.image.buffer));
-    console.log(process.memoryUsage().heapUsed / 1024 / 1024);
+    this.bot.logger.info(`Loaded ${items.length} cosmetics`);
 
-    await wait(10 * 1000);
-    console.log(process.memoryUsage().heapUsed / 1024 / 1024);
+    // clear memory
+    items = [];
 
     setInterval(async () => {
       items = await this.getCosmetics();
