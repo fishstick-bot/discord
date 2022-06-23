@@ -1,14 +1,15 @@
 {
   "name": "discord",
   "version": "1.0.0",
-  "main": "dist/index.js",
+  "main": "index.js",
   "types": "dist/index.d.ts",
   "repository": "https://github.com/fishstick-bot/discord",
   "author": "Vanxh <71810662+vanxh@users.noreply.github.com>",
   "scripts": {
     "lint": "eslint src/**/*.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node index.js",
+    "dev" : "tsc && node index.js"
   },
   "license": "MIT",
   "homepage": "https://fishstickbot.com",
@@ -34,11 +35,16 @@
     "@discordjs/rest": "^0.5.0",
     "axios": "^0.27.2",
     "bufferutil": "^4.0.6",
+    "discord-hybrid-sharding": "^1.6.2",
     "discord.js": "^13.8.1",
+    "dotenv": "^16.0.1",
     "erlpack": "discord/erlpack",
+    "moment": "^2.29.3",
     "mongoose": "^6.4.0",
     "mongoose-autopopulate": "^0.16.1",
     "utf-8-validate": "^5.0.9",
+    "winston": "^3.8.0",
+    "winston-daily-rotate-file": "^4.7.1",
     "zlib-sync": "^0.1.7"
   }
 }

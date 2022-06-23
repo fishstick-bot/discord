@@ -10,7 +10,6 @@ export const requiredNumber = { type: Number, required: true };
 export const uniqueRequiredNumber = {
   ...requiredNumber,
   unique: true,
-  index: true,
 };
 export const stringArray = { type: [String], required: false, default: [] };
 export const objectId = {

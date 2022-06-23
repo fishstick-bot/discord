@@ -1,11 +1,11 @@
 import { Schema, model } from 'mongoose';
 
-import { requiredString, uniqueRequiredNumber, requiredNumber } from '../../../schemaTypes';
+import { requiredString, uniqueRequiredNumber } from '../../../schemaTypes';
 import { ICosmeticIntroducedIn } from '../typings';
 
 const CosmeticIntroducedInSchema = new Schema<ICosmeticIntroducedIn>({
-  chapter: requiredNumber,
-  season: requiredNumber,
+  chapter: requiredString,
+  season: requiredString,
   text: requiredString,
   seasonNumber: uniqueRequiredNumber,
 }, {

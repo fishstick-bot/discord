@@ -5,7 +5,7 @@ import { ICosmeticSet } from '../typings';
 
 const CosmeticSetSchema = new Schema<ICosmeticSet>({
   value: uniqueRequiredString,
-  displayValue: requiredString,
+  text: requiredString,
   backendValue: requiredString,
 }, {
   timestamps: true,

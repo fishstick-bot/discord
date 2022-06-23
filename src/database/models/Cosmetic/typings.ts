@@ -17,11 +17,15 @@ export interface ICosmeticSeries {
   backendValue: string;
 }
 
-export interface ICosmeticSet extends ISimpleValueType {}
+export interface ICosmeticSet {
+  value: string;
+  text: string;
+  backendValue: string;
+}
 
 export interface ICosmeticIntroducedIn {
-  chapter: number;
-  season: number;
+  chapter: string;
+  season: string;
   text: string;
   seasonNumber: number;
 }
@@ -35,7 +39,7 @@ export interface ICosmetic {
     series?: Schema.Types.ObjectId | ICosmeticSeries;
     set?: Schema.Types.ObjectId | ICosmeticSet;
     introduction?: ICosmeticIntroducedIn;
-    image: Buffer;
+    image?: Buffer;
     searchTags: string[];
     gameplayTags: string[];
     metaTags: string[];
