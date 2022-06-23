@@ -1,6 +1,6 @@
-import { Schema } from 'mongoose';
+import { Schema, model } from 'mongoose';
 
-import { requiredString } from '../../schemaTypes';
+import { requiredString } from '../../../schemaTypes';
 import { ICosmeticType } from './typings';
 
 const CosmeticTypeSchema = new Schema<ICosmeticType>({
@@ -11,4 +11,4 @@ const CosmeticTypeSchema = new Schema<ICosmeticType>({
   timestamps: true,
 });
 
-export default CosmeticTypeSchema;
+export default model<ICosmeticType>('CosmeticType', CosmeticTypeSchema);

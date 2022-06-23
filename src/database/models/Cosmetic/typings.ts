@@ -1,6 +1,6 @@
 import { Schema } from 'mongoose';
 
-import { ICosmeticType } from '../CosmeticType/typings';
+import { ICosmeticType } from './CosmeticType/typings';
 
 export interface ICosmetic {
     id: string;
