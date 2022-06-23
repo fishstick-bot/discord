@@ -60,6 +60,8 @@ class CosmeticService {
   }
 
   public async saveCosmetic(item: any) : Promise<void> {
+    if (this.cosmetics.has(item.id?.toLowerCase())) return;
+
     const cosmeticsModel = this.bot.cosmeticModel;
 
     try {
