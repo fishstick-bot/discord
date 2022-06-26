@@ -116,14 +116,13 @@ class CosmeticService {
           shopHistory: item.shopHistory ? item.shopHistory : [],
         });
 
-        const created = await cosmeticsModel.findOne({
+        this.cosmetics.set(item.id.toLowerCase(), (await cosmeticsModel.findOne({
           id: item.id,
         }).populate('type').populate('rarity').populate('series')
           .populate('set')
           .populate('introduction')
           .lean()
-          .exec();
-        this.cosmetics.set(created!.id.toLowerCase(), created!);
+          .exec())!);
       } else {
         this.cosmetics.set(cosmetic.id.toLowerCase(), cosmetic);
       }
