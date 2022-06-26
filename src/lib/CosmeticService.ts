@@ -116,15 +116,22 @@ class CosmeticService {
           shopHistory: item.shopHistory ? item.shopHistory : [],
         });
 
-        this.cosmetics.set(item.id.toLowerCase(), (await cosmeticsModel.findOne({
+        const createdCosmetic = (await cosmeticsModel.findOne({
           id: item.id,
         }).populate('type').populate('rarity').populate('series')
           .populate('set')
           .populate('introduction')
           .lean()
-          .exec())!);
+          .exec())!;
+        this.cosmetics.set(item.id.toLowerCase(), {
+          ...createdCosmetic,
+          image: this.bot.isMainProcess ? createdCosmetic.image! : null,
+        });
       } else {
-        this.cosmetics.set(cosmetic.id.toLowerCase(), cosmetic);
+        this.cosmetics.set(cosmetic.id.toLowerCase(), {
+          ...cosmetic,
+          image: this.bot.isMainProcess ? cosmetic.image! : null,
+        });
       }
     } catch (e) {
       this.bot.logger.error(e);

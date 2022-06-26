@@ -59,14 +59,18 @@ class Bot extends Client {
   }
 
   // start the bot
-  public async start() {
+  public async start() : Promise<void> {
     const start = Date.now();
     await this.login(this._config.discordToken);
-    this.logger.info(`Logged in as ${this.user?.tag} [${(Date.now() - start).toFixed(2)}ms]`);
+    this.logger.info(`[SHARD ${this.shard?.ids.join(', ')}] Logged in as ${this.user?.tag} [${(Date.now() - start).toFixed(2)}ms]`);
 
     await connectToDatabase();
 
     this.cosmeticService.start();
+  }
+
+  public get isMainProcess() : boolean {
+    return this.shard?.ids.includes(0) ?? true;
   }
 }
 
