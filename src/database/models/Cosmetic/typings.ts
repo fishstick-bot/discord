@@ -30,14 +30,6 @@ export interface ICosmeticIntroducedIn {
   seasonNumber: number;
 }
 
-export interface ICosmeticVariant {
-  channel: string;
-  type: string;
-  tag: string;
-  name: string;
-  image: string;
-}
-
 export interface ICosmetic {
     id: string;
     name: string;
@@ -48,7 +40,6 @@ export interface ICosmetic {
     set?: Schema.Types.ObjectId | ICosmeticSet;
     introduction?: ICosmeticIntroducedIn;
     image: Buffer;
-    variants?: ICosmeticVariant[];
     searchTags: string[];
     gameplayTags: string[];
     metaTags: string[];
