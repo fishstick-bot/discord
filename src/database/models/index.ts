@@ -4,7 +4,6 @@ import CosmeticRarityModel from './Cosmetic/CosmeticRarity';
 import CosmeticSeriesModel from './Cosmetic/CosmeticSeries';
 import CosmeticSetModel from './Cosmetic/CosmeticSet';
 import CosmeticIntroducedInModel from './Cosmetic/CosmeticIntroducedIn';
-import CosmeticVariantModel from './Cosmetic/CosmeticVariant';
 
 export {
   CosmeticModel,
@@ -13,5 +12,4 @@ export {
   CosmeticSeriesModel,
   CosmeticSetModel,
   CosmeticIntroducedInModel,
-  CosmeticVariantModel,
 };
