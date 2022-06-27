@@ -117,7 +117,7 @@ class Bot extends Client {
 
   private async _loadEventListeners() : Promise<void> {
     const start = Date.now();
-    const eventFiles = await globPromisify(`${__dirname}/../events/**/*.ts`);
+    const eventFiles = await globPromisify(`${__dirname}/events/**/*.ts`);
 
     await Promise.all(eventFiles.map(async (file) => {
       const event: IEvent = (await import(file)).default;
