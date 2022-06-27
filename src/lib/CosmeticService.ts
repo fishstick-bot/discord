@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { Collection } from 'discord.js';
 import type { Types } from 'mongoose';
-import sharp from 'sharp';
 import { promisify } from 'util';
 
 import Bot from '../client/Client';
 import getLogger from '../Logger';
 import { ICosmetic } from '../database/models/typings';
+import { drawLockerItem } from './images/LockerImage';
 
 const wait = promisify(setTimeout);
 
@@ -26,18 +26,10 @@ class CosmeticService {
   }
 
   public async start() {
-    let items : any[] = [];
-
-    items = await this.getCosmetics();
-    await this.saveCosmetics(items);
-
-    // clear memory
-    items = [];
+    await this.saveCosmetics(await this.getCosmetics());
 
     setInterval(async () => {
-      items = await this.getCosmetics();
-      await this.saveCosmetics(items);
-      items = [];
+      await this.saveCosmetics(await this.getCosmetics());
     }, 60 * 60 * 1000);
   }
 
@@ -49,16 +41,18 @@ class CosmeticService {
       )).data.data as any[];
       this.logger.info(`Fetched ${items.length} cosmetics [${(Date.now() - start).toFixed(2)}ms]`);
       return items;
-    } catch (e) {
-      return [];
+    } catch (e : any) {
+      this.logger.error(e.response?.data ?? e ?? 'Unknown error');
+      await wait(5 * 1000);
+      return this.getCosmetics();
     }
   }
 
   public async saveCosmetics(items: any[]) : Promise<void> {
-    // this.logger.info(process.memoryUsage().heapUsed / 1024 / 1024);
     const start = Date.now();
 
-    await Promise.all(items.map(async (item) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const item of items) {
       await this.saveCosmetic(item);
 
       if (item.variants && item.variants.length !== 0) {
@@ -93,10 +87,9 @@ class CosmeticService {
           }
         }));
       }
-    }));
+    }
 
     this.logger.info(`Loaded ${this.cosmetics.size} cosmetics [${(Date.now() - start).toFixed(2)}ms]`);
-    // this.logger.info(process.memoryUsage().heapUsed / 1024 / 1024);
   }
 
   public async saveCosmetic(item: any) : Promise<void> {
@@ -116,7 +109,7 @@ class CosmeticService {
       if (!cosmetic) {
         this.logger.warn(`${item.name} not found in database.`);
 
-        await cosmeticsModel.create({
+        const c : any = {
           id: item.id,
           name: item.name,
           description: item.description,
@@ -146,7 +139,6 @@ class CosmeticService {
             text: item.introduction.text,
             seasonNumber: item.introduction.backendValue,
           }) : null,
-          image: await this._getCosmeticImage(item.images.icon ?? item.images.smallIcon),
           searchTags: item.searchTags ?? [],
           gameplayTags: item.gameplayTags ?? [],
           metaTags: item.metaTags ?? [],
@@ -154,6 +146,35 @@ class CosmeticService {
           path: item.path,
           addedAt: item.added,
           shopHistory: item.shopHistory ? item.shopHistory : [],
+        };
+
+        await cosmeticsModel.create({
+          ...c,
+          image: await drawLockerItem({
+            id: c.id.toLowerCase(),
+            name: c.name,
+            description: c.description,
+            type: item.type.value,
+            rarity: item.rarity.value,
+            series: item.series ? item.series.value : null,
+            set: item.set ? item.set.value : null,
+            introduction: c.introduction ? {
+              chapter: item.introduction.chapter,
+              season: item.introduction.season,
+              text: item.introduction.text,
+              seasonNumber: item.introduction.backendValue,
+            } : null,
+            isExclusive: c.isExclusive,
+            isCrew: c.isCrew || (c.gameplayTags.filter((t : string) => t.toLowerCase().includes('crewpack')).length > 0),
+            isSTW: c.gameplayTags.filter((t : string) => t.toLowerCase().includes('savetheworld') || t.toLowerCase().includes('stw')).length > 0,
+            isBattlePass: c.gameplayTags.filter((t : string) => t.toLowerCase().includes('battlepass.paid')).length > 0,
+            isFreePass: c.gameplayTags.filter((t : string) => t.toLowerCase().includes('battlepass.free')).length > 0,
+            isItemShop: c.gameplayTags.filter((t : string) => t.toLowerCase().includes('itemshop')).length > 0,
+            isPlaystation: c.gameplayTags.filter((t : string) => t.toLowerCase().includes('platform.ps4')).length > 0,
+            isXbox: c.gameplayTags.filter((t : string) => t.toLowerCase().includes('platform.xbox')).length > 0,
+            isPromo: c.gameplayTags.filter((t : string) => t.toLowerCase().includes('source.promo')).length > 0,
+            image: item.images.icon ?? item.images.smallIcon,
+          }),
         });
 
         const createdCosmetic = (await cosmeticsModel.findOne({
@@ -163,15 +184,9 @@ class CosmeticService {
           .populate('introduction')
           .lean()
           .exec())!;
-        this.cosmetics.set(item.id.toLowerCase(), {
-          ...createdCosmetic,
-          image: this.bot.isMainProcess ? createdCosmetic.image! : null,
-        });
+        this.cosmetics.set(item.id.toLowerCase(), createdCosmetic);
       } else {
-        this.cosmetics.set(cosmetic.id.toLowerCase(), {
-          ...cosmetic,
-          image: this.bot.isMainProcess ? cosmetic.image! : null,
-        });
+        this.cosmetics.set(cosmetic.id.toLowerCase(), cosmetic);
       }
     } catch (e) {
       this.logger.error(e);
@@ -281,15 +296,6 @@ class CosmeticService {
     }
 
     return introducedIn!._id;
-  }
-
-  private async _getCosmeticImage(img : string) : Promise<Buffer> {
-    try {
-      return sharp(Buffer.from((await axios.get(img, { responseType: 'arraybuffer' })).data)).resize(125, 125).toFormat('jpeg').toBuffer();
-    } catch (e) {
-      await wait(30 * 1000);
-      return this._getCosmeticImage(img);
-    }
   }
 }
 
