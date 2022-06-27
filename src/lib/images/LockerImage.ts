@@ -1,6 +1,6 @@
 // import { Canvas, loadImage, FontLibrary } from 'skia-canvas';
 import {
-  registerFont, loadImage, createCanvas, Canvas,
+  registerFont, loadImage, Canvas,
 } from 'canvas';
 import { promises as fs } from 'fs';
 
@@ -30,7 +30,7 @@ const getCachedImage = async (path: string, x = 100, y = 100) : Promise<Canvas> 
     return imgCache[path]!;
   }
 
-  const canvas = createCanvas(x, y);
+  const canvas = new Canvas(x, y);
   const ctx = canvas.getContext('2d');
 
   const img = await loadImage(path);
