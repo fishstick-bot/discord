@@ -24,6 +24,7 @@ module.exports = {
     'function-paren-newline': 'off',
     'function-call-argument-newline': 'off',
     'default-param-last': 'off',
+    'no-unused-vars': 'off',
   },
   settings: {
     'import/resolver': {
