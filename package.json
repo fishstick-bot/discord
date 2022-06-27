@@ -44,6 +44,7 @@
     "mongoose": "^6.4.0",
     "mongoose-autopopulate": "^0.16.1",
     "sharp": "^0.30.7",
+    "skia-canvas": "^0.9.30",
     "utf-8-validate": "^5.0.9",
     "winston": "^3.8.0",
     "winston-daily-rotate-file": "^4.7.1",

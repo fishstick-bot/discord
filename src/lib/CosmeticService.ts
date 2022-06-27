@@ -28,7 +28,7 @@ class CosmeticService {
     items = await this.getCosmetics();
     await this.saveCosmetics(items);
 
-    this.bot.logger.info(`Loaded ${items.length} cosmetics`);
+    this.bot.logger.info(`Loaded ${this.cosmetics.size} cosmetics`);
 
     // clear memory
     items = [];
@@ -56,6 +56,39 @@ class CosmeticService {
   public async saveCosmetics(items: any[]) : Promise<void> {
     await Promise.all(items.map(async (item) => {
       await this.saveCosmetic(item);
+
+      if (item.variants && item.variants.length !== 0) {
+        await Promise.all(item.variants.map(async (v: any) => {
+          if (v.options && v.options.length !== 0) {
+            await Promise.all(v.options.map(async (o: any) => {
+              await this.saveCosmetic({
+                id: `${item.id}-${o.tag}`,
+                name: `${item.name} (${o.name})`,
+                description: item.description,
+                type: {
+                  value: 'style',
+                  displayValue: 'Style',
+                  backendValue: 'style',
+                },
+                rarity: item.rarity,
+                series: item.series,
+                set: item.set,
+                introduction: item.introduction,
+                images: {
+                  icon: o.image ?? item.images.icon,
+                },
+                searchTags: item.searchTags,
+                gameplayTags: item.gameplayTags,
+                metaTags: item.metaTags,
+                showcaseVideo: item.showcaseVideo,
+                path: item.path,
+                added: item.added,
+                shopHistory: item.shopHistory,
+              });
+            }));
+          }
+        }));
+      }
     }));
   }
 
