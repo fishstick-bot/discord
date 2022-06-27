@@ -48,4 +48,5 @@ export interface ICosmetic {
     addedAt: Date;
     shopHistory: Date[];
     isExclusive: boolean;
+    isCrew: boolean;
   }

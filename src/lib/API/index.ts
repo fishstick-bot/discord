@@ -22,6 +22,10 @@ class API {
 
     this.app = express();
     this.app.use(compression());
+    this.app.use((req, res, next) => {
+      this.logger.info(`${req.method} ${req.url} (${req.ip})`);
+      next();
+    });
   }
 
   public async start() {
@@ -64,7 +68,7 @@ class API {
             seasonNumber: c.introduction.seasonNumber,
           } : null,
           isExclusive: c.isExclusive,
-          isCrew: c.gameplayTags.filter((t) => t.toLowerCase().includes('crewpack')).length > 0, // TODO: find out more way's to find exclusives, for eg: Loki skin don't has any crew tags in it.
+          isCrew: c.isCrew || (c.gameplayTags.filter((t) => t.toLowerCase().includes('crewpack')).length > 0),
           isSTW: c.gameplayTags.filter((t) => t.toLowerCase().includes('savetheworld') || t.toLowerCase().includes('stw')).length > 0,
           isBattlePass: c.gameplayTags.filter((t) => t.toLowerCase().includes('battlepass.paid')).length > 0,
           isFreePass: c.gameplayTags.filter((t) => t.toLowerCase().includes('battlepass.free')).length > 0,

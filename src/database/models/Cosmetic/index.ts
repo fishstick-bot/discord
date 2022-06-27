@@ -67,6 +67,10 @@ const CosmeticSchema = new Schema<ICosmetic>({
     type: Boolean,
     default: false,
   },
+  isCrew: {
+    type: Boolean,
+    default: false,
+  },
 },
 {
   timestamps: true,
