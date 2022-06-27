@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import { promisify } from 'util';
 
 import Bot from '../client/Client';
+import getLogger from '../Logger';
 import { ICosmetic } from '../database/models/typings';
 
 const wait = promisify(setTimeout);
@@ -15,6 +16,8 @@ interface KeyValuePair {
 
 class CosmeticService {
   private bot: Bot;
+
+  public logger = getLogger('COSMETICS SERVICE');
 
   public cosmetics: Collection<string, ICosmetic> = new Collection();
 
@@ -28,7 +31,7 @@ class CosmeticService {
     items = await this.getCosmetics();
     await this.saveCosmetics(items);
 
-    this.bot.logger.info(`Loaded ${this.cosmetics.size} cosmetics`);
+    this.logger.info(`Loaded ${this.cosmetics.size} cosmetics`);
 
     // clear memory
     items = [];
@@ -46,7 +49,7 @@ class CosmeticService {
       const items = (await axios.get(
         'https://fortnite-api.com/v2/cosmetics/br',
       )).data.data as any[];
-      this.bot.logger.info(`Fetched ${items.length} cosmetics [${(Date.now() - start).toFixed(2)}ms]`);
+      this.logger.info(`Fetched ${items.length} cosmetics [${(Date.now() - start).toFixed(2)}ms]`);
       return items;
     } catch (e) {
       return [];
@@ -107,7 +110,7 @@ class CosmeticService {
         .exec();
 
       if (!cosmetic) {
-        this.bot.logger.warn(`${item.name} not found in database.`);
+        this.logger.warn(`${item.name} not found in database.`);
 
         await cosmeticsModel.create({
           id: item.id,
@@ -167,7 +170,7 @@ class CosmeticService {
         });
       }
     } catch (e) {
-      this.bot.logger.error(e);
+      this.logger.error(e);
     }
   }
 
@@ -181,7 +184,7 @@ class CosmeticService {
       try {
         return (await typesModel.create(value))._id;
       } catch (e) {
-        this.bot.logger.error(e);
+        this.logger.error(e);
 
         if (retry) {
           return this._getCosmeticType(value, false);
@@ -202,7 +205,7 @@ class CosmeticService {
       try {
         return (await raritiesModel.create(value))._id;
       } catch (e) {
-        this.bot.logger.error(e);
+        this.logger.error(e);
 
         if (retry) {
           return this._getCosmeticRarity(value, false);
@@ -223,7 +226,7 @@ class CosmeticService {
       try {
         return (await seriesModel.create(value))._id;
       } catch (e) {
-        this.bot.logger.error(e);
+        this.logger.error(e);
 
         if (retry) {
           return this._getCosmeticSeries(value, false);
@@ -244,7 +247,7 @@ class CosmeticService {
       try {
         return (await setsModel.create(value))._id;
       } catch (e) {
-        this.bot.logger.error(e);
+        this.logger.error(e);
 
         if (retry) {
           return this._getCosmeticSet(value, false);
@@ -265,7 +268,7 @@ class CosmeticService {
       try {
         return (await introducedInModel.create(value))._id;
       } catch (e) {
-        this.bot.logger.error(e);
+        this.logger.error(e);
 
         if (retry) {
           return this._getCosmeticIntroducedIn(value, false);

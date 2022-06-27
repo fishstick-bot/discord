@@ -14,12 +14,16 @@ import {
   CosmeticIntroducedInModel,
 } from '../database/models';
 import CosmeticService from '../lib/CosmeticService';
+import API from '../lib/API';
 
 class Bot extends Client {
   // bot config
-  private _config: IConfig;
+  public _config: IConfig;
   // logger for this bot
   public logger = getLogger('BOT');
+
+  // cluster client
+  public cluster = new Cluster.Client(this);
 
   // cosmetic models
   public cosmeticModel = CosmeticModel;
@@ -31,6 +35,9 @@ class Bot extends Client {
 
   // cosmetic service
   public cosmeticService = new CosmeticService(this);
+
+  // bot api
+  public botAPI = new API(this);
 
   constructor() {
     super({
@@ -60,17 +67,25 @@ class Bot extends Client {
 
   // start the bot
   public async start() : Promise<void> {
+    // start discord bot
     const start = Date.now();
     await this.login(this._config.discordToken);
-    this.logger.info(`[SHARD ${this.shard?.ids.join(', ')}] Logged in as ${this.user?.tag} [${(Date.now() - start).toFixed(2)}ms]`);
+    this.logger.info(`[CLUSTER ${this.cluster.id}] Logged in as ${this.user?.tag} [${(Date.now() - start).toFixed(2)}ms]`);
 
+    // connect to database
     await connectToDatabase();
 
-    this.cosmeticService.start();
+    if (this.isMainProcess) {
+      // start cosmetics service
+      this.cosmeticService.start();
+
+      // start bot api
+      this.botAPI.start();
+    }
   }
 
   public get isMainProcess() : boolean {
-    return this.shard?.ids.includes(0) ?? true;
+    return this.cluster.id === 0;
   }
 }
 
