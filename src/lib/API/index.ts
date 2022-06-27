@@ -1,9 +1,10 @@
 import express, { Express } from 'express';
+import compression from 'compression';
 
 import Bot from '../../client/Client';
 import getLogger from '../../Logger';
 import {
-  ICosmeticRarity, ICosmeticSeries, ICosmeticType,
+  ICosmeticRarity, ICosmeticSeries, ICosmeticType, ICosmeticSet,
 } from '../../database/models/typings';
 
 class API {
@@ -18,7 +19,9 @@ class API {
 
   constructor(bot: Bot) {
     this.bot = bot;
+
     this.app = express();
+    this.app.use(compression());
   }
 
   public async start() {
@@ -36,14 +39,25 @@ class API {
 
     this.app.get('/api/cosmetics', async (req, res) => {
       try {
+        let sendDescription = false;
+        if (req.query.description) {
+          sendDescription = true;
+        }
+        let sendSet = false;
+        if (req.query.set) {
+          sendSet = true;
+        }
+
         const cosmetics = this.bot.cosmeticService.cosmetics.toJSON().map((c) => ({
-          id: c.id,
+          id: c.id.toLowerCase(),
           name: c.name,
-          description: c.description,
+          description: sendDescription ? c.description : undefined,
           type: (c.type as ICosmeticType).value,
           rarity: (c.rarity as ICosmeticRarity).value,
           series: c.series ? (c.series as ICosmeticSeries).value : null,
-          //   set: c.set ? (c.set as ICosmeticSet).value : null,
+          set: sendSet ? (
+            (c.set as ICosmeticSet)?.value ?? null
+          ) : null,
           introduction: c.introduction ? {
             season: c.introduction.season,
             chapter: c.introduction.chapter,

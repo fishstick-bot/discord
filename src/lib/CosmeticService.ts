@@ -31,8 +31,6 @@ class CosmeticService {
     items = await this.getCosmetics();
     await this.saveCosmetics(items);
 
-    this.logger.info(`Loaded ${this.cosmetics.size} cosmetics`);
-
     // clear memory
     items = [];
 
@@ -57,6 +55,9 @@ class CosmeticService {
   }
 
   public async saveCosmetics(items: any[]) : Promise<void> {
+    // this.logger.info(process.memoryUsage().heapUsed / 1024 / 1024);
+    const start = Date.now();
+
     await Promise.all(items.map(async (item) => {
       await this.saveCosmetic(item);
 
@@ -93,6 +94,9 @@ class CosmeticService {
         }));
       }
     }));
+
+    this.logger.info(`Loaded ${this.cosmetics.size} cosmetics [${(Date.now() - start).toFixed(2)}ms]`);
+    // this.logger.info(process.memoryUsage().heapUsed / 1024 / 1024);
   }
 
   public async saveCosmetic(item: any) : Promise<void> {
