@@ -5,6 +5,8 @@ import { promisify } from 'util';
 
 import Bot from '../client/Client';
 import getLogger from '../Logger';
+import Exclusives from '../resources/Exclusives.json';
+import Crew from '../resources/Crew.json';
 import { ICosmetic } from '../database/models/typings';
 import { drawLockerItem } from './images/LockerImage';
 
@@ -82,6 +84,8 @@ class CosmeticService {
                 path: item.path,
                 added: item.added,
                 shopHistory: item.shopHistory,
+                isExclusive: Exclusives.includes(item.id.toLowerCase()),
+                isCrew: Crew.includes(item.id.toLowerCase()),
               });
             }));
           }
@@ -146,6 +150,8 @@ class CosmeticService {
           path: item.path,
           addedAt: item.added,
           shopHistory: item.shopHistory ? item.shopHistory : [],
+          isExclusive: Exclusives.includes(item.id.toLowerCase()),
+          isCrew: Crew.includes(item.id.toLowerCase()),
         };
 
         await cosmeticsModel.create({
