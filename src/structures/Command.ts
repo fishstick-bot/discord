@@ -3,10 +3,7 @@ import type { SlashCommandBuilder } from '@discordjs/builders';
 
 import Bot from '../client/Client';
 
-type ExecuteCommand = (
-  bot: Bot,
-  interaction: CommandInteraction
-) => Promise<void>;
+type RunCommand = (bot: Bot, interaction: CommandInteraction) => Promise<void>;
 
 interface CommandOptions {
   privateResponse?: boolean;
@@ -24,5 +21,5 @@ export interface ICommand {
 
   options: CommandOptions;
 
-  execute: ExecuteCommand;
+  run: RunCommand;
 }

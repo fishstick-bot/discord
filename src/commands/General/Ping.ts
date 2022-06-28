@@ -13,7 +13,9 @@ const Command: ICommand = {
 
   options: {},
 
-  execute: async (bot, interaction: CommandInteraction) => {},
+  run: async (bot, interaction: CommandInteraction) => {
+    await interaction.editReply(`🏓Pong! ${bot.ws.ping}ms`);
+  },
 };
 
 export default Command;
