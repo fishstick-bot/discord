@@ -107,7 +107,7 @@ class Bot extends Client {
   private async _loadCommands(): Promise<void> {
     const start = Date.now();
     const commandFiles = await globPromisify(
-      `${__dirname}/../commands/**/*.ts`
+      `${__dirname}/../commands/**/*{.ts,.js}`
     );
 
     await Promise.all(
@@ -126,7 +126,7 @@ class Bot extends Client {
 
   private async _loadEventListeners(): Promise<void> {
     const start = Date.now();
-    const eventFiles = await globPromisify(`${__dirname}/events/**/*.ts`);
+    const eventFiles = await globPromisify(`${__dirname}/events/**/*{.ts,.js}`);
 
     await Promise.all(
       eventFiles.map(async (file) => {
@@ -139,7 +139,7 @@ class Bot extends Client {
     );
 
     this.logger.info(
-      `[CLUSTER ${this.cluster.id}] Loaded ${eventFiles} events [${(
+      `[CLUSTER ${this.cluster.id}] Loaded ${eventFiles.length} events [${(
         Date.now() - start
       ).toFixed(2)}ms]`
     );

@@ -5,7 +5,7 @@ import Bot from '../client/Client';
 
 type ExecuteCommand = (
   bot: Bot,
-  interaction: CommandInteraction,
+  interaction: CommandInteraction
 ) => Promise<void>;
 
 interface CommandOptions {

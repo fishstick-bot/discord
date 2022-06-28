@@ -9,7 +9,7 @@
     "lint": "eslint src/**/*.ts",
     "build": "tsc",
     "start": "node index.js",
-    "dev": "NODE_ENV=development tsc && node index.js"
+    "dev": "NODE_ENV=development rm -r dist && tsc && node index.js"
   },
   "license": "MIT",
   "homepage": "https://fishstickbot.com",
@@ -44,6 +44,7 @@
     "bufferutil": "^4.0.6",
     "canvas": "^2.9.3",
     "compression": "^1.7.4",
+    "discord-api-types": "^0.35.0",
     "discord-hybrid-sharding": "^1.6.2",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",

@@ -43,8 +43,8 @@ class CosmeticService {
       ).data.data as any[];
       this.logger.info(
         `Fetched ${items.length} cosmetics [${(Date.now() - start).toFixed(
-          2,
-        )}ms]`,
+          2
+        )}ms]`
       );
       return items;
     } catch (e: any) {
@@ -93,18 +93,18 @@ class CosmeticService {
                     isExclusive: Exclusives.includes(item.id.toLowerCase()),
                     isCrew: Crew.includes(item.id.toLowerCase()),
                   });
-                }),
+                })
               );
             }
-          }),
+          })
         );
       }
     }
 
     this.logger.info(
       `Loaded ${this.cosmetics.size} cosmetics [${(Date.now() - start).toFixed(
-        2,
-      )}ms]`,
+        2
+      )}ms]`
     );
   }
 
@@ -198,37 +198,37 @@ class CosmeticService {
             isCrew:
               c.isCrew ||
               c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('crewpack'),
+                t.toLowerCase().includes('crewpack')
               ).length > 0,
             isSTW:
               c.gameplayTags.filter(
                 (t: string) =>
                   t.toLowerCase().includes('savetheworld') ||
-                  t.toLowerCase().includes('stw'),
+                  t.toLowerCase().includes('stw')
               ).length > 0,
             isBattlePass:
               c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('battlepass.paid'),
+                t.toLowerCase().includes('battlepass.paid')
               ).length > 0,
             isFreePass:
               c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('battlepass.free'),
+                t.toLowerCase().includes('battlepass.free')
               ).length > 0,
             isItemShop:
               c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('itemshop'),
+                t.toLowerCase().includes('itemshop')
               ).length > 0,
             isPlaystation:
               c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('platform.ps4'),
+                t.toLowerCase().includes('platform.ps4')
               ).length > 0,
             isXbox:
               c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('platform.xbox'),
+                t.toLowerCase().includes('platform.xbox')
               ).length > 0,
             isPromo:
               c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('source.promo'),
+                t.toLowerCase().includes('source.promo')
               ).length > 0,
             image: item.images.icon ?? item.images.smallIcon,
           }),
@@ -256,7 +256,7 @@ class CosmeticService {
 
   private async _getCosmeticType(
     value: KeyValuePair,
-    retry = true,
+    retry = true
   ): Promise<Types.ObjectId> {
     const typesModel = this.bot.cosmeticTypeModel;
 
@@ -283,7 +283,7 @@ class CosmeticService {
 
   private async _getCosmeticRarity(
     value: KeyValuePair,
-    retry = true,
+    retry = true
   ): Promise<Types.ObjectId> {
     const raritiesModel = this.bot.cosmeticRarityModel;
 
@@ -310,7 +310,7 @@ class CosmeticService {
 
   private async _getCosmeticSeries(
     value: KeyValuePair,
-    retry = true,
+    retry = true
   ): Promise<Types.ObjectId> {
     const seriesModel = this.bot.cosmeticSeriesModel;
 
@@ -337,7 +337,7 @@ class CosmeticService {
 
   private async _getCosmeticSet(
     value: KeyValuePair,
-    retry = true,
+    retry = true
   ): Promise<Types.ObjectId> {
     const setsModel = this.bot.cosmeticSetModel;
 
@@ -364,7 +364,7 @@ class CosmeticService {
 
   private async _getCosmeticIntroducedIn(
     value: KeyValuePair,
-    retry = true,
+    retry = true
   ): Promise<Types.ObjectId> {
     const introducedInModel = this.bot.cosmeticIntroducedInModel;
 

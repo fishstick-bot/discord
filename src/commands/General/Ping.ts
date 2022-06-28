@@ -1,6 +1,7 @@
+import type { CommandInteraction } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
-import { ICommand } from '../structures/Command';
+import type { ICommand } from '../../structures/Command';
 
 const Command: ICommand = {
   name: 'ping',
@@ -12,7 +13,7 @@ const Command: ICommand = {
 
   options: {},
 
-  execute: async (bot, interaction) => {},
+  execute: async (bot, interaction: CommandInteraction) => {},
 };
 
 export default Command;
