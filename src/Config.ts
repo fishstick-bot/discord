@@ -1,3 +1,5 @@
+import { ColorResolvable } from 'discord.js';
+
 import IConfig from './structures/Config';
 
 class Config implements IConfig {
@@ -6,6 +8,7 @@ class Config implements IConfig {
   readonly developmentGuild: string;
   readonly mongoUri: string;
   readonly apiPort: number;
+  readonly color: ColorResolvable;
 
   constructor() {
     this.discordToken = process.env.DISCORD_TOKEN!;
@@ -13,6 +16,7 @@ class Config implements IConfig {
     this.developmentGuild = '846470870385426452';
     this.mongoUri = process.env.MONGO_URI!;
     this.apiPort = Number(process.env.API_PORT!);
+    this.color = 'AQUA';
   }
 }
 

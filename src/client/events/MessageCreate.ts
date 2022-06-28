@@ -27,11 +27,11 @@ const Event: IEvent = {
 
       await rest.put(
         isDevelopment
-          ? Routes.applicationCommands(bot.user!.id)
-          : Routes.applicationGuildCommands(
+          ? Routes.applicationGuildCommands(
               bot.user!.id,
               bot._config.developmentGuild
-            ),
+            )
+          : Routes.applicationCommands(bot.user!.id),
         {
           body: commands,
         }

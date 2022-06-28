@@ -65,6 +65,7 @@ const Event: IEvent = {
       try {
         await cmd.run(bot, interaction, user);
       } catch (e) {
+        logger.error(e);
         // TODO: Handle error
       }
     }

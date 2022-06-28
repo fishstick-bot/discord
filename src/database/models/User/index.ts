@@ -36,6 +36,11 @@ const UserSchema = new Schema<IUser>(
       required: false,
     },
 
+    selectedEpicAccount: {
+      type: String,
+      required: false,
+      default: '',
+    },
     epicAccounts: {
       type: [Schema.Types.ObjectId],
       ref: 'EpicAccount',

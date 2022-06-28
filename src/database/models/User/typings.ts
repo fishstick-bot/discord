@@ -46,5 +46,6 @@ export interface IUser {
   blacklistedAt?: Date;
   blacklistedReason?: string;
 
+  selectedEpicAccount: string;
   epicAccounts: Schema.Types.ObjectId[] | IEpicAccount[];
 }
