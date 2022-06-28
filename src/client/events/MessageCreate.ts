@@ -14,6 +14,9 @@ const Event: IEvent = {
     if (content === 'reloadcommands') {
       if (msg.author.id !== bot._config.ownerDiscordID) return;
 
+      const start = Date.now();
+      bot.logger.info('Started refreshing application (/) commands.');
+
       const commands = bot.commands.map((command) =>
         command.slashCommandBuilder.toJSON()
       );
@@ -43,9 +46,15 @@ const Event: IEvent = {
       await msg.reply(
         `[${isDevelopment ? 'DEV' : 'PROD'}] Reloaded ${
           commands.length
-        } commands${
-          isDevelopment ? ` in ${bot._config.developmentGuild}` : ''
-        }!`
+        } command(s)${
+          isDevelopment ? ` in GUILD ${bot._config.developmentGuild}` : ''
+        } in ${(Date.now() - start).toFixed(2)}ms.`
+      );
+
+      bot.logger.info(
+        `Finished refreshing application (/) commands. [${(
+          Date.now() - start
+        ).toFixed(2)}ms]`
       );
     }
   },

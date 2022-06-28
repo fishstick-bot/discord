@@ -28,11 +28,38 @@ class CosmeticService {
   }
 
   public async start() {
+    await this.init();
+
     await this.saveCosmetics(await this.getCosmetics());
 
     setInterval(async () => {
       await this.saveCosmetics(await this.getCosmetics());
     }, 60 * 60 * 1000);
+  }
+
+  public async init(): Promise<void> {
+    const start = Date.now();
+    const cosmetics = await this.bot.cosmeticModel
+      .find({})
+      .populate('type')
+      .populate('rarity')
+      .populate('series')
+      .populate('set')
+      .populate('introduction')
+      .lean()
+      .exec();
+
+    await Promise.all(
+      cosmetics.map(async (cosmetic: ICosmetic) => {
+        this.cosmetics.set(cosmetic.id.toLowerCase(), cosmetic);
+      })
+    );
+
+    this.logger.info(
+      `Loaded ${this.cosmetics.size} cosmetics [${(Date.now() - start).toFixed(
+        2
+      )}ms]`
+    );
   }
 
   public async getCosmetics(): Promise<any[]> {

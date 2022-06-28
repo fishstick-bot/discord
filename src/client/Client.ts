@@ -114,6 +114,9 @@ class Bot extends Client {
       commandFiles.map(async (file) => {
         const command: ICommand = (await import(file)).default;
         this.commands.set(command.name, command);
+        this.logger.debug(
+          `[CLUSTER ${this.cluster.id}] Loaded command ${command.name}`
+        );
       })
     );
 
@@ -132,7 +135,7 @@ class Bot extends Client {
       eventFiles.map(async (file) => {
         const event: IEvent = (await import(file)).default;
         this.on(event.name, event.run.bind(null, this));
-        this.logger.info(
+        this.logger.debug(
           `[CLUSTER ${this.cluster.id}] Loaded event ${event.name}`
         );
       })
