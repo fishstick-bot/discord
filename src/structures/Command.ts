@@ -3,23 +3,26 @@ import type { SlashCommandBuilder } from '@discordjs/builders';
 
 import Bot from '../client/Client';
 
-type ExecuteCommand = (bot: Bot, interaction: CommandInteraction) => Promise<void>;
+type ExecuteCommand = (
+  bot: Bot,
+  interaction: CommandInteraction,
+) => Promise<void>;
 
 interface CommandOptions {
-    privateResponse?: boolean;
+  privateResponse?: boolean;
 
-    premiumOnly?: boolean;
-    partnerOnly?: boolean;
-    ownerOnly?: boolean;
+  premiumOnly?: boolean;
+  partnerOnly?: boolean;
+  ownerOnly?: boolean;
 }
 
 export interface ICommand {
-    name: string;
-    category: string;
+  name: string;
+  category: string;
 
-    slashCommandBuilder: SlashCommandBuilder;
+  slashCommandBuilder: SlashCommandBuilder;
 
-    options: CommandOptions;
+  options: CommandOptions;
 
-    execute: ExecuteCommand;
+  execute: ExecuteCommand;
 }

@@ -1,7 +1,5 @@
 // import { Canvas, loadImage, FontLibrary } from 'skia-canvas';
-import {
-  registerFont, loadImage, Canvas,
-} from 'canvas';
+import { registerFont, loadImage, Canvas } from 'canvas';
 // import { promises as fs } from 'fs';
 
 // FontLibrary.use('Burbank Big Regular', 'assets/Fonts/BurbankBigRegular-Black.otf');
@@ -11,7 +9,7 @@ registerFont('./assets/Fonts/BurbankBigRegular-Black.otf', {
 });
 
 interface KeyValuePair {
-    [key: string]: any;
+  [key: string]: any;
 }
 
 const mult = 0.5;
@@ -21,11 +19,15 @@ const imgY = 530 * mult;
 let fontSize: number;
 let textWidth: number;
 
-const imgCache : {
+const imgCache: {
   [key: string]: Canvas;
 } = {};
 
-const getCachedImage = async (path: string, x = 100, y = 100) : Promise<Canvas> => {
+const getCachedImage = async (
+  path: string,
+  x = 100,
+  y = 100
+): Promise<Canvas> => {
   if (imgCache[path]) {
     return imgCache[path]!;
   }
@@ -41,7 +43,7 @@ const getCachedImage = async (path: string, x = 100, y = 100) : Promise<Canvas> 
   return canvas;
 };
 
-const overlayColors : KeyValuePair = {
+const overlayColors: KeyValuePair = {
   common: 'rgba(96,170,58,1)',
   uncommon: 'rgba(96,170,58,1)',
   rare: 'rgba(73,172,242,1)',
@@ -60,101 +62,245 @@ const overlayColors : KeyValuePair = {
   gaminglegends: 'rgba(117,108,235,1)',
 };
 
-const drawLockerItem = async (item : KeyValuePair) : Promise<Buffer> => {
+const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
   const canvas = new Canvas(imgX, imgY);
   const ctx = canvas.getContext('2d');
 
   const cosmetic = await loadImage(item.image);
 
-  let background = await getCachedImage('./assets/Locker/Backgrounds/Common.png', imgX, imgY);
-  let overlay = await getCachedImage('./assets/Locker/Overlays/Common.png', imgX, imgY);
+  let background = await getCachedImage(
+    './assets/Locker/Backgrounds/Common.png',
+    imgX,
+    imgY
+  );
+  let overlay = await getCachedImage(
+    './assets/Locker/Overlays/Common.png',
+    imgX,
+    imgY
+  );
 
   switch (item.rarity) {
     case 'uncommon':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Uncommon.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Uncommon.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Uncommon.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Uncommon.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'rare':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Rare.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Rare.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Rare.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Rare.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'epic':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Epic.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Epic.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Epic.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Epic.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'legendary':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Legendary.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Legendary.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Legendary.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Legendary.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'marvel':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Marvel.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Marvel.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Marvel.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Marvel.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'dark':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Dark.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Dark.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Dark.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Dark.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'dc':
-      background = await getCachedImage('./assets/Locker/Backgrounds/DC.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/DC.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/DC.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/DC.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'icon':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Icon.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Icon.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Icon.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Icon.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'lava':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Lava.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Lava.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Lava.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Lava.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'frozen':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Frozen.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Frozen.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Frozen.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Frozen.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'shadow':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Shadow.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Shadow.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Shadow.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Shadow.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'starwars':
-      background = await getCachedImage('./assets/Locker/Backgrounds/StarWars.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/StarWars.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/StarWars.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/StarWars.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'slurp':
-      background = await getCachedImage('./assets/Locker/Backgrounds/Slurp.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/Slurp.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/Slurp.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/Slurp.png',
+        imgX,
+        imgY
+      );
       break;
 
     case 'platform':
     case 'gaminglegends':
-      background = await getCachedImage('./assets/Locker/Backgrounds/GamingLegends.png', imgX, imgY);
-      overlay = await getCachedImage('./assets/Locker/Overlays/GamingLegends.png', imgX, imgY);
+      background = await getCachedImage(
+        './assets/Locker/Backgrounds/GamingLegends.png',
+        imgX,
+        imgY
+      );
+      overlay = await getCachedImage(
+        './assets/Locker/Overlays/GamingLegends.png',
+        imgX,
+        imgY
+      );
       break;
   }
 
   if (item.isExclusive) {
-    background = await getCachedImage('./assets/Locker/Backgrounds/Exclusive.png', imgX, imgY);
-    overlay = await getCachedImage('./assets/Locker/Overlays/Exclusive.png', imgX, imgY);
+    background = await getCachedImage(
+      './assets/Locker/Backgrounds/Exclusive.png',
+      imgX,
+      imgY
+    );
+    overlay = await getCachedImage(
+      './assets/Locker/Overlays/Exclusive.png',
+      imgX,
+      imgY
+    );
   }
 
   if (item.isCrew) {
-    background = await getCachedImage('./assets/Locker/Backgrounds/Crew.png', imgX, imgY);
-    overlay = await getCachedImage('./assets/Locker/Overlays/Crew.png', imgX, imgY);
+    background = await getCachedImage(
+      './assets/Locker/Backgrounds/Crew.png',
+      imgX,
+      imgY
+    );
+    overlay = await getCachedImage(
+      './assets/Locker/Overlays/Crew.png',
+      imgX,
+      imgY
+    );
   }
 
   if (item.isSTW) {
-    background = await getCachedImage('./assets/Locker/Backgrounds/STW.png', imgX, imgY);
-    overlay = await getCachedImage('./assets/Locker/Overlays/STW.png', imgX, imgY);
+    background = await getCachedImage(
+      './assets/Locker/Backgrounds/STW.png',
+      imgX,
+      imgY
+    );
+    overlay = await getCachedImage(
+      './assets/Locker/Overlays/STW.png',
+      imgX,
+      imgY
+    );
   }
 
   ctx.drawImage(background, 0, 0);
@@ -182,7 +328,7 @@ const drawLockerItem = async (item : KeyValuePair) : Promise<Buffer> => {
 
   const rarityText = `${item.rarity.toUpperCase()} ${item.type.toUpperCase()}`;
 
-  const rarity : string = item.series ?? item.rarity;
+  const rarity: string = item.series ?? item.rarity;
   ctx.fillStyle = overlayColors[rarity] ?? overlayColors.common;
 
   fontSize = imgY * 0.1;
@@ -203,12 +349,9 @@ const drawLockerItem = async (item : KeyValuePair) : Promise<Buffer> => {
   return buffer;
 };
 
-const drawLocker = async (items : KeyValuePair[]) : Promise<Buffer> => {
+const drawLocker = async (items: KeyValuePair[]): Promise<Buffer> => {
   items.sort();
   throw new Error('Not implemented');
 };
 
-export {
-  drawLockerItem,
-  drawLocker,
-};
+export { drawLockerItem, drawLocker };

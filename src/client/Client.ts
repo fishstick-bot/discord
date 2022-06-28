@@ -50,10 +50,7 @@ class Bot extends Client {
 
   constructor() {
     super({
-      intents: [
-        Intents.FLAGS.DIRECT_MESSAGES,
-        Intents.FLAGS.GUILDS,
-      ],
+      intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS],
       partials: ['CHANNEL'],
       allowedMentions: {
         repliedUser: false,
@@ -75,11 +72,15 @@ class Bot extends Client {
   }
 
   // start the bot
-  public async start() : Promise<void> {
+  public async start(): Promise<void> {
     // start discord bot
     const start = Date.now();
     await this.login(this._config.discordToken);
-    this.logger.info(`[CLUSTER ${this.cluster.id}] Logged in as ${this.user?.tag} [${(Date.now() - start).toFixed(2)}ms]`);
+    this.logger.info(
+      `[CLUSTER ${this.cluster.id}] Logged in as ${this.user?.tag} [${(
+        Date.now() - start
+      ).toFixed(2)}ms]`
+    );
 
     // connect to database
     await connectToDatabase();
@@ -99,33 +100,49 @@ class Bot extends Client {
     }
   }
 
-  public get isMainProcess() : boolean {
+  public get isMainProcess(): boolean {
     return this.cluster.id === 0;
   }
 
-  private async _loadCommands() : Promise<void> {
+  private async _loadCommands(): Promise<void> {
     const start = Date.now();
-    const commandFiles = await globPromisify(`${__dirname}/../commands/**/*.ts`);
+    const commandFiles = await globPromisify(
+      `${__dirname}/../commands/**/*.ts`
+    );
 
-    await Promise.all(commandFiles.map(async (file) => {
-      const command: ICommand = (await import(file)).default;
-      this.commands.set(command.name, command);
-    }));
+    await Promise.all(
+      commandFiles.map(async (file) => {
+        const command: ICommand = (await import(file)).default;
+        this.commands.set(command.name, command);
+      })
+    );
 
-    this.logger.info(`[CLUSTER ${this.cluster.id}] Loaded ${this.commands.size} commands [${(Date.now() - start).toFixed(2)}ms]`);
+    this.logger.info(
+      `[CLUSTER ${this.cluster.id}] Loaded ${this.commands.size} commands [${(
+        Date.now() - start
+      ).toFixed(2)}ms]`
+    );
   }
 
-  private async _loadEventListeners() : Promise<void> {
+  private async _loadEventListeners(): Promise<void> {
     const start = Date.now();
     const eventFiles = await globPromisify(`${__dirname}/events/**/*.ts`);
 
-    await Promise.all(eventFiles.map(async (file) => {
-      const event: IEvent = (await import(file)).default;
-      this.on(event.name, event.run.bind(null, this));
-      this.logger.info(`[CLUSTER ${this.cluster.id}] Loaded event ${event.name}`);
-    }));
+    await Promise.all(
+      eventFiles.map(async (file) => {
+        const event: IEvent = (await import(file)).default;
+        this.on(event.name, event.run.bind(null, this));
+        this.logger.info(
+          `[CLUSTER ${this.cluster.id}] Loaded event ${event.name}`
+        );
+      })
+    );
 
-    this.logger.info(`[CLUSTER ${this.cluster.id}] Loaded ${eventFiles} events [${(Date.now() - start).toFixed(2)}ms]`);
+    this.logger.info(
+      `[CLUSTER ${this.cluster.id}] Loaded ${eventFiles} events [${(
+        Date.now() - start
+      ).toFixed(2)}ms]`
+    );
   }
 }
 
