@@ -14,6 +14,9 @@ import {
   CosmeticSeriesModel,
   CosmeticSetModel,
   CosmeticIntroducedInModel,
+  UserModel,
+  EpicAccountModel,
+  SurvivorSquadPresetModel,
 } from '../database/models';
 import CosmeticService from '../lib/CosmeticService';
 import API from '../lib/API';
@@ -41,6 +44,11 @@ class Bot extends Client {
   public cosmeticSeriesModel = CosmeticSeriesModel;
   public cosmeticSetModel = CosmeticSetModel;
   public cosmeticIntroducedInModel = CosmeticIntroducedInModel;
+
+  // user models
+  public userModel = UserModel;
+  public epicAccountModel = EpicAccountModel;
+  public survivorSquadPresetModel = SurvivorSquadPresetModel;
 
   // cosmetic service
   public cosmeticService = new CosmeticService(this);

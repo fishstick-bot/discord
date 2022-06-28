@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 
-import { uniqueRequiredString, requiredString } from '../../../schemaTypes';
-import { ICosmeticType } from '../typings';
+import { uniqueRequiredString, requiredString } from '../../schemaTypes';
+import { ICosmeticType } from './typings';
 
 const CosmeticTypeSchema = new Schema<ICosmeticType>(
   {

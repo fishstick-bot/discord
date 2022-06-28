@@ -5,6 +5,10 @@ import CosmeticSeriesModel from './Cosmetic/CosmeticSeries';
 import CosmeticSetModel from './Cosmetic/CosmeticSet';
 import CosmeticIntroducedInModel from './Cosmetic/CosmeticIntroducedIn';
 
+import UserModel from './User';
+import EpicAccountModel from './User/EpicAccount';
+import SurvivorSquadPresetModel from './User/SurvivorSquadPreset';
+
 export {
   CosmeticModel,
   CosmeticTypeModel,
@@ -12,4 +16,7 @@ export {
   CosmeticSeriesModel,
   CosmeticSetModel,
   CosmeticIntroducedInModel,
+  UserModel,
+  EpicAccountModel,
+  SurvivorSquadPresetModel,
 };

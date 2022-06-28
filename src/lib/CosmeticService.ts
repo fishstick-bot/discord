@@ -7,7 +7,13 @@ import Bot from '../client/Client';
 import getLogger from '../Logger';
 import Exclusives from '../resources/Exclusives.json';
 import Crew from '../resources/Crew.json';
-import { ICosmetic } from '../database/models/typings';
+import {
+  ICosmetic,
+  ICosmeticRarity,
+  ICosmeticSeries,
+  ICosmeticType,
+  ICosmeticSet,
+} from '../database/models/typings';
 import { drawLockerItem } from './images/LockerImage';
 
 const wait = promisify(setTimeout);
@@ -414,6 +420,56 @@ class CosmeticService {
     }
 
     return introducedIn!._id;
+  }
+
+  public get parsedCosmetics() {
+    return this.cosmetics.toJSON().map((c) => ({
+      id: c.id.toLowerCase(),
+      name: c.name,
+      description: c.description,
+      type: (c.type as ICosmeticType).value,
+      rarity: (c.rarity as ICosmeticRarity).value,
+      series: c.series ? (c.series as ICosmeticSeries).value : null,
+      set: (c.set as ICosmeticSet)?.value ?? null,
+      introduction: c.introduction
+        ? {
+            season: c.introduction.season,
+            chapter: c.introduction.chapter,
+            seasonNumber: c.introduction.seasonNumber,
+          }
+        : null,
+      isExclusive: c.isExclusive,
+      isCrew:
+        c.isCrew ||
+        c.gameplayTags.filter((t) => t.toLowerCase().includes('crewpack'))
+          .length > 0,
+      isSTW:
+        c.gameplayTags.filter(
+          (t) =>
+            t.toLowerCase().includes('savetheworld') ||
+            t.toLowerCase().includes('stw')
+        ).length > 0,
+      isBattlePass:
+        c.gameplayTags.filter((t) =>
+          t.toLowerCase().includes('battlepass.paid')
+        ).length > 0,
+      isFreePass:
+        c.gameplayTags.filter((t) =>
+          t.toLowerCase().includes('battlepass.free')
+        ).length > 0,
+      isItemShop:
+        c.gameplayTags.filter((t) => t.toLowerCase().includes('itemshop'))
+          .length > 0,
+      isPlaystation:
+        c.gameplayTags.filter((t) => t.toLowerCase().includes('platform.ps4'))
+          .length > 0,
+      isXbox:
+        c.gameplayTags.filter((t) => t.toLowerCase().includes('platform.xbox'))
+          .length > 0,
+      isPromo:
+        c.gameplayTags.filter((t) => t.toLowerCase().includes('source.promo'))
+          .length > 0,
+    }));
   }
 }
 
