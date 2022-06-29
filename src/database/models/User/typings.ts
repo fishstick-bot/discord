@@ -31,9 +31,8 @@ export interface IEpicAccount {
 
   survivorSquadPresets: Schema.Types.ObjectId[] | ISurvivorSquadPreset[];
 
-  launcherToken: string;
-  launcherRefreshToken: string;
-  lastLauncherTokenRefresh: Date;
+  deviceId: string;
+  secret: string;
 }
 
 export interface IUser {

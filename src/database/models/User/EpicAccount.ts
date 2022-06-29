@@ -44,12 +44,15 @@ const EpicAccountSchema = new Schema<IEpicAccount>(
       required: false,
     },
 
-    launcherToken: requiredString,
-    launcherRefreshToken: requiredString,
-    lastLauncherTokenRefresh: {
-      type: Date,
-      required: true,
-    },
+    // launcherToken: requiredString,
+    // launcherRefreshToken: requiredString,
+    // lastLauncherTokenRefresh: {
+    //   type: Date,
+    //   required: true,
+    // },
+
+    deviceId: requiredString,
+    secret: requiredString,
   },
   {
     timestamps: true,

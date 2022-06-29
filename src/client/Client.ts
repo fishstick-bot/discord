@@ -20,6 +20,7 @@ import {
 } from '../database/models';
 import CosmeticService from '../lib/CosmeticService';
 import API from '../lib/API';
+import FortniteManager from '../lib/FortniteManager';
 import type { ICommand } from '../structures/Command';
 import type IEvent from '../structures/Event';
 
@@ -36,6 +37,11 @@ class Bot extends Client {
 
   // commands
   public commands: Collection<string, ICommand> = new Collection();
+  public cooldown = 4; // for premium, cooldown is half of regular cooldown
+  public cooldowns: Collection<string, Collection<string, number>> =
+    new Collection();
+
+  public loginCooldowns: Collection<string, number> = new Collection();
 
   // cosmetic models
   public cosmeticModel = CosmeticModel;
@@ -55,6 +61,9 @@ class Bot extends Client {
 
   // bot api
   public botAPI = new API(this);
+
+  // fortnite manager
+  public fortniteManager = new FortniteManager(this);
 
   constructor() {
     super({

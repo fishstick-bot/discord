@@ -3,12 +3,6 @@ import compression from 'compression';
 
 import Bot from '../client/Client';
 import getLogger from '../Logger';
-import {
-  ICosmeticRarity,
-  ICosmeticSeries,
-  ICosmeticType,
-  ICosmeticSet,
-} from '../database/models/typings';
 
 class API {
   // bot
@@ -45,31 +39,6 @@ class API {
         success: true,
       })
     );
-
-    this.app.get('/api/cosmetics', async (req, res) => {
-      try {
-        let sendDescription = false;
-        if (req.query.description) {
-          sendDescription = true;
-        }
-        let sendSet = false;
-        if (req.query.set) {
-          sendSet = true;
-        }
-
-        const cosmetics = this.bot.cosmeticService.parsedCosmetics;
-
-        return res.json({
-          success: true,
-          data: cosmetics,
-        });
-      } catch (e) {
-        return res.status(500).json({
-          success: false,
-          error: e,
-        });
-      }
-    });
   }
 }
 
