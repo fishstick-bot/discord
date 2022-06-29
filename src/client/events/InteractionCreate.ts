@@ -47,14 +47,14 @@ const Event: IEvent = {
             user.blacklistedReason
               ? `reason: ${user.blacklistedReason}`
               : 'no reason'
-          }`
+          }`,
         );
         return;
       }
 
       if (cmd.options.partnerOnly && !user.isPartner) {
         await interaction.editReply(
-          'You must be Fishstick Partner to use this command, for more information make a ticket in [our support server](https://discord.gg/fishstick)'
+          'You must be Fishstick Partner to use this command, for more information make a ticket in [our support server](https://discord.gg/fishstick)',
         );
         return;
       }
@@ -75,8 +75,8 @@ const Event: IEvent = {
           (cooldown.get(interaction.user.id)! - Date.now()) / 1000;
         await interaction.editReply(
           `You must wait ${timeLeft.toFixed(
-            1
-          )} seconds before using this command again.`
+            1,
+          )} seconds before using this command again.`,
         );
 
         setTimeout(async () => {
@@ -87,7 +87,7 @@ const Event: IEvent = {
 
       cooldown.set(
         interaction.user.id,
-        Date.now() + (isPremium ? bot.cooldown / 2 : bot.cooldown) * 1000
+        Date.now() + (isPremium ? bot.cooldown / 2 : bot.cooldown) * 1000,
       );
 
       setTimeout(() => {
@@ -103,7 +103,7 @@ const Event: IEvent = {
           .setTitle(`${Emojies.cross} NOT THE LLAMA YOU'RE LOOKING FOR`)
           .setColor('RED')
           .setDescription(
-            `An error occured while running the command ${cmd.name}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`
+            `An error occured while running the command ${cmd.name}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
           )
           .addField('Stack', `\`\`\`${e.stack ?? e}\`\`\``)
           .setTimestamp();

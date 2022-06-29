@@ -1,5 +1,8 @@
 import type { CommandInteraction } from 'discord.js';
-import type { SlashCommandBuilder } from '@discordjs/builders';
+import type {
+  SlashCommandBuilder,
+  SlashCommandSubcommandsOnlyBuilder,
+} from '@discordjs/builders';
 import type { Document, Types } from 'mongoose';
 import { IUser } from '../database/models/typings';
 
@@ -11,7 +14,7 @@ type RunCommand = (
   user: Document<unknown, any, IUser> &
     IUser & {
       _id: Types.ObjectId;
-    }
+    },
 ) => Promise<void>;
 
 interface CommandOptions {
@@ -26,7 +29,7 @@ export interface ICommand {
   name: string;
   category: string;
 
-  slashCommandBuilder: SlashCommandBuilder;
+  slashCommandBuilder: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
 
   options: CommandOptions;
 
