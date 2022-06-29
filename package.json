@@ -9,7 +9,7 @@
     "lint": "eslint src/**/*.ts",
     "build": "tsc",
     "start": "node index.js",
-    "dev": "NODE_ENV=development rm -r dist && tsc && node index.js"
+    "dev": "NODE_ENV=development rm -rf dist && tsc && node index.js"
   },
   "license": "MIT",
   "homepage": "https://fishstickbot.com",
