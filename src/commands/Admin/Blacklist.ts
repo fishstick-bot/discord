@@ -6,31 +6,37 @@ import type { ICommand } from '../../structures/Command';
 import Emojis from '../../resources/Emojies';
 
 const Command: ICommand = {
-  name: 'partner',
+  name: 'blacklist',
   category: 'Admin',
 
   slashCommandBuilder: new SlashCommandBuilder()
-    .setName('partner')
-    .setDescription('Grant/revoke partner status to a user.')
+    .setName('blacklist')
+    .setDescription('Add/remove a user from the blacklist.')
     .addSubcommand((subcommand) =>
       subcommand
-        .setName('grant')
-        .setDescription('Grant partner status to a user.')
+        .setName('add')
+        .setDescription('Add a user to blacklist.')
         .addUserOption((user) =>
           user
             .setName('user')
-            .setDescription('The user to grant partner status to.')
+            .setDescription('The user to add to blacklist.')
             .setRequired(true),
+        )
+        .addStringOption((string) =>
+          string
+            .setName('reason')
+            .setDescription('The reason for blacklisting the user.')
+            .setRequired(false),
         ),
     )
     .addSubcommand((subcommand) =>
       subcommand
-        .setName('revoke')
-        .setDescription('Revoke partner status from a user.')
+        .setName('remove')
+        .setDescription('Remove a user from blacklist.')
         .addUserOption((user) =>
           user
             .setName('user')
-            .setDescription('The user to revoke partner status of.')
+            .setDescription('The user to remove from blacklist.')
             .setRequired(true),
         ),
     ),
@@ -42,6 +48,7 @@ const Command: ICommand = {
   run: async (bot, interaction, user) => {
     const subcommand = interaction.options.getSubcommand();
     const target = interaction.options.getUser('user', true);
+    const reason = interaction.options.getString('reason');
 
     const targetUser = await bot.userModel
       .findOne({
@@ -56,32 +63,41 @@ const Command: ICommand = {
       return;
     }
 
-    if (subcommand === 'grant' && targetUser.isPartner) {
+    if (subcommand === 'add' && targetUser.blacklisted) {
       await interaction.editReply(
-        `${Emojis.cross} ${target.tag} is already a partner.`,
+        `${Emojis.cross} ${target.tag} is already blacklisted.`,
       );
       return;
     }
 
-    if (subcommand === 'revoke' && !targetUser.isPartner) {
+    if (subcommand === 'remove' && !targetUser.blacklisted) {
       await interaction.editReply(
-        `${Emojis.cross} ${target.tag} is not a partner.`,
+        `${Emojis.cross} ${target.tag} is not blacklisted.`,
       );
       return;
     }
 
-    targetUser.isPartner = subcommand === 'grant';
+    targetUser.blacklisted = subcommand === 'add';
+    if (subcommand === 'add') {
+      targetUser.blacklistedAt = new Date();
+      if (reason) {
+        targetUser.blacklistedReason = reason;
+      }
+    } else {
+      targetUser.blacklistedAt = undefined;
+      targetUser.blacklistedReason = undefined;
+    }
     await targetUser.save();
 
     const embed = new MessageEmbed()
       .setAuthor({
-        name: `${target.username}'s Partner Status`,
+        name: `${target.username}'s Blacklist Status`,
         iconURL: target.displayAvatarURL({ dynamic: true }),
       })
       .setDescription(
-        `${subcommand === 'grant' ? 'Granted' : 'Revoked'} partner status ${
-          subcommand === 'grant' ? 'to' : 'from'
-        } **${target.tag}**`,
+        `${subcommand === 'add' ? 'Added' : 'Removed'} **${target.tag}** ${
+          subcommand === 'add' ? 'to' : 'from'
+        } the blacklist.`,
       )
       .setColor(bot._config.color)
       .setTimestamp();
