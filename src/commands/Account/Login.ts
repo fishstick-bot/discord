@@ -8,15 +8,12 @@ import {
   ModalActionRowComponent,
   Message,
   MessageAttachment,
+  SelectMenuInteraction,
 } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
-import axios from 'axios';
-// import AuthClients from 'fnbr/dist/resources/AuthClients';
-// import { EpicgamesOAuthResponse } from 'fnbr/dist/resources/httpResponses';
-// import { Endpoints } from 'fnbr';
-import { Client } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
+import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojies';
 
 const Command: ICommand = {
@@ -38,7 +35,7 @@ const Command: ICommand = {
       .setDescription(
         `To switch to a different account use the drop down menu below.
         To save a new account, click the **Save New Account** button below.
-        This message will timeout in 60 seconds.`
+        This message will timeout in 60 seconds.`,
       )
       .setColor(bot._config.color);
 
@@ -68,20 +65,22 @@ const Command: ICommand = {
           label: account.displayName,
           description: account.accountId,
           default: user.selectedEpicAccount === account.accountId,
-        }))
+        })),
       );
 
-    const components = new MessageActionRow();
+    const components = [];
 
     if (user.epicAccounts.length > 0) {
-      components.addComponents(accountsMenu);
+      components.push(new MessageActionRow().addComponents(accountsMenu));
     }
 
-    components.addComponents(saveNewAccountButton, closeButton);
+    const btns = new MessageActionRow();
+    btns.addComponents(saveNewAccountButton, closeButton);
+    components.push(btns);
 
     await interaction.editReply({
       embeds: [embed],
-      components: [components],
+      components,
     });
 
     const msg = (await interaction.fetchReply()) as Message;
@@ -132,18 +131,18 @@ const Command: ICommand = {
           
           ⚠️ We recommend that you only log into accounts that you have email access to.
           
-          **This message will timeout in 5 minutes.**`
+          **This message will timeout in 5 minutes.**`,
         );
 
       const authcodeImg = new MessageAttachment(
         './assets/AuthCode.png',
-        'AuthCode.png'
+        'AuthCode.png',
       );
 
       const authcodeButton = new MessageButton()
         .setLabel('Epic Games')
         .setURL(
-          'https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode'
+          'https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode',
         )
         .setStyle('LINK');
 
@@ -167,13 +166,13 @@ const Command: ICommand = {
 
       authCodeModal.addComponents(
         new MessageActionRow<ModalActionRowComponent>().addComponents(
-          authCodeInput
-        )
+          authCodeInput,
+        ),
       );
 
       const authcodeComponents = new MessageActionRow().addComponents(
         authcodeButton,
-        submitcodeButton
+        submitcodeButton,
       );
 
       await interaction.editReply({
@@ -228,24 +227,22 @@ const Command: ICommand = {
               `this.fortniteManager.clientFromAuthorizationCode('${authorizationCode}')`,
               {
                 cluster: 0,
-              }
+              },
             );
 
             let epicAcc = await bot.epicAccountModel
               .findOne({
                 accountId: loginacc.accountId,
               })
-              .lean()
               .exec();
 
             if (epicAcc) {
-              await bot.epicAccountModel.updateOne({
-                accountId: loginacc.accountId,
-                deviceId: loginacc.deviceAuth.deviceId,
-                secret: loginacc.deviceAuth.secret,
-                displayName: loginacc.displayName,
-                avatarUrl: loginacc.avatar,
-              });
+              epicAcc.accountId = loginacc.accountId;
+              epicAcc.deviceId = loginacc.deviceAuth.deviceId;
+              epicAcc.secret = loginacc.deviceAuth.secret;
+              epicAcc.displayName = loginacc.displayName;
+              epicAcc.avatarUrl = loginacc.avatar;
+              await epicAcc.save();
             } else {
               epicAcc = await bot.epicAccountModel.create({
                 accountId: loginacc.accountId,
@@ -259,6 +256,7 @@ const Command: ICommand = {
               });
             }
 
+            user.selectedEpicAccount = epicAcc.accountId;
             user.epicAccounts.push(epicAcc._id as any);
             await user.save();
 
@@ -286,7 +284,7 @@ const Command: ICommand = {
                       isPremium
                         ? `\n• Automatic Free Llamas\n• Automatic Research`
                         : ''
-                    }`
+                    }`,
                   ),
               ],
             });
@@ -312,8 +310,35 @@ const Command: ICommand = {
       return;
     }
 
-    // TODO: handle account switch
-    const a = 'a';
+    const selectedEpicAccount = (user.epicAccounts as IEpicAccount[]).find(
+      (a) => a.accountId === (selected as SelectMenuInteraction).values[0],
+    );
+
+    if (!selectedEpicAccount) {
+      throw new Error('Invalid Epic Account');
+    }
+
+    user.selectedEpicAccount = selectedEpicAccount.accountId;
+    await user.save();
+
+    const selectedEmbed = new MessageEmbed()
+      .setAuthor({
+        name: `${interaction.user.username}'s Saved Accounts`,
+        iconURL: interaction.user.displayAvatarURL({
+          dynamic: true,
+        }),
+      })
+      .setColor(bot._config.color)
+      .setTimestamp()
+      .setThumbnail(selectedEpicAccount.avatarUrl)
+      .setDescription(
+        `${Emojis.tick} Successfully switched active epic account to **${selectedEpicAccount.displayName}**.`,
+      );
+
+    await interaction.editReply({
+      embeds: [selectedEmbed],
+      components: [],
+    });
   },
 };
 

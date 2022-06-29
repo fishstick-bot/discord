@@ -23,8 +23,6 @@ class FortniteManager {
       connectToXMPP: false,
       createParty: false,
       fetchFriends: false,
-      debug: console.log,
-      httpDebug: console.log,
     });
     await client.login();
     this.clients.set(client.user!.id, client);
@@ -35,10 +33,10 @@ class FortniteManager {
       `${Endpoints.OAUTH_DEVICE_AUTH}/${
         client.auth.auths.get('fortnite')?.account_id
       }/deviceAuth`,
-      'fortnite'
+      'fortnite',
     );
 
-    const avatarId = (await client.user?.getAvatar())?.id;
+    const avatarId = (await client.user?.getAvatar())?.id?.split(':')[1];
 
     return {
       accountId: client.user!.id,
