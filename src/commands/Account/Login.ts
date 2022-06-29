@@ -40,7 +40,8 @@ const Command: ICommand = {
       )
       .setColor(bot._config.color);
 
-    const isPremium = user.premiumUntil.getTime() > Date.now();
+    const isPremium =
+      user.premiumUntil.getTime() > Date.now() || user.isPartner;
     const accountsLimit = isPremium ? 15 : 3;
 
     const saveNewAccountButton = new MessageButton()

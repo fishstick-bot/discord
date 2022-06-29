@@ -17,6 +17,7 @@ import {
   UserModel,
   EpicAccountModel,
   SurvivorSquadPresetModel,
+  PremiumKeyModel,
 } from '../database/models';
 import CosmeticService from '../lib/CosmeticService';
 import API from '../lib/API';
@@ -55,6 +56,9 @@ class Bot extends Client {
   public userModel = UserModel;
   public epicAccountModel = EpicAccountModel;
   public survivorSquadPresetModel = SurvivorSquadPresetModel;
+
+  // premium key model
+  public premiumKeyModel = PremiumKeyModel;
 
   // cosmetic service
   public cosmeticService = new CosmeticService(this);
@@ -96,7 +100,7 @@ class Bot extends Client {
     this.logger.info(
       `[CLUSTER ${this.cluster.id}] Logged in as ${this.user?.tag} [${(
         Date.now() - start
-      ).toFixed(2)}ms]`
+      ).toFixed(2)}ms]`,
     );
 
     // connect to database
@@ -124,7 +128,7 @@ class Bot extends Client {
   private async _loadCommands(): Promise<void> {
     const start = Date.now();
     const commandFiles = await globPromisify(
-      `${__dirname}/../commands/**/*{.ts,.js}`
+      `${__dirname}/../commands/**/*{.ts,.js}`,
     );
 
     await Promise.all(
@@ -132,15 +136,15 @@ class Bot extends Client {
         const command: ICommand = (await import(file)).default;
         this.commands.set(command.name, command);
         this.logger.debug(
-          `[CLUSTER ${this.cluster.id}] Loaded command ${command.name}`
+          `[CLUSTER ${this.cluster.id}] Loaded command ${command.name}`,
         );
-      })
+      }),
     );
 
     this.logger.info(
       `[CLUSTER ${this.cluster.id}] Loaded ${this.commands.size} commands [${(
         Date.now() - start
-      ).toFixed(2)}ms]`
+      ).toFixed(2)}ms]`,
     );
   }
 
@@ -153,15 +157,15 @@ class Bot extends Client {
         const event: IEvent = (await import(file)).default;
         this.on(event.name, event.run.bind(null, this));
         this.logger.debug(
-          `[CLUSTER ${this.cluster.id}] Loaded event ${event.name}`
+          `[CLUSTER ${this.cluster.id}] Loaded event ${event.name}`,
         );
-      })
+      }),
     );
 
     this.logger.info(
       `[CLUSTER ${this.cluster.id}] Loaded ${eventFiles.length} events [${(
         Date.now() - start
-      ).toFixed(2)}ms]`
+      ).toFixed(2)}ms]`,
     );
   }
 }

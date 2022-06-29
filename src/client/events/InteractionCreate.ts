@@ -59,7 +59,8 @@ const Event: IEvent = {
         return;
       }
 
-      const isPremium = user.premiumUntil.getTime() > Date.now();
+      const isPremium =
+        user.premiumUntil.getTime() > Date.now() || user.isPartner;
       if (cmd.options.premiumOnly && !isPremium) {
         // TODO
       }

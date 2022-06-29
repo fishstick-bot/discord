@@ -9,6 +9,8 @@ import UserModel from './User';
 import EpicAccountModel from './User/EpicAccount';
 import SurvivorSquadPresetModel from './User/SurvivorSquadPreset';
 
+import PremiumKeyModel from './PremiumKey';
+
 export {
   CosmeticModel,
   CosmeticTypeModel,
@@ -19,4 +21,5 @@ export {
   UserModel,
   EpicAccountModel,
   SurvivorSquadPresetModel,
+  PremiumKeyModel,
 };
