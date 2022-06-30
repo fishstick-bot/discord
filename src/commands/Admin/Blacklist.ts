@@ -7,7 +7,6 @@ import Emojis from '../../resources/Emojies';
 
 const Command: ICommand = {
   name: 'blacklist',
-  category: 'Admin',
 
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('blacklist')

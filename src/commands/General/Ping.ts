@@ -4,7 +4,6 @@ import type { ICommand } from '../../structures/Command';
 
 const Command: ICommand = {
   name: 'ping',
-  category: 'general',
 
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('ping')

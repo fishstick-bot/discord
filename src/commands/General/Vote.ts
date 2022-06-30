@@ -5,7 +5,6 @@ import type { ICommand } from '../../structures/Command';
 
 const Command: ICommand = {
   name: 'vote',
-  category: "Get bot's vote link",
 
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('vote')

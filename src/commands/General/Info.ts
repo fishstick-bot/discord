@@ -7,7 +7,6 @@ import type { ICommand } from '../../structures/Command';
 
 const Command: ICommand = {
   name: 'info',
-  category: "Get bot's info",
 
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('info')
@@ -26,7 +25,7 @@ const Command: ICommand = {
       .addField('📁 Guilds', `${await bot.getGuildCount()}`, true)
       .addField(
         '⏳ Memory Usage',
-        `**All Clusters:** ${(
+        `**All Clusters**: ${(
           (await bot.cluster.broadcastEval(
             `(process.memoryUsage().heapUsed/1024/1024)`,
           )) as number[]
@@ -34,7 +33,7 @@ const Command: ICommand = {
           .reduce((prev: number, value: number) => Number(prev + value), 0)
           .toFixed(2)} / ${(os.totalmem() / 1024 / 1024).toFixed(
           2,
-        )} MB\n**Current Cluster:** ${(
+        )} MB\n**Current Cluster**: ${(
           process.memoryUsage().heapUsed /
           1024 /
           1024

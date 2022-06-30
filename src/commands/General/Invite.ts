@@ -5,7 +5,6 @@ import type { ICommand } from '../../structures/Command';
 
 const Command: ICommand = {
   name: 'invite',
-  category: "Get bot's invite link",
 
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('invite')

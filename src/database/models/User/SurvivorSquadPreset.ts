@@ -22,11 +22,11 @@ const SurvivorSquadPresetSchema = new Schema<ISurvivorSquadPreset>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 SurvivorSquadPresetSchema.plugin(autopopulate);
 
 export default model<ISurvivorSquadPreset>(
   'SurvivorSquadPreset',
-  SurvivorSquadPresetSchema
+  SurvivorSquadPresetSchema,
 );

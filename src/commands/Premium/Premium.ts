@@ -7,7 +7,6 @@ import Emojis from '../../resources/Emojies';
 
 const Command: ICommand = {
   name: 'premium',
-  category: 'Premium',
 
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('premium')

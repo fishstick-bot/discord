@@ -19,7 +19,6 @@ import Emojis from '../../resources/Emojies';
 
 const Command: ICommand = {
   name: 'logout',
-  category: 'account',
 
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('logout')

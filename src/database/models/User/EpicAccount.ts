@@ -56,7 +56,7 @@ const EpicAccountSchema = new Schema<IEpicAccount>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 EpicAccountSchema.plugin(autopopulate);
 

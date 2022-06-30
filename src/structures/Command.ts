@@ -27,7 +27,6 @@ interface CommandOptions {
 
 export interface ICommand {
   name: string;
-  category: string;
 
   slashCommandBuilder: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
 
