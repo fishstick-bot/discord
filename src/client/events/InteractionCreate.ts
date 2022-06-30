@@ -4,6 +4,7 @@ import { promisify } from 'util';
 import type IEvent from '../../structures/Event';
 import getLogger from '../../Logger';
 import Emojies from '../../resources/Emojies';
+import { IEpicAccount } from '../../database/models/typings';
 
 const wait = promisify(setTimeout);
 const logger = getLogger('COMMAND');
@@ -97,6 +98,12 @@ const Event: IEvent = {
         );
 
         return;
+      }
+
+      if (cmd.options.needsEpicAccount && user.selectedEpicAccount === '') {
+        user.selectedEpicAccount = (
+          user.epicAccounts[0] as IEpicAccount
+        ).accountId;
       }
 
       if (!bot.cooldowns.has(cmd.name)) {
