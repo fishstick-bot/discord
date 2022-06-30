@@ -62,7 +62,41 @@ const Event: IEvent = {
       const isPremium =
         user.premiumUntil.getTime() > Date.now() || user.isPartner;
       if (cmd.options.premiumOnly && !isPremium) {
-        // TODO
+        const noPremiumEmbed = new MessageEmbed()
+          .setTitle(`${Emojies.cross} You are not a premium user`)
+          .setColor('RED')
+          .setDescription(
+            `You must be a Fishstick Premium User to use this command.
+            To become a Fishstick Premium User, you can purchase a subscription by messaging Vanxh#6969 or by [joining our support server](https://discord.gg/fishstick).
+            
+            **Premium Plans**
+            • $2 / month
+            • $10 / year
+            • $25 for lifetime
+
+            **Payment Methods**
+            • [Paypal](https://paypal.me/vanxh)
+            • Bitcoin - 16BwrsgmYXrzuun6LkuoRhuepuffiaK7A2
+            • Litecoin - LSZJJxkfhMhqq3ygVmJz4ox4nVrSuFdQqJ
+            • Solana - J37KizZ7tJA9NkqwQC16EQUm99BE7jMv9ayx2YnjwHRP
+            
+            **Premium helps us to keep the bot running and improve the bot's features.**`,
+          )
+          .setTimestamp();
+
+        await interaction.editReply({
+          embeds: [noPremiumEmbed],
+        });
+
+        return;
+      }
+
+      if (cmd.options.needsEpicAccount && user.epicAccounts.length === 0) {
+        await interaction.editReply(
+          'You must have an Epic account logged in to use this command. Use `/login` to login to an Epic account.',
+        );
+
+        return;
       }
 
       if (!bot.cooldowns.has(cmd.name)) {

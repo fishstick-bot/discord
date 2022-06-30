@@ -23,6 +23,7 @@ interface CommandOptions {
   premiumOnly?: boolean;
   partnerOnly?: boolean;
   ownerOnly?: boolean;
+  needsEpicAccount?: boolean;
 }
 
 export interface ICommand {
