@@ -56,14 +56,28 @@ const Command: ICommand = {
       c
         .setName('page')
         .setDescription('Create an url to your Epic Games account page.'),
+    )
+    .addSubcommand((c) =>
+      c
+        .setName('authorization-code')
+        .setDescription('Get authorization code for your account.')
+        .addStringOption((o) =>
+          o
+            .setName('clientid')
+            .setDescription(
+              'The client id to use. Eg: 3446cd72694c4a4485d81b77adbb2141',
+            )
+            .setRequired(false),
+        ),
     ),
 
   options: {
+    privateResponse: true,
     needsEpicAccount: true,
   },
 
   run: async (bot, interaction, user) => {
-    const subcmdgroup = interaction.options.getSubcommandGroup();
+    const subcmdgroup = interaction.options.getSubcommandGroup(false);
     const subcmd = interaction.options.getSubcommand();
 
     const epicAccount = (user.epicAccounts as IEpicAccount[]).find(
@@ -148,6 +162,25 @@ const Command: ICommand = {
           ? exchangeCode
           : `Visit your account page **[here](${pageUrl})**.`,
       );
+    }
+
+    if (subcmd === 'authorization-code') {
+      const clientId =
+        interaction.options.getString('clientId') ||
+        '3446cd72694c4a4485d81b77adbb2141';
+
+      const authorizationCode = await bot.cluster.broadcastEval(
+        `this.fortniteManager.createAuthorizationCode('${epicAccount.accountId}', '${clientId}')`,
+        {
+          cluster: 0,
+        },
+      );
+
+      if (!authorizationCode) {
+        throw new Error('Failed to create authorization code.');
+      }
+
+      await interaction.editReply(authorizationCode);
     }
   },
 };

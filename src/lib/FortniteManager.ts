@@ -194,6 +194,32 @@ class FortniteManager {
 
     return res.response.code;
   }
+
+  public async createAuthorizationCode(
+    accountId: string,
+    clientId: string = '3446cd72694c4a4485d81b77adbb2141',
+  ) {
+    if (!this.clients.has(accountId)) {
+      throw new Error('No client found for this account.');
+    }
+
+    const client = this.clients.get(accountId)!;
+    const authData = client.auth.auths.get('fortnite');
+
+    const res = await client.http.sendEpicgamesRequest(
+      true,
+      'GET',
+      `https://www.epicgames.com/id/api/redirect?clientId=${clientId}&responseType=code`,
+      'fortnite',
+      { Cookie: `EPIC_BEARER_TOKEN=${authData?.token}` },
+    );
+
+    if (res.error) {
+      throw new Error(res.error.message ?? res.error.code);
+    }
+
+    return res.response.authorizationCode;
+  }
 }
 
 export default FortniteManager;
