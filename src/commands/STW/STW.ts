@@ -81,6 +81,18 @@ const Command: ICommand = {
     };
     await refreshSTWProfile();
 
+    const tutorialCompleted =
+      (stw!.items.find((i) => i.templateId === 'Quest:homebaseonboarding')
+        ?.attributes.completion_hbonboarding_completezone ?? 0) > 0;
+
+    if (!tutorialCompleted) {
+      throw new Error(
+        `${player ?? 'You'} must complete ${
+          player ? 'the' : 'your'
+        } tutorial before you can view ${player ? 'their' : 'your'} stats.`,
+      );
+    }
+
     const rawEmbed = () => {
       const embed = new MessageEmbed()
         .setAuthor({
