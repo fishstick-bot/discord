@@ -11,7 +11,7 @@ const CosmeticTypeSchema = new Schema<ICosmeticType>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 export default model<ICosmeticType>('CosmeticType', CosmeticTypeSchema);

@@ -2,6 +2,7 @@ import axios from 'axios';
 import { Collection } from 'discord.js';
 import type { Types } from 'mongoose';
 import { promisify } from 'util';
+import fs from 'fs';
 
 import Bot from '../client/Client';
 import getLogger from '../Logger';
@@ -14,7 +15,6 @@ import {
   ICosmeticType,
   ICosmeticSet,
 } from '../database/models/typings';
-import { drawLockerItem } from './images/LockerImage';
 
 const wait = promisify(setTimeout);
 
@@ -40,7 +40,7 @@ class CosmeticService {
 
     setInterval(async () => {
       await this.saveCosmetics(await this.getCosmetics());
-    }, 60 * 60 * 1000);
+    }, 30 * 60 * 1000);
   }
 
   public async init(): Promise<void> {
@@ -58,13 +58,13 @@ class CosmeticService {
     await Promise.all(
       cosmetics.map(async (cosmetic: ICosmetic) => {
         this.cosmetics.set(cosmetic.id.toLowerCase(), cosmetic);
-      })
+      }),
     );
 
     this.logger.info(
       `Loaded ${this.cosmetics.size} cosmetics [${(Date.now() - start).toFixed(
-        2
-      )}ms]`
+        2,
+      )}ms]`,
     );
   }
 
@@ -76,8 +76,8 @@ class CosmeticService {
       ).data.data as any[];
       this.logger.info(
         `Fetched ${items.length} cosmetics [${(Date.now() - start).toFixed(
-          2
-        )}ms]`
+          2,
+        )}ms]`,
       );
       return items;
     } catch (e: any) {
@@ -126,18 +126,18 @@ class CosmeticService {
                     isExclusive: Exclusives.includes(item.id.toLowerCase()),
                     isCrew: Crew.includes(item.id.toLowerCase()),
                   });
-                })
+                }),
               );
             }
-          })
+          }),
         );
       }
     }
 
     this.logger.info(
       `Loaded ${this.cosmetics.size} cosmetics [${(Date.now() - start).toFixed(
-        2
-      )}ms]`
+        2,
+      )}ms]`,
     );
   }
 
@@ -162,7 +162,7 @@ class CosmeticService {
       if (!cosmetic) {
         this.logger.warn(`${item.name} not found in database.`);
 
-        const c: any = {
+        await cosmeticsModel.create({
           id: item.id,
           name: item.name,
           description: item.description,
@@ -207,64 +207,7 @@ class CosmeticService {
           shopHistory: item.shopHistory ? item.shopHistory : [],
           isExclusive: Exclusives.includes(item.id.toLowerCase()),
           isCrew: Crew.includes(item.id.toLowerCase()),
-        };
-
-        await cosmeticsModel.create({
-          ...c,
-          image: await drawLockerItem({
-            id: c.id.toLowerCase(),
-            name: c.name,
-            description: c.description,
-            type: item.type.value,
-            rarity: item.rarity.value,
-            series: item.series ? item.series.value : null,
-            set: item.set ? item.set.value : null,
-            introduction: c.introduction
-              ? {
-                  chapter: item.introduction.chapter,
-                  season: item.introduction.season,
-                  text: item.introduction.text,
-                  seasonNumber: item.introduction.backendValue,
-                }
-              : null,
-            isExclusive: c.isExclusive,
-            isCrew:
-              c.isCrew ||
-              c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('crewpack')
-              ).length > 0,
-            isSTW:
-              c.gameplayTags.filter(
-                (t: string) =>
-                  t.toLowerCase().includes('savetheworld') ||
-                  t.toLowerCase().includes('stw')
-              ).length > 0,
-            isBattlePass:
-              c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('battlepass.paid')
-              ).length > 0,
-            isFreePass:
-              c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('battlepass.free')
-              ).length > 0,
-            isItemShop:
-              c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('itemshop')
-              ).length > 0,
-            isPlaystation:
-              c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('platform.ps4')
-              ).length > 0,
-            isXbox:
-              c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('platform.xbox')
-              ).length > 0,
-            isPromo:
-              c.gameplayTags.filter((t: string) =>
-                t.toLowerCase().includes('source.promo')
-              ).length > 0,
-            image: item.images.icon ?? item.images.smallIcon,
-          }),
+          image: item.images.icon ?? item.images.smallIcon,
         });
 
         const createdCosmetic = (await cosmeticsModel
@@ -289,7 +232,7 @@ class CosmeticService {
 
   private async _getCosmeticType(
     value: KeyValuePair,
-    retry = true
+    retry = true,
   ): Promise<Types.ObjectId> {
     const typesModel = this.bot.cosmeticTypeModel;
 
@@ -316,7 +259,7 @@ class CosmeticService {
 
   private async _getCosmeticRarity(
     value: KeyValuePair,
-    retry = true
+    retry = true,
   ): Promise<Types.ObjectId> {
     const raritiesModel = this.bot.cosmeticRarityModel;
 
@@ -343,7 +286,7 @@ class CosmeticService {
 
   private async _getCosmeticSeries(
     value: KeyValuePair,
-    retry = true
+    retry = true,
   ): Promise<Types.ObjectId> {
     const seriesModel = this.bot.cosmeticSeriesModel;
 
@@ -370,7 +313,7 @@ class CosmeticService {
 
   private async _getCosmeticSet(
     value: KeyValuePair,
-    retry = true
+    retry = true,
   ): Promise<Types.ObjectId> {
     const setsModel = this.bot.cosmeticSetModel;
 
@@ -397,7 +340,7 @@ class CosmeticService {
 
   private async _getCosmeticIntroducedIn(
     value: KeyValuePair,
-    retry = true
+    retry = true,
   ): Promise<Types.ObjectId> {
     const introducedInModel = this.bot.cosmeticIntroducedInModel;
 
@@ -447,15 +390,15 @@ class CosmeticService {
         c.gameplayTags.filter(
           (t) =>
             t.toLowerCase().includes('savetheworld') ||
-            t.toLowerCase().includes('stw')
+            t.toLowerCase().includes('stw'),
         ).length > 0,
       isBattlePass:
         c.gameplayTags.filter((t) =>
-          t.toLowerCase().includes('battlepass.paid')
+          t.toLowerCase().includes('battlepass.paid'),
         ).length > 0,
       isFreePass:
         c.gameplayTags.filter((t) =>
-          t.toLowerCase().includes('battlepass.free')
+          t.toLowerCase().includes('battlepass.free'),
         ).length > 0,
       isItemShop:
         c.gameplayTags.filter((t) => t.toLowerCase().includes('itemshop'))
@@ -469,6 +412,7 @@ class CosmeticService {
       isPromo:
         c.gameplayTags.filter((t) => t.toLowerCase().includes('source.promo'))
           .length > 0,
+      image: c.image,
     }));
   }
 }

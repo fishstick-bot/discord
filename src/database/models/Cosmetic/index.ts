@@ -43,10 +43,7 @@ const CosmeticSchema = new Schema<ICosmetic>(
       ref: 'CosmeticIntroducedIn',
       autopopulate: true,
     },
-    image: {
-      type: Buffer,
-      required: true,
-    },
+    image: requiredString,
     searchTags: stringArray,
     gameplayTags: stringArray,
     metaTags: stringArray,
@@ -75,7 +72,7 @@ const CosmeticSchema = new Schema<ICosmetic>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 CosmeticSchema.plugin(autopopulate);
 

@@ -37,7 +37,7 @@ class API {
     this.app.get('/api/status', async (req, res) =>
       res.json({
         success: true,
-      })
+      }),
     );
   }
 }
