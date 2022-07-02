@@ -3,22 +3,17 @@ import { Schema, model } from 'mongoose';
 import { uniqueRequiredString, requiredString } from '../../schemaTypes';
 import { ICosmeticSeries } from './typings';
 
-const CosmeticSeriesSchema = new Schema<ICosmeticSeries>(
-  {
-    value: uniqueRequiredString,
-    image: {
-      type: String,
-      required: false,
-    },
-    colors: {
-      type: [String],
-      required: true,
-    },
-    backendValue: requiredString,
+const CosmeticSeriesSchema = new Schema<ICosmeticSeries>({
+  value: uniqueRequiredString,
+  image: {
+    type: String,
+    required: false,
   },
-  {
-    timestamps: true,
-  }
-);
+  colors: {
+    type: [String],
+    required: true,
+  },
+  backendValue: requiredString,
+});
 
 export default model<ICosmeticSeries>('CosmeticSeries', CosmeticSeriesSchema);
