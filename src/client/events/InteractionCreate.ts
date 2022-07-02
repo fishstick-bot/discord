@@ -147,7 +147,7 @@ const Event: IEvent = {
           .setDescription(
             `An error occured while running the command ${cmd.name}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
           )
-          .addField('Stack', `\`\`\`${e.stack ?? e}\`\`\``)
+          .addField('Stack', `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``)
           .setTimestamp();
 
         await interaction
@@ -155,7 +155,8 @@ const Event: IEvent = {
             embeds: [errorEmbed],
             components: [],
           })
-          .catch(() => {});
+          // eslint-disable-next-line no-console
+          .catch(console.error);
       }
     }
 

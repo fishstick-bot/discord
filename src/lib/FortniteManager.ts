@@ -4,6 +4,16 @@ import AuthClients from 'fnbr/dist/resources/AuthClients';
 
 import Bot from '../client/Client';
 
+export interface STWProfile {
+  resources: {
+    id: string;
+    quantity: number;
+  }[];
+  accountLevel: number;
+  backpackSize: number;
+  storageSize: number;
+}
+
 class FortniteManager {
   private bot: Bot;
 
@@ -59,7 +69,7 @@ class FortniteManager {
     secret: string,
   ) {
     if (this.clients.has(accountId)) {
-      return true;
+      return this.clients.get(accountId)!;
     }
 
     const client = new Client({
@@ -76,11 +86,13 @@ class FortniteManager {
       connectToXMPP: false,
       createParty: false,
       fetchFriends: false,
+      // eslint-disable-next-line no-console
+      // debug: console.log,
     });
     await client.login();
     this.clients.set(client.user!.id, client);
 
-    return true;
+    return this.clients.get(accountId)!;
   }
 
   public async getAccountInfo(accountId: string) {
@@ -170,8 +182,6 @@ class FortniteManager {
         throw new Error(res.error.message ?? res.error.code);
       }
     }
-
-    return true;
   }
 
   public async createExchangeCode(accountId: string) {
@@ -219,6 +229,66 @@ class FortniteManager {
     }
 
     return res.response.authorizationCode;
+  }
+
+  public async searchPlayer(accountId: string, prefix: string) {
+    if (!this.clients.has(accountId)) {
+      throw new Error('No client found for this account.');
+    }
+
+    const client = this.clients.get(accountId)!;
+
+    const search = await client.searchProfiles(prefix);
+
+    if (search.length === 0) {
+      throw new Error('No player found.');
+    }
+
+    const firstsearch = search[0];
+
+    return {
+      accountId: firstsearch.matches[0].value,
+      displayName: firstsearch.displayName,
+    };
+  }
+
+  public async getSTWProfile(
+    accountId: string,
+    player: string,
+  ): Promise<STWProfile> {
+    if (!this.clients.has(accountId)) {
+      throw new Error('No client found for this account.');
+    }
+
+    const client = this.clients.get(accountId)!;
+
+    const stw = await client.getSTWProfile(player);
+
+    const mfa = stw.stats.mfaRewardClaimed;
+    let backpackSize = 50;
+    const storageSize = 0;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of stw.items) {
+      if (item.templateId === 'HomebaseNode:skilltree_backpacksize') {
+        backpackSize = item.quantity * 20;
+      }
+    }
+
+    if (mfa) {
+      backpackSize += 10;
+    }
+
+    return {
+      // stw resources for the profile
+      resources: stw.resources.map((r) => ({
+        id: r.templateId.split(':')[1],
+        quantity: r.quantity,
+      })),
+      accountLevel: stw.stats.actualLevel,
+      backpackSize,
+      storageSize,
+    };
   }
 }
 

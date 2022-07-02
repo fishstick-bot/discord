@@ -92,55 +92,40 @@ const Command: ICommand = {
 
     await interaction.editReply(`Connecting to Epic Games${Emojis.loading}`);
 
-    await bot.cluster.broadcastEval(
-      `this.fortniteManager.clientFromDeviceAuth('${epicAccount.accountId}', '${epicAccount.deviceId}', '${epicAccount.secret}')`,
-      {
-        cluster: 0,
-      },
+    await bot.fortniteManager.clientFromDeviceAuth(
+      epicAccount.accountId,
+      epicAccount.deviceId,
+      epicAccount.secret,
     );
 
-    const accountInfo = await bot.cluster.broadcastEval(
-      `this.fortniteManager.getAccountInfo('${epicAccount.accountId}')`,
-      {
-        cluster: 0,
-      },
+    const accountInfo = await bot.fortniteManager.getAccountInfo(
+      epicAccount.accountId,
     );
-    // console.log(accountInfo);
 
     let res: any;
     if (subcmdgroup === 'token') {
       switch (subcmd) {
         case 'create':
-          res = await bot.cluster.broadcastEval(
-            `this.fortniteManager.createBearerToken('${epicAccount.accountId}', '${epicAccount.deviceId}', '${epicAccount.secret}')`,
-            {
-              cluster: 0,
-            },
+          res = await bot.fortniteManager.createBearerToken(
+            epicAccount.accountId,
+            epicAccount.deviceId,
+            epicAccount.secret,
           );
 
           await interaction.editReply(res);
           break;
 
         case 'kill':
-          await bot.cluster.broadcastEval(
-            `this.fortniteManager.killBearerToken('${
-              epicAccount.accountId
-            }', '${interaction.options.getString('token')}')`,
-            {
-              cluster: 0,
-            },
+          await bot.fortniteManager.killBearerToken(
+            epicAccount.accountId,
+            interaction.options.getString('token')!,
           );
 
           await interaction.editReply(`Bearer token killed.`);
           break;
 
         case 'kill-all':
-          await bot.cluster.broadcastEval(
-            `this.fortniteManager.killBearerToken('${epicAccount.accountId}')`,
-            {
-              cluster: 0,
-            },
-          );
+          await bot.fortniteManager.killBearerToken(epicAccount.accountId);
 
           await interaction.editReply(`All active bearer tokens killed.`);
           break;
@@ -148,11 +133,8 @@ const Command: ICommand = {
     }
 
     if (subcmd === 'exchange-code' || subcmd === 'page') {
-      const exchangeCode = await bot.cluster.broadcastEval(
-        `this.fortniteManager.createExchangeCode('${epicAccount.accountId}')`,
-        {
-          cluster: 0,
-        },
+      const exchangeCode = await bot.fortniteManager.createExchangeCode(
+        epicAccount.accountId,
       );
 
       const pageUrl = `https://epicgames.com/id/exchange?exchangeCode=${exchangeCode}`;
@@ -169,12 +151,11 @@ const Command: ICommand = {
         interaction.options.getString('clientId') ||
         '3446cd72694c4a4485d81b77adbb2141';
 
-      const authorizationCode = await bot.cluster.broadcastEval(
-        `this.fortniteManager.createAuthorizationCode('${epicAccount.accountId}', '${clientId}')`,
-        {
-          cluster: 0,
-        },
-      );
+      const authorizationCode =
+        await bot.fortniteManager.createAuthorizationCode(
+          epicAccount.accountId,
+          clientId,
+        );
 
       if (!authorizationCode) {
         throw new Error('Failed to create authorization code.');

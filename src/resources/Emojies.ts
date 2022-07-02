@@ -9,6 +9,7 @@ const Emojies = {
   tech: '<:technology:803430881724596255>',
   technology: '<:technology:803430881724596255>',
   research: '<:research:803433855393988608>',
+  brxp: '<:xp:836010555868708924>',
 };
 
 export default Emojies;

@@ -29,7 +29,10 @@ interface CommandOptions {
 export interface ICommand {
   name: string;
 
-  slashCommandBuilder: SlashCommandBuilder | SlashCommandSubcommandsOnlyBuilder;
+  slashCommandBuilder:
+    | SlashCommandBuilder
+    | SlashCommandSubcommandsOnlyBuilder
+    | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
 
   options: CommandOptions;
 

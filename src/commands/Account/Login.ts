@@ -224,12 +224,10 @@ const Command: ICommand = {
             modalSubmit.fields.getTextInputValue('authCodeInput');
 
           try {
-            const loginacc: any = await bot.cluster.broadcastEval(
-              `this.fortniteManager.clientFromAuthorizationCode('${authorizationCode}')`,
-              {
-                cluster: 0,
-              },
-            );
+            const loginacc =
+              await bot.fortniteManager.clientFromAuthorizationCode(
+                authorizationCode,
+              );
 
             let epicAcc = await bot.epicAccountModel
               .findOne({
@@ -241,7 +239,7 @@ const Command: ICommand = {
               epicAcc.accountId = loginacc.accountId;
               epicAcc.deviceId = loginacc.deviceAuth.deviceId;
               epicAcc.secret = loginacc.deviceAuth.secret;
-              epicAcc.displayName = loginacc.displayName;
+              epicAcc.displayName = loginacc.displayName || loginacc.accountId;
               epicAcc.avatarUrl = loginacc.avatar;
               await epicAcc.save();
             } else {
@@ -249,7 +247,7 @@ const Command: ICommand = {
                 accountId: loginacc.accountId,
                 deviceId: loginacc.deviceAuth.deviceId,
                 secret: loginacc.deviceAuth.secret,
-                displayName: loginacc.displayName,
+                displayName: loginacc.displayName || loginacc.accountId,
                 avatarUrl: loginacc.avatar,
                 autoDaily: true,
                 autoFreeLlamas: isPremium,
