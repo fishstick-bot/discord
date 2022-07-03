@@ -114,19 +114,17 @@ const Command: ICommand = {
         })
         .setDescription(
           `• ${Emojis.star} - Needs premium.
-          
-          • **Automatic Daily Login Reward**: ${
+
+• **Automatic Daily Login Reward**: ${
             epicAccount.autoDaily ? 'Enabled' : 'Disabled'
           }
-          • **Automatic Freebie Llamas**: ${
+• **Automatic Freebie Llamas**: ${
             epicAccount.autoFreeLlamas ? 'Enabled' : 'Disabled'
           } ${Emojis.star}
-          • **Auto Research**: ${capitalizeFirst(epicAccount.autoResearch)} ${
-            Emojis.star
-          }
-          
-          **Click any button to enable/disable setting.**
-          **This message will timeout in 60 seconds.**`,
+• **Auto Research**: ${capitalizeFirst(epicAccount.autoResearch)} ${Emojis.star}
+
+**Click any button to enable/disable setting.**
+**This message will timeout in 60 seconds.**`,
         );
 
       return embed;

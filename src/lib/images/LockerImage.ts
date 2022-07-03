@@ -26,7 +26,7 @@ const imgCache: {
 const getCachedImage = async (
   path: string,
   x = 100,
-  y = 100
+  y = 100,
 ): Promise<Canvas> => {
   if (imgCache[path]) {
     return imgCache[path]!;
@@ -71,12 +71,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
   let background = await getCachedImage(
     './assets/Locker/Backgrounds/Common.png',
     imgX,
-    imgY
+    imgY,
   );
   let overlay = await getCachedImage(
     './assets/Locker/Overlays/Common.png',
     imgX,
-    imgY
+    imgY,
   );
 
   switch (item.rarity) {
@@ -84,12 +84,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Uncommon.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Uncommon.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -97,12 +97,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Rare.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Rare.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -110,12 +110,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Epic.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Epic.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -123,12 +123,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Legendary.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Legendary.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -136,12 +136,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Marvel.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Marvel.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -149,12 +149,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Dark.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Dark.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -162,12 +162,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/DC.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/DC.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -175,12 +175,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Icon.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Icon.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -188,12 +188,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Lava.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Lava.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -201,12 +201,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Frozen.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Frozen.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -214,12 +214,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Shadow.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Shadow.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -227,12 +227,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/StarWars.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/StarWars.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -240,12 +240,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/Slurp.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/Slurp.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
 
@@ -254,12 +254,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
       background = await getCachedImage(
         './assets/Locker/Backgrounds/GamingLegends.png',
         imgX,
-        imgY
+        imgY,
       );
       overlay = await getCachedImage(
         './assets/Locker/Overlays/GamingLegends.png',
         imgX,
-        imgY
+        imgY,
       );
       break;
   }
@@ -268,12 +268,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
     background = await getCachedImage(
       './assets/Locker/Backgrounds/Exclusive.png',
       imgX,
-      imgY
+      imgY,
     );
     overlay = await getCachedImage(
       './assets/Locker/Overlays/Exclusive.png',
       imgX,
-      imgY
+      imgY,
     );
   }
 
@@ -281,12 +281,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
     background = await getCachedImage(
       './assets/Locker/Backgrounds/Crew.png',
       imgX,
-      imgY
+      imgY,
     );
     overlay = await getCachedImage(
       './assets/Locker/Overlays/Crew.png',
       imgX,
-      imgY
+      imgY,
     );
   }
 
@@ -294,12 +294,12 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
     background = await getCachedImage(
       './assets/Locker/Backgrounds/STW.png',
       imgX,
-      imgY
+      imgY,
     );
     overlay = await getCachedImage(
       './assets/Locker/Overlays/STW.png',
       imgX,
-      imgY
+      imgY,
     );
   }
 

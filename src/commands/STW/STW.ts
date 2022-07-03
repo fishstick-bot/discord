@@ -13,10 +13,14 @@ import {
 } from 'discord.js';
 import { SlashCommandBuilder, time } from '@discordjs/builders';
 import type { STWProfile } from 'fnbr';
+import { promises as fs } from 'fs';
+// @ts-ignore
+import approx from 'approximate-number';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojies';
+import drawSTWResources from '../../lib/images/STWResources';
 
 const Command: ICommand = {
   name: 'stw',
@@ -92,6 +96,8 @@ const Command: ICommand = {
         } tutorial before you can view ${player ? 'their' : 'your'} stats.`,
       );
     }
+
+    const stwData = JSON.parse(await fs.readFile('assets/STW.json', 'utf-8'));
 
     const rawEmbed = () => {
       const embed = new MessageEmbed()
@@ -196,27 +202,29 @@ const Command: ICommand = {
       const embed = rawEmbed()
         .setDescription(
           `• Account Level: **${stw?.stats.actualLevel.toLocaleString()}**
-        • Backpack Size: **${backpackSize}**
-        • Storage Size: **${storageSize}**
-        • Zones Completed: **${stw?.stats.matchesPlayed.toLocaleString()}**
-        • Collection Book Level: **${stw?.stats.collectionBookMaxXPLevel?.toLocaleString()}**
-        • Unslot Cost: **${stw?.stats.unslotMtxSpend.toLocaleString()}**
-        • FORT Stats: **${Object.keys(stw?.FORTStats!)
-          .map(
-            (s) =>
-              `${(Emojis as any)[s]!} ${(stw?.FORTStats! as any)[
-                s
-              ].toLocaleString()}`,
-          )
-          .join(' ')}**
-        • Research: **${Object.keys(stw?.stats.researchLevels!)
-          .map(
-            (s) =>
-              `${(Emojis as any)[s]!} ${
-                (stw?.stats.researchLevels! as any)[s]
-              }`,
-          )
-          .join(' ')} ${Emojis.research} ${researchPoints.toLocaleString()}**`,
+• Backpack Size: **${backpackSize}**
+• Storage Size: **${storageSize}**
+• Zones Completed: **${stw?.stats.matchesPlayed.toLocaleString()}**
+• Collection Book Level: **${stw?.stats.collectionBookMaxXPLevel?.toLocaleString()}**
+• Unslot Cost: **${stw?.stats.unslotMtxSpend.toLocaleString()}**
+• FORT Stats: **${Object.keys(stw?.FORTStats!)
+            .map(
+              (s) =>
+                `${(Emojis as any)[s]!} ${(stw?.FORTStats! as any)[
+                  s
+                ].toLocaleString()}`,
+            )
+            .join(' ')}**
+• Research: **${Object.keys(stw?.stats.researchLevels!)
+            .map(
+              (s) =>
+                `${(Emojis as any)[s]!} ${
+                  (stw?.stats.researchLevels! as any)[s]
+                }`,
+            )
+            .join(' ')} ${
+            Emojis.research
+          } ${researchPoints.toLocaleString()}**`,
         )
         .addField(
           'SSD Completions',
@@ -246,6 +254,28 @@ const Command: ICommand = {
           }**`,
         );
       return embed;
+    };
+
+    const createSTWResourcesImage = async () => {
+      const resources: any = stw!.resources.map((r) => ({
+        id: r.templateId.split(':')[1].toLowerCase(),
+        name:
+          stwData[r.templateId.split(':')[1].toLowerCase()]?.name ?? 'Unknown',
+        rarity:
+          stwData[r.templateId.split(':')[1].toLowerCase()]?.rarity ?? 'common',
+        quantity: approx(r.quantity).toUpperCase(),
+      }));
+
+      const attachment = new MessageAttachment(
+        await drawSTWResources(
+          resources,
+          player ?? epicAccount.displayName,
+          interaction.user.username,
+        ),
+        'stw-resources.png',
+      );
+
+      return attachment;
     };
 
     const createBtns = (disabled = false) => {
@@ -326,16 +356,22 @@ const Command: ICommand = {
       }
 
       const embeds: MessageEmbed[] = [];
+      const files: MessageAttachment[] = [];
 
       switch (mode) {
         case 'stwoverview':
           embeds.push(createSTWOverviewEmbed());
+          break;
+
+        case 'stwresources':
+          files.push(await createSTWResourcesImage());
           break;
       }
 
       await interaction.editReply({
         embeds,
         components: [createModeMenu(), createBtns()],
+        files,
       });
     });
 
@@ -343,6 +379,7 @@ const Command: ICommand = {
       await interaction
         .editReply({
           embeds: [createSTWOverviewEmbed()],
+          files: [],
           components: [createModeMenu(true), createBtns(true)],
         })
         .catch(() => {});

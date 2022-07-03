@@ -77,35 +77,6 @@ const Command: ICommand = {
             .setRequired(true),
         ),
     ),
-  // .addSubcommand((subcommand) =>
-  //   subcommand
-  //     .setName('purchase')
-  //     .setDescription('Purchase Fishstick Premium.')
-  //     .addStringOption((o) =>
-  //       o
-  //         .setName('plan')
-  //         .setDescription('The plan to generate a premium key for.')
-  //         .setRequired(true)
-  //         .setChoices(
-  //           {
-  //             name: 'Monthly',
-  //             value: 'monthly',
-  //           },
-  //           {
-  //             name: '6 Months',
-  //             value: '6months',
-  //           },
-  //           {
-  //             name: 'Yearly',
-  //             value: 'yearly',
-  //           },
-  //           {
-  //             name: 'Lifetime',
-  //             value: '100years',
-  //           },
-  //         ),
-  //     ),
-  // ),
 
   options: {},
 
@@ -168,8 +139,7 @@ const Command: ICommand = {
               .setColor(bot._config.color)
               .setTimestamp()
               .setDescription(
-                `**Code:** ${key.code}
-                **Duration:** ${key.premiumDays} days`,
+                `**Code:** ${key.code}\n**Duration:** ${key.premiumDays} days`,
               ),
           ],
         });
@@ -349,19 +319,6 @@ const Command: ICommand = {
           ],
         });
         break;
-
-      // case 'purchase':
-      //   if (
-      //     !plan ||
-      //     !['monthly', '6months', 'yearly', '100years'].includes(plan)
-      //   ) {
-      //     await interaction.editReply(
-      //       `${Emojis.cross} Please specify a valid plan.`,
-      //     );
-
-      //     // add return
-      //   }
-      //   break;
     }
   },
 };
