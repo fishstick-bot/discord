@@ -3,10 +3,7 @@ import {
   MessageEmbed,
   MessageButton,
   MessageSelectMenu,
-  Modal,
-  TextInputComponent,
   MessageActionRow,
-  ModalActionRowComponent,
   Message,
   MessageAttachment,
   SelectMenuInteraction,
@@ -22,6 +19,14 @@ import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojies';
 import Sort from '../../lib/Sort';
 import drawSTWResources from '../../lib/images/STWResources';
+
+const bisect = (array: number[], x: number) => {
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] >= x) return i;
+  }
+  return array.length;
+};
 
 const Command: ICommand = {
   name: 'stw',
@@ -99,6 +104,9 @@ const Command: ICommand = {
     }
 
     const stwData = JSON.parse(await fs.readFile('assets/STW.json', 'utf-8'));
+    const venturesData = JSON.parse(
+      await fs.readFile('assets/PhoenixLevelRewardsTable.json', 'utf-8'),
+    );
 
     const rawEmbed = () => {
       const embed = new MessageEmbed()
@@ -291,6 +299,90 @@ const Command: ICommand = {
       return embed;
     };
 
+    const createSTWVenturesEmbed = () => {
+      const venturesEndDate = new Date(
+        stw!.items.find(
+          (i) =>
+            i.templateId === 'ConditionalAction:generic_instance' &&
+            i.attributes.devName === 'MAJOR: Summer - Phoenix',
+        )?.attributes?.conditions?.event?.eventEnd ?? '2000-01-01',
+      );
+      const venturesXP =
+        stw!.resources.find((r) => r.templateId === 'AccountResource:phoenixxp')
+          ?.quantity ?? 0;
+      let lvl = bisect(
+        Object.values(venturesData).map((v: any) => v.TotalRequiredXP),
+        venturesXP,
+      );
+      if (lvl === 0) lvl = 1;
+
+      const nextLvl: any = lvl < 50 ? Object.values(venturesData)[lvl] : null;
+      // major levels are for eg: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50
+      const nextMajorLvl =
+        lvl < 50
+          ? [5, 10, 15, 20, 25, 30, 35, 40, 45, 50].find((l) => l > lvl) ?? 50
+          : null;
+
+      const embed = rawEmbed()
+        .setTitle(
+          `[${stw?.venturesPowerLevel.toFixed(2)}] ${
+            player ?? epicAccount.displayName
+          }'s STW Ventures Overview`,
+        )
+        .setDescription(
+          `• Season End: ${time(venturesEndDate, 'd')}
+
+• XP: **${venturesXP.toLocaleString()}** ${Emojis.venturexp}
+• Level: **${lvl} / 50**${
+            nextLvl
+              ? `
+
+**${(nextLvl.TotalRequiredXP - venturesXP).toLocaleString()} XP** to next level`
+              : ''
+          }${
+            lvl < 50
+              ? `
+**${approx(
+                  (Object.values(venturesData) as any)[49].TotalRequiredXP -
+                    venturesXP,
+                ).toUpperCase()} XP** to level 50`
+              : ''
+          }`,
+        );
+
+      if (nextLvl) {
+        embed.addField(
+          `Rewards for Level ${lvl + 1}`,
+          `${nextLvl.VisibleReward.map(
+            (r: any) =>
+              `${
+                (Emojis as any)[r.TemplateId] ??
+                stwData[r.TemplateId.split(':')[1]].name
+              } ${r.Quantity}`,
+          ).join(' ')}`,
+          true,
+        );
+      }
+
+      if (nextMajorLvl) {
+        embed.addField(
+          `Rewards for Level ${nextMajorLvl}`,
+          `${(Object.values(venturesData) as any)[
+            nextMajorLvl - 1
+          ]?.VisibleReward.map(
+            (r: any) =>
+              `${
+                (Emojis as any)[r.TemplateId] ??
+                stwData[r.TemplateId.split(':')[1]].name
+              } ${r.Quantity}`,
+          ).join(' ')}`,
+          true,
+        );
+      }
+
+      return embed;
+    };
+
     const createBtns = (disabled = false) => {
       const refreshButton = new MessageButton()
         .setCustomId('refresh')
@@ -331,6 +423,12 @@ const Command: ICommand = {
               value: 'stwresources',
               default: mode === 'stwresources',
               description: 'View Save the World profile resources.',
+            },
+            {
+              label: 'Save the World Ventures',
+              value: 'stwventures',
+              default: mode === 'stwventures',
+              description: 'View Save the World Ventures profile.',
             },
           ])
           .setDisabled(disabled),
@@ -380,6 +478,10 @@ const Command: ICommand = {
           files.push(await createSTWResourcesImage());
           embeds.push(createSTWResourcesEmbed());
           break;
+
+        case 'stwventures':
+          embeds.push(createSTWVenturesEmbed());
+          break;
       }
 
       await interaction.editReply({
@@ -392,8 +494,8 @@ const Command: ICommand = {
     collector.on('end', async (collected, reason) => {
       await interaction
         .editReply({
-          embeds: [createSTWOverviewEmbed()],
-          files: [],
+          // embeds: [createSTWOverviewEmbed()],
+          // files: [],
           components: [createModeMenu(true), createBtns(true)],
         })
         .catch(() => {});

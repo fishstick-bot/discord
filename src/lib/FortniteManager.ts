@@ -247,8 +247,8 @@ class FortniteManager {
     const firstsearch = search[0];
 
     return {
-      accountId: firstsearch.matches[0].value,
-      displayName: firstsearch.displayName,
+      accountId: firstsearch.id,
+      displayName: firstsearch.matches[0].value,
     };
   }
 
