@@ -90,6 +90,7 @@ class Bot extends Client {
     });
 
     this._config = new Config();
+    this.logger = getLogger(`BOT (CLUSTER ${this.cluster.id})`);
   }
 
   // start the bot
@@ -98,9 +99,7 @@ class Bot extends Client {
     const start = Date.now();
     await this.login(this._config.discordToken);
     this.logger.info(
-      `[CLUSTER ${this.cluster.id}] Logged in as ${this.user?.tag} [${(
-        Date.now() - start
-      ).toFixed(2)}ms]`,
+      `Logged in as ${this.user?.tag} [${(Date.now() - start).toFixed(2)}ms]`,
     );
 
     // connect to database
@@ -145,16 +144,14 @@ class Bot extends Client {
       commandFiles.map(async (file) => {
         const command: ICommand = (await import(file)).default;
         this.commands.set(command.name, command);
-        this.logger.debug(
-          `[CLUSTER ${this.cluster.id}] Loaded command ${command.name}`,
-        );
+        this.logger.debug(`Loaded command ${command.name}`);
       }),
     );
 
     this.logger.info(
-      `[CLUSTER ${this.cluster.id}] Loaded ${this.commands.size} commands [${(
-        Date.now() - start
-      ).toFixed(2)}ms]`,
+      `Loaded ${this.commands.size} commands [${(Date.now() - start).toFixed(
+        2,
+      )}ms]`,
     );
   }
 
@@ -166,16 +163,14 @@ class Bot extends Client {
       eventFiles.map(async (file) => {
         const event: IEvent = (await import(file)).default;
         this.on(event.name, event.run.bind(null, this));
-        this.logger.debug(
-          `[CLUSTER ${this.cluster.id}] Loaded event ${event.name}`,
-        );
+        this.logger.debug(`Loaded event ${event.name}`);
       }),
     );
 
     this.logger.info(
-      `[CLUSTER ${this.cluster.id}] Loaded ${eventFiles.length} events [${(
-        Date.now() - start
-      ).toFixed(2)}ms]`,
+      `Loaded ${eventFiles.length} events [${(Date.now() - start).toFixed(
+        2,
+      )}ms]`,
     );
   }
 }

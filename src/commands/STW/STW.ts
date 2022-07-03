@@ -20,6 +20,7 @@ import approx from 'approximate-number';
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojies';
+import Sort from '../../lib/Sort';
 import drawSTWResources from '../../lib/images/STWResources';
 
 const Command: ICommand = {
@@ -268,14 +269,26 @@ const Command: ICommand = {
 
       const attachment = new MessageAttachment(
         await drawSTWResources(
-          resources,
+          Sort(resources),
           player ?? epicAccount.displayName,
-          interaction.user.username,
+          interaction.user.tag,
         ),
         'stw-resources.png',
       );
 
       return attachment;
+    };
+
+    const createSTWResourcesEmbed = () => {
+      const embed = rawEmbed()
+        .setTitle(
+          `[${stw?.powerLevel.toFixed(2)}] ${
+            player ?? epicAccount.displayName
+          }'s STW Resources`,
+        )
+        .setImage('attachment://stw-resources.png');
+
+      return embed;
     };
 
     const createBtns = (disabled = false) => {
@@ -365,6 +378,7 @@ const Command: ICommand = {
 
         case 'stwresources':
           files.push(await createSTWResourcesImage());
+          embeds.push(createSTWResourcesEmbed());
           break;
       }
 

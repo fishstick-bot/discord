@@ -20,7 +20,7 @@ const imgX = 500 * mult;
 const imgY = 530 * mult;
 
 const drawSTWResource = async (item: KeyValuePair) => {
-  const outpath = `./account_resources/${item.id}.png`;
+  const outpath = `./STWResources/${item.id}.png`;
 
   const canvas = new Canvas(imgX, imgX);
   const ctx = canvas.getContext('2d');
@@ -28,31 +28,31 @@ const drawSTWResource = async (item: KeyValuePair) => {
   let bgImg;
   switch (item.rarity) {
     case 'common':
-      bgImg = await loadImage('./assets/stw/common.png');
+      bgImg = await loadImage('./assets/STW/Common.png');
       break;
 
     case 'uncommon':
-      bgImg = await loadImage('./assets/stw/uncommon.png');
+      bgImg = await loadImage('./assets/STW/Uncommon.png');
       break;
 
     case 'rare':
-      bgImg = await loadImage('./assets/stw/rare.png');
+      bgImg = await loadImage('./assets/STW/Rare.png');
       break;
 
     case 'epic':
-      bgImg = await loadImage('./assets/stw/epic.png');
+      bgImg = await loadImage('./assets/STW/Epic.png');
       break;
 
     case 'legendary':
-      bgImg = await loadImage('./assets/stw/legendary.png');
+      bgImg = await loadImage('./assets/STW/Legendary.png');
       break;
 
     case 'mythic':
-      bgImg = await loadImage('./assets/stw/mythic.png');
+      bgImg = await loadImage('./assets/STW/Mythic.png');
       break;
 
     default:
-      bgImg = await loadImage('./assets/stw/common.png');
+      bgImg = await loadImage('./assets/STW/Common.png');
       break;
   }
 
@@ -60,7 +60,7 @@ const drawSTWResource = async (item: KeyValuePair) => {
   ctx.drawImage(bgImg, 0, 0, imgX, imgX);
 
   // draw the item
-  const img = await loadImage(`./stw_images/${item.image.toLowerCase()}.png`);
+  const img = await loadImage(`./STWImages/${item.id}.png`);
   ctx.drawImage(img, 0 + imgX * 0.05, 0 + imgX * 0.05, imgX * 0.9, imgX * 0.9);
 
   try {
@@ -123,7 +123,7 @@ const drawSTWResources = async (
 
     let img;
     try {
-      img = await loadImage(`./account_resources/${item.id}.png`);
+      img = await loadImage(`./STWResources/${item.id}.png`);
     } catch (e) {
       img = await loadImage(await drawSTWResource(item));
     }
@@ -150,7 +150,7 @@ const drawSTWResources = async (
   }
 
   if (!cache.stw) {
-    cache.stw = await loadImage('./assets/stw.png');
+    cache.stw = await loadImage('./assets/STW.png');
   }
 
   drawWatermarks(
