@@ -72,6 +72,15 @@ const Emojies = {
   edged_sword: '<:stormkingsravager:850674233616891925>',
   pistol: '<:stormkingsonslaught:850674313655877642>',
   'AccountResource:campaign_event_currency': '<a:ticket:829454892149375026>',
+
+  banner: '<:banner:993614565164191784>',
+  teleporter: '<:teleporter:993614778104819772>',
+  adrenaline: '<:adrenaline:993614507580600431>',
+  proximity: '<:proxymity:993614658932052000>',
+  slowfield: '<:slowfield:993614735079637032>',
+  hoverturret: '<:hoverturret:993614608571047998>',
+  airstrike: '<:airstrike:993614535883763763>',
+  supplydrop: '<:supplydrop:993614757087154337>',
 };
 
 export default Emojies;
