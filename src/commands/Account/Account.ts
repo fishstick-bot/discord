@@ -1,17 +1,7 @@
 /* eslint-disable no-param-reassign */
-import {
-  MessageEmbed,
-  MessageButton,
-  MessageSelectMenu,
-  Modal,
-  TextInputComponent,
-  MessageActionRow,
-  ModalActionRowComponent,
-  Message,
-  MessageAttachment,
-  SelectMenuInteraction,
-} from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { MessageEmbed } from 'discord.js';
+import { SlashCommandBuilder, time } from '@discordjs/builders';
+import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
@@ -23,6 +13,11 @@ const Command: ICommand = {
   slashCommandBuilder: new SlashCommandBuilder()
     .setName('account')
     .setDescription('Manage your Epic Games account.')
+    .addSubcommand((c) =>
+      c
+        .setName('info')
+        .setDescription('View your Epic Games account information.'),
+    )
     .addSubcommandGroup((g) =>
       g
         .setName('token')
@@ -69,6 +64,9 @@ const Command: ICommand = {
             )
             .setRequired(false),
         ),
+    )
+    .addSubcommand((c) =>
+      c.setName('2fa').setDescription('Claim your 2FA rewards.'),
     ),
 
   options: {
@@ -92,17 +90,41 @@ const Command: ICommand = {
 
     await interaction.editReply(`Connecting to Epic Games${Emojis.loading}`);
 
-    await bot.fortniteManager.clientFromDeviceAuth(
+    const client = await bot.fortniteManager.clientFromDeviceAuth(
       epicAccount.accountId,
       epicAccount.deviceId,
       epicAccount.secret,
     );
-
-    const accountInfo = await bot.fortniteManager.getAccountInfo(
-      epicAccount.accountId,
-    );
+    await client.user?.fetch();
 
     let res: any;
+    if (subcmd === 'info') {
+      const accountInfoEmbed = new MessageEmbed()
+        .setAuthor({
+          name: `${epicAccount.displayName}'s Account Information`,
+          iconURL: epicAccount.avatarUrl,
+        })
+        .setTimestamp()
+        .setColor(bot._config.color)
+        .setDescription(
+          `• **Account ID**: ${epicAccount.accountId}
+• **Epic Name**: ${client.user!.displayName}
+• **Real Name**: ${client.user!.name} ${client.user?.lastName}
+• **Email**: ${client.user!.email} ${
+            client.user?.emailVerified ? Emojis.tick : Emojis.cross
+          }
+• **2FA Enabled**: ${client.user?.tfaEnabled ? 'Yes' : 'No'}
+• **Country**: ${client.user?.country}
+
+• **Last Login**: ${time(client.user?.lastLogin)}`,
+        );
+
+      await interaction.editReply({
+        content: ' ',
+        embeds: [accountInfoEmbed],
+      });
+    }
+
     if (subcmdgroup === 'token') {
       switch (subcmd) {
         case 'create':
@@ -162,6 +184,72 @@ const Command: ICommand = {
       }
 
       await interaction.editReply(authorizationCode);
+    }
+
+    if (subcmd === '2fa') {
+      const athena = await client.http.sendEpicgamesRequest(
+        true,
+        'POST',
+        `${Endpoints.MCP}/${epicAccount.accountId}/client/QueryProfile?profileId=athena`,
+        'fortnite',
+        { 'Content-Type': 'application/json' },
+        {},
+      );
+
+      const campaign = await client.http.sendEpicgamesRequest(
+        true,
+        'POST',
+        `${Endpoints.MCP}/${epicAccount.accountId}/client/QueryProfile?profileId=campaign`,
+        'fortnite',
+        { 'Content-Type': 'application/json' },
+        {},
+      );
+
+      if (athena.error) {
+        throw new Error(athena.error.message ?? athena.error.code);
+      }
+
+      const brMfaClaimed =
+        athena.response.profileChanges[0].profile.stats.attributes
+          .mfa_reward_claimed;
+      const campaignMfaClaimed =
+        campaign.response?.profileChanges[0].profile.stats.attributes
+          .mfa_reward_claimed ?? false;
+
+      if (brMfaClaimed || campaignMfaClaimed) {
+        await interaction.editReply(
+          `You have already claimed your 2FA rewards.`,
+        );
+        return;
+      }
+
+      const claimMfa = await client.http.sendEpicgamesRequest(
+        true,
+        'POST',
+        `${Endpoints.MCP}/${epicAccount.accountId}/client/ClaimMfaEnabled?profileId=common_core`,
+        'fortnite',
+        { 'Content-Type': 'application/json' },
+        {
+          bClaimForStw: !campaignMfaClaimed && !campaign.error,
+        },
+      );
+
+      if (claimMfa.error) {
+        throw new Error(claimMfa.error.message ?? claimMfa.error.code);
+      }
+
+      const { profileRevision } = claimMfa.response;
+      const { profileChangesBaseRevision } = claimMfa.response;
+
+      if (profileRevision < profileChangesBaseRevision) {
+        throw new Error(
+          'Failed to claim 2fa Rewards.\nPlease make sure that you already have two-factor authentication enabled on your account prior to attempting to claim the rewards.',
+        );
+      }
+
+      await interaction.editReply(
+        `Successfully claimed 2FA rewards for **${epicAccount.displayName}**.`,
+      );
     }
   },
 };

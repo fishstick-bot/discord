@@ -71,6 +71,7 @@ const Emojies = {
   assault: '<:stormkingsscourge:850673955017719829>',
   edged_sword: '<:stormkingsravager:850674233616891925>',
   pistol: '<:stormkingsonslaught:850674313655877642>',
+  'AccountResource:campaign_event_currency': '<a:ticket:829454892149375026>',
 };
 
 export default Emojies;

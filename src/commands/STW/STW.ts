@@ -577,6 +577,58 @@ ${questData.reward
       return embed;
     };
 
+    const createSTWWeeklyQuestsEmbed = () => {
+      const quests = stw!.items.filter(
+        (i) =>
+          i.templateId.startsWith('Quest:weekly') &&
+          i.attributes.quest_state === 'Active',
+      );
+
+      const embed = rawEmbed().setTitle(
+        `[${stw?.powerLevel.toFixed(2)}] ${
+          player ?? epicAccount.displayName
+        }'s STW Weekly Quests`,
+      );
+
+      if (quests.length === 0) {
+        embed.setDescription(`No active weekly quests found.`);
+      } else {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const q of quests) {
+          const questData = stwQuests[q.templateId.split(':')[1].toLowerCase()];
+
+          embed.addField(
+            `${questData.name ?? 'Unknown Quest'}`,
+            `${questData.objectives
+              .map((o: any) => {
+                const completed =
+                  (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
+                let task = o.description;
+                if (q.templateId.toLowerCase().includes('supercharge')) {
+                  task = task.replace('[UIRating]', '160');
+                }
+                if (completed) {
+                  task = strikethrough(task);
+                }
+                return `• ${task} **[${(
+                  q.attributes[`completion_${o.id}`] ?? 0
+                ).toLocaleString()}/${o.count.toLocaleString()}]**`;
+              })
+              .join('\n')}
+${questData.reward
+  .filter((r: any) => !r.hidden)
+  .map(
+    (r: any) =>
+      `${(Emojis as any)[r.id] ?? r.id} **${r.quantity.toLocaleString()}x**`,
+  )
+  .join(' ')}`,
+          );
+        }
+      }
+
+      return embed;
+    };
+
     const createBtns = (disabled = false) => {
       const refreshButton = new MessageButton()
         .setCustomId('refresh')
@@ -636,6 +688,12 @@ ${questData.reward
               value: 'stwdailyquests',
               default: mode === 'stwdailyquests',
               description: 'View Save the World Daily Quests progress.',
+            },
+            {
+              label: 'Save the World Weekly Quests',
+              value: 'stwweeklyquests',
+              default: mode === 'stwweeklyquests',
+              description: 'View Save the World Weekly Quests progress.',
             },
           ])
           .setDisabled(disabled),
@@ -697,6 +755,10 @@ ${questData.reward
 
           case 'stwdailyquests':
             embeds.push(createSTWDailyQuestsEmbed());
+            break;
+
+          case 'stwweeklyquests':
+            embeds.push(createSTWWeeklyQuestsEmbed());
             break;
         }
 
