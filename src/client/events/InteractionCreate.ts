@@ -6,6 +6,7 @@ import getLogger from '../../Logger';
 import Emojies from '../../resources/Emojies';
 import { IEpicAccount } from '../../database/models/typings';
 import UserNotFoundError from '../../structures/UserNotFoundError';
+import { handleCommandError } from '../../lib/Utils';
 
 const wait = promisify(setTimeout);
 const logger = getLogger('COMMAND');
@@ -139,34 +140,7 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
       try {
         await cmd.run(bot, interaction, user);
       } catch (e: any) {
-        logger.error(e);
-
-        let errorEmbed: MessageEmbed;
-        if (e instanceof UserNotFoundError) {
-          errorEmbed = new MessageEmbed()
-            .setTitle(`${Emojies.cross} USER NOT FOUND`)
-            .setColor('RED')
-            .setDescription(e.message)
-            .setTimestamp();
-        } else {
-          errorEmbed = new MessageEmbed()
-            .setTitle(`${Emojies.cross} NOT THE LLAMA YOU'RE LOOKING FOR`)
-            .setColor('RED')
-            .setDescription(
-              `An error occured while running the command ${cmd.name}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
-            )
-            .addField('Stack', `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``)
-            .setTimestamp();
-        }
-
-        await interaction
-          .editReply({
-            content: ' ',
-            embeds: [errorEmbed],
-            components: [],
-          })
-          // eslint-disable-next-line no-console
-          .catch(console.error);
+        await handleCommandError(logger, interaction, e);
       }
 
       const random = Math.floor(Math.random() * 100) + 1;

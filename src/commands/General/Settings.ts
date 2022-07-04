@@ -3,19 +3,16 @@ import {
   MessageEmbed,
   MessageButton,
   MessageSelectMenu,
-  Modal,
-  TextInputComponent,
   MessageActionRow,
-  ModalActionRowComponent,
   Message,
-  MessageAttachment,
   SelectMenuInteraction,
 } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
-import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojies';
+import getLogger from '../../Logger';
+import { handleCommandError } from '../../lib/Utils';
 
 const capitalizeFirst = (str: string) =>
   str.charAt(0).toUpperCase() + str.slice(1);
@@ -143,33 +140,37 @@ const Command: ICommand = {
     });
 
     collector.on('collect', async (i) => {
-      if (i.customId === 'autoDaily') {
-        await toggleAutoDaily();
-        await interaction.editReply({
-          embeds: [createEmbed()],
-          components: createComponents(),
-        });
-      } else if (i.customId === 'autoFreeLlamas') {
-        await toggleAutoFreeLlamas();
-        await interaction.editReply({
-          embeds: [createEmbed()],
-          components: createComponents(),
-        });
-      } else if (i.customId === 'autoResearch') {
-        const option = (i as SelectMenuInteraction).values[0] as
-          | 'fortitude'
-          | 'offense'
-          | 'resistance'
-          | 'tech'
-          | 'auto'
-          | 'none';
-        epicAccount.autoResearch = option;
-        await epicAccount.save();
+      try {
+        if (i.customId === 'autoDaily') {
+          await toggleAutoDaily();
+          await interaction.editReply({
+            embeds: [createEmbed()],
+            components: createComponents(),
+          });
+        } else if (i.customId === 'autoFreeLlamas') {
+          await toggleAutoFreeLlamas();
+          await interaction.editReply({
+            embeds: [createEmbed()],
+            components: createComponents(),
+          });
+        } else if (i.customId === 'autoResearch') {
+          const option = (i as SelectMenuInteraction).values[0] as
+            | 'fortitude'
+            | 'offense'
+            | 'resistance'
+            | 'tech'
+            | 'auto'
+            | 'none';
+          epicAccount.autoResearch = option;
+          await epicAccount.save();
 
-        await interaction.editReply({
-          embeds: [createEmbed()],
-          components: createComponents(),
-        });
+          await interaction.editReply({
+            embeds: [createEmbed()],
+            components: createComponents(),
+          });
+        }
+      } catch (e) {
+        await handleCommandError(getLogger('COMMAND'), interaction, e);
       }
     });
 

@@ -19,6 +19,8 @@ import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojies';
 import Sort from '../../lib/Sort';
 import drawSTWResources from '../../lib/images/STWResources';
+import getLogger from '../../Logger';
+import { handleCommandError } from '../../lib/Utils';
 
 const bisect = (array: number[], x: number) => {
   // eslint-disable-next-line no-plusplus
@@ -503,44 +505,48 @@ const Command: ICommand = {
     });
 
     collector.on('collect', async (i) => {
-      switch (i.customId) {
-        case 'refresh':
-          await refreshSTWProfile();
-          break;
+      try {
+        switch (i.customId) {
+          case 'refresh':
+            await refreshSTWProfile();
+            break;
 
-        case 'mode':
-          // eslint-disable-next-line prefer-destructuring
-          mode = (i as SelectMenuInteraction).values[0];
-          break;
+          case 'mode':
+            // eslint-disable-next-line prefer-destructuring
+            mode = (i as SelectMenuInteraction).values[0];
+            break;
 
-        case 'close':
-          collector.stop();
-          return;
+          case 'close':
+            collector.stop();
+            return;
+        }
+
+        const embeds: MessageEmbed[] = [];
+        const files: MessageAttachment[] = [];
+
+        switch (mode) {
+          case 'stwoverview':
+            embeds.push(createSTWOverviewEmbed());
+            break;
+
+          case 'stwresources':
+            files.push(await createSTWResourcesImage());
+            embeds.push(createSTWResourcesEmbed());
+            break;
+
+          case 'stwventures':
+            embeds.push(createSTWVenturesEmbed());
+            break;
+        }
+
+        await interaction.editReply({
+          embeds,
+          components: [createModeMenu(), createBtns()],
+          files,
+        });
+      } catch (e) {
+        await handleCommandError(getLogger('COMMAND'), interaction, e);
       }
-
-      const embeds: MessageEmbed[] = [];
-      const files: MessageAttachment[] = [];
-
-      switch (mode) {
-        case 'stwoverview':
-          embeds.push(createSTWOverviewEmbed());
-          break;
-
-        case 'stwresources':
-          files.push(await createSTWResourcesImage());
-          embeds.push(createSTWResourcesEmbed());
-          break;
-
-        case 'stwventures':
-          embeds.push(createSTWVenturesEmbed());
-          break;
-      }
-
-      await interaction.editReply({
-        embeds,
-        components: [createModeMenu(), createBtns()],
-        files,
-      });
     });
 
     collector.on('end', async (collected, reason) => {

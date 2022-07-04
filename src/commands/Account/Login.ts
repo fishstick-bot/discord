@@ -16,6 +16,8 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojies';
+import getLogger from '../../Logger';
+import { handleCommandError } from '../../lib/Utils';
 
 const Command: ICommand = {
   name: 'login',
@@ -189,92 +191,96 @@ const Command: ICommand = {
       bot.loginCooldowns.set(interaction.user.id, Date.now() + 5 * 60 * 1000);
 
       collector.on('collect', async (i) => {
-        if (i.customId === 'submitcode') {
-          await i.showModal(authCodeModal);
+        try {
+          if (i.customId === 'submitcode') {
+            await i.showModal(authCodeModal);
 
-          setTimeout(async () => {
+            setTimeout(async () => {
+              (i.component as MessageButton)
+                .setLabel('Submit Code (30s Cooldown)')
+                .setDisabled(false);
+              return i
+                .editReply({
+                  components: i.message.components as any,
+                })
+                .catch(() => {});
+            }, 30 * 1000);
+
             (i.component as MessageButton)
-              .setLabel('Submit Code (30s Cooldown)')
-              .setDisabled(false);
-            return i
-              .editReply({
-                components: i.message.components as any,
+              .setLabel('On Cooldown...')
+              .setDisabled(true);
+            await i.editReply({
+              components: i.message.components as any,
+            });
+
+            const modalSubmit = await i
+              .awaitModalSubmit({
+                filter: (int) => int.user.id === interaction.user.id,
+                time: 30 * 1000,
               })
-              .catch(() => {});
-          }, 30 * 1000);
+              .catch(() => null);
+            if (!modalSubmit) return;
 
-          (i.component as MessageButton)
-            .setLabel('On Cooldown...')
-            .setDisabled(true);
-          await i.editReply({
-            components: i.message.components as any,
-          });
+            await modalSubmit.deferReply({ ephemeral: true });
 
-          const modalSubmit = await i
-            .awaitModalSubmit({
-              filter: (int) => int.user.id === interaction.user.id,
-              time: 30 * 1000,
-            })
-            .catch(() => null);
-          if (!modalSubmit) return;
+            const authorizationCode =
+              modalSubmit.fields.getTextInputValue('authCodeInput');
 
-          await modalSubmit.deferReply({ ephemeral: true });
+            try {
+              const loginacc =
+                await bot.fortniteManager.clientFromAuthorizationCode(
+                  authorizationCode,
+                );
 
-          const authorizationCode =
-            modalSubmit.fields.getTextInputValue('authCodeInput');
+              let epicAcc = await bot.epicAccountModel
+                .findOne({
+                  accountId: loginacc.accountId,
+                })
+                .exec();
 
-          try {
-            const loginacc =
-              await bot.fortniteManager.clientFromAuthorizationCode(
-                authorizationCode,
-              );
+              if (epicAcc) {
+                epicAcc.accountId = loginacc.accountId;
+                epicAcc.deviceId = loginacc.deviceAuth.deviceId;
+                epicAcc.secret = loginacc.deviceAuth.secret;
+                epicAcc.displayName =
+                  loginacc.displayName || loginacc.accountId;
+                epicAcc.avatarUrl = loginacc.avatar;
+                await epicAcc.save();
+              } else {
+                epicAcc = await bot.epicAccountModel.create({
+                  accountId: loginacc.accountId,
+                  deviceId: loginacc.deviceAuth.deviceId,
+                  secret: loginacc.deviceAuth.secret,
+                  displayName: loginacc.displayName || loginacc.accountId,
+                  avatarUrl: loginacc.avatar,
+                  autoDaily: true,
+                  autoFreeLlamas: isPremium,
+                  autoResearch: isPremium ? 'auto' : 'none',
+                });
+              }
 
-            let epicAcc = await bot.epicAccountModel
-              .findOne({
-                accountId: loginacc.accountId,
-              })
-              .exec();
+              user.selectedEpicAccount = epicAcc.accountId;
+              user.epicAccounts.push(epicAcc._id as any);
+              await user.save();
 
-            if (epicAcc) {
-              epicAcc.accountId = loginacc.accountId;
-              epicAcc.deviceId = loginacc.deviceAuth.deviceId;
-              epicAcc.secret = loginacc.deviceAuth.secret;
-              epicAcc.displayName = loginacc.displayName || loginacc.accountId;
-              epicAcc.avatarUrl = loginacc.avatar;
-              await epicAcc.save();
-            } else {
-              epicAcc = await bot.epicAccountModel.create({
-                accountId: loginacc.accountId,
-                deviceId: loginacc.deviceAuth.deviceId,
-                secret: loginacc.deviceAuth.secret,
-                displayName: loginacc.displayName || loginacc.accountId,
-                avatarUrl: loginacc.avatar,
-                autoDaily: true,
-                autoFreeLlamas: isPremium,
-                autoResearch: isPremium ? 'auto' : 'none',
-              });
-            }
-
-            user.selectedEpicAccount = epicAcc.accountId;
-            user.epicAccounts.push(epicAcc._id as any);
-            await user.save();
-
-            await modalSubmit.editReply({
-              embeds: [
-                new MessageEmbed()
-                  .setAuthor({
-                    name: `${interaction.user.username}'s Saved Accounts`,
-                    iconURL: interaction.user.displayAvatarURL({
-                      dynamic: true,
-                    }),
-                  })
-                  .setColor('GREEN')
-                  .setTimestamp()
-                  .setThumbnail(epicAcc.avatarUrl)
-                  .setDescription(
-                    `${Emojis.tick} You have been successfully logged into **${
-                      epicAcc.displayName
-                    }**.
+              await modalSubmit.editReply({
+                embeds: [
+                  new MessageEmbed()
+                    .setAuthor({
+                      name: `${interaction.user.username}'s Saved Accounts`,
+                      iconURL: interaction.user.displayAvatarURL({
+                        dynamic: true,
+                      }),
+                    })
+                    .setColor('GREEN')
+                    .setTimestamp()
+                    .setThumbnail(epicAcc.avatarUrl)
+                    .setDescription(
+                      `${
+                        Emojis.tick
+                      } You have been successfully logged into **${
+                        epicAcc.displayName
+                      }**.
                     You are a ${
                       isPremium ? 'premium' : 'regular'
                     } member so I have enabled these perks by default.
@@ -284,19 +290,22 @@ const Command: ICommand = {
                         ? `\n• Automatic Free Llamas\n• Automatic Research`
                         : ''
                     }`,
-                  ),
-              ],
-            });
+                    ),
+                ],
+              });
 
-            bot.loginCooldowns.delete(interaction.user.id);
-            collector.stop();
-          } catch (e: any) {
-            await modalSubmit
-              .editReply({
-                content: `${e?.error?.errorMessage ?? e}`,
-              })
-              .catch(() => {});
+              bot.loginCooldowns.delete(interaction.user.id);
+              collector.stop();
+            } catch (e: any) {
+              await modalSubmit
+                .editReply({
+                  content: `${e?.error?.errorMessage ?? e}`,
+                })
+                .catch(() => {});
+            }
           }
+        } catch (e) {
+          await handleCommandError(getLogger('COMMAND'), interaction, e);
         }
       });
 

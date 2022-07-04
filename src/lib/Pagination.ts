@@ -7,6 +7,8 @@ import {
 } from 'discord.js';
 
 import Emojis from '../resources/Emojies';
+import getLogger from '../Logger';
+import { handleCommandError } from './Utils';
 
 class Pagination {
   public timeLimit: number = 5 * 60 * 1000;
@@ -48,27 +50,31 @@ class Pagination {
     };
 
     collector.on('collect', async (i) => {
-      if (i.customId === 'close') {
-        collector.stop();
-        return;
-      }
-
-      const move = moves[i.customId];
-
-      if (move) {
-        this.page += move;
-
-        if (this.page < 0) {
-          this.page = 0;
-        }
-        if (this.page >= this.pages.length) {
-          this.page = this.pages.length - 1;
+      try {
+        if (i.customId === 'close') {
+          collector.stop();
+          return;
         }
 
-        await interaction.editReply({
-          embeds: [this.pages[this.page]],
-          components: [this.buttons],
-        });
+        const move = moves[i.customId];
+
+        if (move) {
+          this.page += move;
+
+          if (this.page < 0) {
+            this.page = 0;
+          }
+          if (this.page >= this.pages.length) {
+            this.page = this.pages.length - 1;
+          }
+
+          await interaction.editReply({
+            embeds: [this.pages[this.page]],
+            components: [this.buttons],
+          });
+        }
+      } catch (e) {
+        await handleCommandError(getLogger('COMMAND'), interaction, e);
       }
     });
 
