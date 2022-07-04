@@ -8,7 +8,7 @@ import {
   MessageAttachment,
   SelectMenuInteraction,
 } from 'discord.js';
-import { SlashCommandBuilder, time } from '@discordjs/builders';
+import { SlashCommandBuilder, time, strikethrough } from '@discordjs/builders';
 import type { STWProfile } from 'fnbr';
 import { promises as fs } from 'fs';
 // @ts-ignore
@@ -403,12 +403,17 @@ const Command: ICommand = {
             ) ?? 0
           } / 12)`,
           `${questData.objectives
-            .map(
-              (o: any) =>
-                `• ${o.description} **[${(
-                  q.attributes[`completion_${o.id}`] ?? 0
-                ).toLocaleString()}/${o.count.toLocaleString()}]**`,
-            )
+            .map((o: any) => {
+              const completed =
+                (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
+              let task = o.description.split(' in a [UIRating]+')[0];
+              if (completed) {
+                task = strikethrough(task);
+              }
+              return `• ${task} **[${(
+                q.attributes[`completion_${o.id}`] ?? 0
+              ).toLocaleString()}/${o.count.toLocaleString()}]**`;
+            })
             .join('\n')}\n${questData.reward
             .filter((r: any) => !r.hidden)
             .map(

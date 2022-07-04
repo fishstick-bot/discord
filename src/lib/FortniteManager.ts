@@ -243,7 +243,16 @@ class FortniteManager {
     let searchedDisplayName: string | null = null;
 
     if (prefix.length === 32) {
-      // TODO: search account id
+      const accountIdSearch = await client.getProfile(prefix);
+
+      if (!accountIdSearch) {
+        throw new UserNotFoundError(`Account ID ${prefix} not found.`);
+      }
+
+      return {
+        accountId: accountIdSearch.id,
+        displayName: accountIdSearch.displayName ?? accountIdSearch.id,
+      };
     }
 
     const search = await client.searchProfiles(prefix);
