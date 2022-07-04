@@ -108,6 +108,80 @@ const Command: ICommand = {
       await fs.readFile('assets/PhoenixLevelRewardsTable.json', 'utf-8'),
     );
 
+    const mfa = stw!.stats.mfaRewardClaimed;
+    let backpackSize = 50;
+    let storageSize = 0;
+    let researchPoints = 0;
+    const ssds: {
+      [key: string]: number;
+    } = {
+      Stonewood: 0,
+      Plankerton: 0,
+      'Canny Valley': 0,
+      'Twine Peaks': 0,
+    };
+    const endurances: {
+      [key: string]: Date | false;
+    } = {
+      Stonewood: false,
+      Plankerton: false,
+      'Canny Valley': false,
+      'Twine Peaks': false,
+    };
+
+    let brxp = 0;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for (const item of stw!.items) {
+      const split = item.templateId.split('_');
+
+      if (item.templateId === 'HomebaseNode:skilltree_backpacksize') {
+        backpackSize += item.quantity * 20;
+      }
+
+      if (item.templateId === 'HomebaseNode:skilltree_stormshieldstorage') {
+        storageSize += item.quantity * 20;
+      }
+
+      if (item.templateId === 'Token:collectionresource_nodegatetoken01') {
+        researchPoints += item.quantity;
+      }
+
+      if (
+        item.templateId.includes('Quest:outpostquest_t') &&
+        item.attributes.quest_state === 'Claimed'
+      ) {
+        const ssdnum =
+          (parseInt(split[split.length - 2].replaceAll('t', ''), 10) ?? 1) - 1;
+        const ssdquan =
+          parseInt(split[split.length - 1].replace('l', ''), 10) ?? 0;
+        const ssdname = Object.keys(ssds)[ssdnum];
+
+        if (ssds[ssdname]! < ssdquan) {
+          ssds[ssdname]! = ssdquan;
+        }
+      }
+
+      if (item.templateId.includes('Quest:endurancewave30theater')) {
+        const endurancenum =
+          (parseInt(
+            item.templateId.split('')[item.templateId.split('').length - 1],
+            10,
+          ) ?? 1) - 1;
+        endurances[Object.keys(endurances)[endurancenum]] = new Date(
+          item.attributes.last_state_change_time,
+        );
+      }
+
+      if (item.templateId === 'Token:stw_accolade_tracker') {
+        brxp = item.attributes.daily_xp;
+      }
+    }
+
+    if (mfa) {
+      backpackSize += 10;
+    }
+
     const rawEmbed = () => {
       const embed = new MessageEmbed()
         .setAuthor({
@@ -133,81 +207,6 @@ const Command: ICommand = {
     };
 
     const createSTWOverviewEmbed = () => {
-      const mfa = stw!.stats.mfaRewardClaimed;
-      let backpackSize = 50;
-      let storageSize = 0;
-      let researchPoints = 0;
-      const ssds: {
-        [key: string]: number;
-      } = {
-        Stonewood: 0,
-        Plankerton: 0,
-        'Canny Valley': 0,
-        'Twine Peaks': 0,
-      };
-      const endurances: {
-        [key: string]: Date | false;
-      } = {
-        Stonewood: false,
-        Plankerton: false,
-        'Canny Valley': false,
-        'Twine Peaks': false,
-      };
-
-      let brxp = 0;
-
-      // eslint-disable-next-line no-restricted-syntax
-      for (const item of stw!.items) {
-        const split = item.templateId.split('_');
-
-        if (item.templateId === 'HomebaseNode:skilltree_backpacksize') {
-          backpackSize += item.quantity * 20;
-        }
-
-        if (item.templateId === 'HomebaseNode:skilltree_stormshieldstorage') {
-          storageSize += item.quantity * 20;
-        }
-
-        if (item.templateId === 'Token:collectionresource_nodegatetoken01') {
-          researchPoints += item.quantity;
-        }
-
-        if (
-          item.templateId.includes('Quest:outpostquest_t') &&
-          item.attributes.quest_state === 'Claimed'
-        ) {
-          const ssdnum =
-            (parseInt(split[split.length - 2].replaceAll('t', ''), 10) ?? 1) -
-            1;
-          const ssdquan =
-            parseInt(split[split.length - 1].replace('l', ''), 10) ?? 0;
-          const ssdname = Object.keys(ssds)[ssdnum];
-
-          if (ssds[ssdname]! < ssdquan) {
-            ssds[ssdname]! = ssdquan;
-          }
-        }
-
-        if (item.templateId.includes('Quest:endurancewave30theater')) {
-          const endurancenum =
-            (parseInt(
-              item.templateId.split('')[item.templateId.split('').length - 1],
-              10,
-            ) ?? 1) - 1;
-          endurances[Object.keys(endurances)[endurancenum]] = new Date(
-            item.attributes.last_state_change_time,
-          );
-        }
-
-        if (item.templateId === 'Token:stw_accolade_tracker') {
-          brxp = item.attributes.daily_xp;
-        }
-      }
-
-      if (mfa) {
-        backpackSize += 10;
-      }
-
       const embed = rawEmbed()
         .setDescription(
           `• Account Level: **${stw?.stats.actualLevel.toLocaleString()}**
@@ -429,6 +428,19 @@ const Command: ICommand = {
               value: 'stwventures',
               default: mode === 'stwventures',
               description: 'View Save the World Ventures profile.',
+            },
+            {
+              label: 'Save the World MSK',
+              value: 'stwmsk',
+              default: mode === 'stwmsk',
+              description:
+                'View Save the World Mythic Storm King quest/prequest progress.',
+            },
+            {
+              label: 'Save the World Daily Quests',
+              value: 'stwdailyquests',
+              default: mode === 'stwdailyquests',
+              description: 'View Save the World Daily Quests progress.',
             },
           ])
           .setDisabled(disabled),
