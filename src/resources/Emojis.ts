@@ -81,6 +81,12 @@ const Emojies = {
   hoverturret: '<:hoverturret:993614608571047998>',
   airstrike: '<:airstrike:993614535883763763>',
   supplydrop: '<:supplydrop:993614757087154337>',
+
+  backpacksize: '<:backpack:993629972851863602>',
+  storagesize: '<:storage:993629866014556320>',
+  pickaxe: '<:pickaxe:993629891583033354>',
+  buildrepairspeed: '<:buildrepairspeed:993629945362387014>',
+  buildinghealth: '<:building_health:993629911405309963>',
 };
 
 export default Emojies;

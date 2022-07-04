@@ -3,7 +3,7 @@ import { promisify } from 'util';
 
 import type IEvent from '../../structures/Event';
 import getLogger from '../../Logger';
-import Emojies from '../../resources/Emojies';
+import Emojies from '../../resources/Emojis';
 import { IEpicAccount } from '../../database/models/typings';
 import UserNotFoundError from '../../structures/UserNotFoundError';
 import { handleCommandError } from '../../lib/Utils';

@@ -6,7 +6,7 @@ import {
   CommandInteraction,
 } from 'discord.js';
 
-import Emojis from '../resources/Emojies';
+import Emojis from '../resources/Emojis';
 import getLogger from '../Logger';
 import { handleCommandError } from './Utils';
 

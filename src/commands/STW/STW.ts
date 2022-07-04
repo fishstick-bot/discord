@@ -16,7 +16,7 @@ import approx from 'approximate-number';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
-import Emojis from '../../resources/Emojies';
+import Emojis from '../../resources/Emojis';
 import Sort from '../../lib/Sort';
 import drawSTWResources from '../../lib/images/STWResources';
 import getLogger from '../../Logger';

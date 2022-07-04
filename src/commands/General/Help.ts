@@ -2,7 +2,7 @@ import { MessageEmbed, version } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
-import Emojis from '../../resources/Emojies';
+import Emojis from '../../resources/Emojis';
 import Pagination from '../../lib/Pagination';
 
 const Command: ICommand = {

@@ -3,7 +3,7 @@ import { CommandInteraction, MessageEmbed } from 'discord.js';
 import type { Logger } from 'winston';
 
 import UserNotFoundError from '../structures/UserNotFoundError';
-import Emojies from '../resources/Emojies';
+import Emojies from '../resources/Emojis';
 
 const handleCommandError = async (
   logger: Logger,

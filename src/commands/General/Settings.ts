@@ -10,7 +10,7 @@ import {
 import { SlashCommandBuilder } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
-import Emojis from '../../resources/Emojies';
+import Emojis from '../../resources/Emojis';
 import getLogger from '../../Logger';
 import { handleCommandError } from '../../lib/Utils';
 

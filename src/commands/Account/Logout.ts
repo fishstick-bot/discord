@@ -15,7 +15,7 @@ import { SlashCommandBuilder } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
-import Emojis from '../../resources/Emojies';
+import Emojis from '../../resources/Emojis';
 
 const Command: ICommand = {
   name: 'logout',
