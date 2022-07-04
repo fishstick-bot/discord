@@ -107,6 +107,9 @@ const Command: ICommand = {
     const venturesData = JSON.parse(
       await fs.readFile('assets/PhoenixLevelRewardsTable.json', 'utf-8'),
     );
+    const stwQuests = JSON.parse(
+      await fs.readFile('assets/STWQuests.json', 'utf-8'),
+    );
 
     const mfa = stw!.stats.mfaRewardClaimed;
     let backpackSize = 50;
@@ -322,6 +325,12 @@ const Command: ICommand = {
           ? [5, 10, 15, 20, 25, 30, 35, 40, 45, 50].find((l) => l > lvl) ?? 50
           : null;
 
+      const activePhoenixQuests = stw!.items.filter(
+        (i) =>
+          i.templateId.startsWith('Quest:phoenix') &&
+          i.attributes.quest_state === 'Active',
+      );
+
       const embed = rawEmbed()
         .setTitle(
           `[${stw?.venturesPowerLevel.toFixed(2)}] ${
@@ -357,7 +366,7 @@ const Command: ICommand = {
               `${
                 (Emojis as any)[r.TemplateId] ??
                 stwData[r.TemplateId.split(':')[1]].name
-              } ${r.Quantity}`,
+              } **${r.Quantity.toLocaleString()}**`,
           ).join(' ')}`,
           true,
         );
@@ -373,9 +382,39 @@ const Command: ICommand = {
               `${
                 (Emojis as any)[r.TemplateId] ??
                 stwData[r.TemplateId.split(':')[1]].name
-              } ${r.Quantity}`,
+              } **${r.Quantity.toLocaleString()}**`,
           ).join(' ')}`,
           true,
+        );
+      }
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const q of activePhoenixQuests) {
+        const questData = stwQuests[q.templateId.split(':')[1].toLowerCase()];
+
+        embed.addField(
+          `${questData.name ?? 'Unknown Quest'} (${
+            parseInt(
+              q.templateId.split('_')[q.templateId.split('_').length - 1],
+              10,
+            ) ?? 0
+          } / 12)`,
+          `${questData.objectives
+            .map(
+              (o: any) =>
+                `• ${o.description} **[${(
+                  q.attributes[`completion_${o.id}`] ?? 0
+                ).toLocaleString()}/${o.count.toLocaleString()}]**`,
+            )
+            .join('\n')}\n${questData.reward
+            .filter((r: any) => !r.hidden)
+            .map(
+              (r: any) =>
+                `${
+                  (Emojis as any)[r.id] ?? r.id
+                } **${r.quantity.toLocaleString()}x**`,
+            )
+            .join('\n')}`,
         );
       }
 

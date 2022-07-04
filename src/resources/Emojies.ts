@@ -27,6 +27,7 @@ const Emojies = {
   'AccountResource:schematicxp': '<:schematicxp:849067891692666960>',
   'AccountResource:personnelxp': '<:survivorxp:849067892934574100>',
   'AccountResource:phoenixxp': '<:venturexp:849067894624223242>',
+  'AccountResource:phoenixxp_reward': '<:venturexp:849067894624223242>',
   'AccountResource:reagent_alteration_ele_fire': '<:fireup:849068930252931082>',
   'AccountResource:reagent_alteration_ele_water':
     '<:frostup:849068931947036682>',
