@@ -528,6 +528,55 @@ ${Object.keys(mskSchematics)
       return embed;
     };
 
+    const createSTWDailyQuestsEmbed = () => {
+      const quests = stw!.items.filter(
+        (i) =>
+          i.templateId.startsWith('Quest:daily') &&
+          i.attributes.quest_state === 'Active',
+      );
+
+      const embed = rawEmbed().setTitle(
+        `[${stw?.powerLevel.toFixed(2)}] ${
+          player ?? epicAccount.displayName
+        }'s STW Daily Quests`,
+      );
+
+      if (quests.length === 0) {
+        embed.setDescription(`No active daily quests found.`);
+      } else {
+        // eslint-disable-next-line no-restricted-syntax
+        for (const q of quests) {
+          const questData = stwQuests[q.templateId.split(':')[1].toLowerCase()];
+
+          embed.addField(
+            `${questData.name ?? 'Unknown Quest'}`,
+            `${questData.objectives
+              .map((o: any) => {
+                const completed =
+                  (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
+                let task = o.description;
+                if (completed) {
+                  task = strikethrough(task);
+                }
+                return `• ${task} **[${(
+                  q.attributes[`completion_${o.id}`] ?? 0
+                ).toLocaleString()}/${o.count.toLocaleString()}]**`;
+              })
+              .join('\n')}
+${questData.reward
+  .filter((r: any) => !r.hidden)
+  .map(
+    (r: any) =>
+      `${(Emojis as any)[r.id] ?? r.id} **${r.quantity.toLocaleString()}x**`,
+  )
+  .join(' ')}`,
+          );
+        }
+      }
+
+      return embed;
+    };
+
     const createBtns = (disabled = false) => {
       const refreshButton = new MessageButton()
         .setCustomId('refresh')
@@ -644,6 +693,10 @@ ${Object.keys(mskSchematics)
 
           case 'stwmsk':
             embeds.push(createSTWMskEmbed());
+            break;
+
+          case 'stwdailyquests':
+            embeds.push(createSTWDailyQuestsEmbed());
             break;
         }
 
