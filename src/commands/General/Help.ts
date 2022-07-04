@@ -40,14 +40,14 @@ const Command: ICommand = {
         })
         .setDescription(
           `**Fishstick**
-            **[Invite me](https://fishstickbot.com/invite)** to your server
-            Join our **[Support Server](https://discord.gg/fishstick)**
-            Follow us on **[Twitter](https://twitter.com/FishstickBot)**.
-            
-            **Commands • ${bot.commands.size}**
-            • ${Emojis.star} - Premium Commands
-            • ⏱️ - ${bot.cooldown}s Cooldown (Regular)
-            • ⏱️ - ${bot.cooldown / 2}s Cooldown (Premium)`,
+**[Invite me](https://fishstickbot.com/invite)** to your server
+Join our **[Support Server](https://discord.gg/fishstick)**
+Follow us on **[Twitter](https://twitter.com/FishstickBot)**.
+
+**Commands • ${bot.commands.size}**
+• ${Emojis.star} - Premium Commands
+• ⏱️ - ${bot.cooldown}s Cooldown (Regular)
+• ⏱️ - ${bot.cooldown / 2}s Cooldown (Premium)`,
         );
 
       // eslint-disable-next-line no-restricted-syntax
