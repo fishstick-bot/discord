@@ -66,6 +66,11 @@ const Emojies = {
   'ConsumableAccountItem:smallxpboost_gift':
     '<:teammatexpboost:849067884839960576>',
   'AccountResource:currency_mtxswap': '<:vbucks:803432012358615051>',
+  blunt_hammer: '<:stormkingsfury:850673849535299585>',
+  explosive: '<:stormkingswrath:850674078167334943>',
+  assault: '<:stormkingsscourge:850673955017719829>',
+  edged_sword: '<:stormkingsravager:850674233616891925>',
+  pistol: '<:stormkingsonslaught:850674313655877642>',
 };
 
 export default Emojies;

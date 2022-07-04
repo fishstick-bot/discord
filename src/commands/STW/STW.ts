@@ -137,7 +137,7 @@ const Command: ICommand = {
       return embed;
     };
 
-    const createSTWOverviewEmbed = () => {
+    const getSTWStats = () => {
       const mfa = stw!.stats.mfaRewardClaimed;
       let backpackSize = 50;
       let storageSize = 0;
@@ -212,6 +212,28 @@ const Command: ICommand = {
       if (mfa) {
         backpackSize += 10;
       }
+
+      return {
+        mfa,
+        backpackSize,
+        storageSize,
+        researchPoints,
+        ssds,
+        endurances,
+        brxp,
+      };
+    };
+
+    const createSTWOverviewEmbed = () => {
+      const {
+        mfa,
+        backpackSize,
+        storageSize,
+        researchPoints,
+        ssds,
+        endurances,
+        brxp,
+      } = getSTWStats();
 
       const embed = rawEmbed()
         .setDescription(
@@ -429,6 +451,83 @@ const Command: ICommand = {
       return embed;
     };
 
+    const createSTWMskEmbed = () => {
+      const mskSchematics = {} as {
+        [key: string]: number;
+      };
+      const schematics = stw!.weaponSchematics.filter((i) =>
+        i.templateId.includes('_stormking_'),
+      );
+      // eslint-disable-next-line no-restricted-syntax
+      for (const s of schematics) {
+        const parsedTemplateId = s.templateId
+          .split(':')[1]
+          .split('_stormking_')[0]
+          .split('sid_')[1];
+        if (!mskSchematics[parsedTemplateId])
+          mskSchematics[parsedTemplateId] = 1;
+        else mskSchematics[parsedTemplateId] += 1;
+      }
+
+      const embed = rawEmbed().setTitle(
+        `[${stw?.powerLevel.toFixed(2)}] ${
+          player ?? epicAccount.displayName
+        }'s STW Mythic Storm King`,
+      );
+
+      const quest = stw!.items.find(
+        (i) =>
+          i.templateId.includes('Quest:stw_stormkinghard') &&
+          i.attributes.quest_state === 'Active',
+      );
+
+      if (!quest) {
+        embed.setDescription(
+          `No active Storm King quest found.
+
+${Object.keys(mskSchematics)
+  .map(
+    (s) =>
+      `${(Emojis as any)[s] ?? s} **${mskSchematics[s].toLocaleString()}x**`,
+  )
+  .join(' ')}`,
+        );
+      } else {
+        const questData =
+          stwQuests[quest.templateId.split(':')[1].toLowerCase()];
+
+        embed.setDescription(
+          `**${questData.name}**
+${questData.description}
+
+${questData.objectives
+  .map(
+    (o: any) =>
+      `• ${o.description} **[${quest.attributes[`completion_${o.id}`] ?? 0}/${
+        o.count
+      }]**`,
+  )
+  .join('\n')}
+${questData.reward
+  .filter((r: any) => !r.hidden && !r.id.includes('Quest'))
+  .map(
+    (r: any) =>
+      `${(Emojis as any)[r.id] ?? r.id} **${r.quantity.toLocaleString()}x**`,
+  )
+  .join(' ')}
+  
+${Object.keys(mskSchematics)
+  .map(
+    (s) =>
+      `${(Emojis as any)[s] ?? s} **${mskSchematics[s].toLocaleString()}x**`,
+  )
+  .join(' ')}`,
+        );
+      }
+
+      return embed;
+    };
+
     const createBtns = (disabled = false) => {
       const refreshButton = new MessageButton()
         .setCustomId('refresh')
@@ -541,6 +640,10 @@ const Command: ICommand = {
 
           case 'stwventures':
             embeds.push(createSTWVenturesEmbed());
+            break;
+
+          case 'stwmsk':
+            embeds.push(createSTWMskEmbed());
             break;
         }
 
