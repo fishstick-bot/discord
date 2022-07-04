@@ -3,6 +3,7 @@ import { Client, Endpoints } from 'fnbr';
 import AuthClients from 'fnbr/dist/resources/AuthClients';
 
 import Bot from '../client/Client';
+import UserNotFoundError from '../structures/UserNotFoundError';
 
 export interface STWProfile {
   resources: {
@@ -238,17 +239,45 @@ class FortniteManager {
 
     const client = this.clients.get(accountId)!;
 
+    let searchedAccountId: string | null = null;
+    let searchedDisplayName: string | null = null;
+
+    if (prefix.length === 32) {
+      // TODO: search account id
+    }
+
     const search = await client.searchProfiles(prefix);
+
+    let probableMatches = '';
+    // eslint-disable-next-line no-restricted-syntax
+    for (const s of search) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const match of s.matches) {
+        probableMatches += `• ${match.platform}:${match.value} - \`${s.id}\`\n`;
+        if (
+          match.value.toLowerCase() === prefix.toLowerCase() &&
+          match.platform === 'epic'
+        ) {
+          searchedAccountId = s.id;
+          searchedDisplayName = match.value ?? s.id;
+          break;
+        }
+      }
+    }
 
     if (search.length === 0) {
       throw new Error('No player found.');
     }
 
-    const firstsearch = search[0];
+    if (!searchedAccountId || !searchedDisplayName) {
+      throw new UserNotFoundError(`Couldn't find an Epic account with name \`${prefix}\`.
+Did you mean:
+${probableMatches}`);
+    }
 
     return {
-      accountId: firstsearch.id,
-      displayName: firstsearch.matches[0].value,
+      accountId: searchedAccountId!,
+      displayName: searchedDisplayName!,
     };
   }
 

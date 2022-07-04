@@ -5,6 +5,7 @@ import type IEvent from '../../structures/Event';
 import getLogger from '../../Logger';
 import Emojies from '../../resources/Emojies';
 import { IEpicAccount } from '../../database/models/typings';
+import UserNotFoundError from '../../structures/UserNotFoundError';
 
 const wait = promisify(setTimeout);
 const logger = getLogger('COMMAND');
@@ -140,17 +141,27 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
       } catch (e: any) {
         logger.error(e);
 
-        const errorEmbed = new MessageEmbed()
-          .setTitle(`${Emojies.cross} NOT THE LLAMA YOU'RE LOOKING FOR`)
-          .setColor('RED')
-          .setDescription(
-            `An error occured while running the command ${cmd.name}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
-          )
-          .addField('Stack', `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``)
-          .setTimestamp();
+        let errorEmbed: MessageEmbed;
+        if (e instanceof UserNotFoundError) {
+          errorEmbed = new MessageEmbed()
+            .setTitle(`${Emojies.cross} USER NOT FOUND`)
+            .setColor('RED')
+            .setDescription(e.message)
+            .setTimestamp();
+        } else {
+          errorEmbed = new MessageEmbed()
+            .setTitle(`${Emojies.cross} NOT THE LLAMA YOU'RE LOOKING FOR`)
+            .setColor('RED')
+            .setDescription(
+              `An error occured while running the command ${cmd.name}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
+            )
+            .addField('Stack', `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``)
+            .setTimestamp();
+        }
 
         await interaction
           .editReply({
+            content: ' ',
             embeds: [errorEmbed],
             components: [],
           })
