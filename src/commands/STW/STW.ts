@@ -769,14 +769,14 @@ ${questData.reward
         });
       } catch (e) {
         await handleCommandError(getLogger('COMMAND'), interaction, e);
+        collector.stop('handleError');
       }
     });
 
     collector.on('end', async (collected, reason) => {
+      if (reason === 'handleError') return;
       await interaction
         .editReply({
-          // embeds: [createSTWOverviewEmbed()],
-          // files: [],
           components: [createModeMenu(true), createBtns(true)],
         })
         .catch(() => {});

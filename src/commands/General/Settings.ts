@@ -171,10 +171,12 @@ const Command: ICommand = {
         }
       } catch (e) {
         await handleCommandError(getLogger('COMMAND'), interaction, e);
+        collector.stop('handleError');
       }
     });
 
     collector.on('end', async (collected, reason) => {
+      if (reason === 'handleError') return;
       await interaction.deleteReply().catch(() => {});
     });
   },

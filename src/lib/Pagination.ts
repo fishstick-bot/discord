@@ -78,10 +78,13 @@ class Pagination {
         }
       } catch (e) {
         await handleCommandError(getLogger('COMMAND'), interaction, e);
+        collector.stop('handleError');
       }
     });
 
     collector.on('end', async (collected, reason) => {
+      if (reason === 'handleError') return;
+
       this.buttonsDisabled = true;
 
       await interaction
