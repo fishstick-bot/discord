@@ -1,11 +1,20 @@
 /* eslint-disable no-param-reassign */
-import { MessageEmbed, MessageAttachment } from 'discord.js';
+import {
+  MessageEmbed,
+  MessageAttachment,
+  MessageSelectMenu,
+  MessageActionRow,
+  Message,
+  SelectMenuInteraction,
+} from 'discord.js';
 import { SlashCommandBuilder, time } from '@discordjs/builders';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
+
+const capitalFirst = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const Command: ICommand = {
   name: 'account',
@@ -21,7 +30,7 @@ const Command: ICommand = {
     .addSubcommandGroup((g) =>
       g
         .setName('token')
-        .setDescription('Create/kill bearer token for your account.')
+        .setDescription('Create / kill bearer token for your account.')
         .addSubcommand((c) =>
           c.setName('create').setDescription('Create a new bearer token.'),
         )
@@ -77,6 +86,13 @@ const Command: ICommand = {
     )
     .addSubcommand((c) =>
       c.setName('receipts').setDescription('Get your account receipts.'),
+    )
+    .addSubcommand((c) =>
+      c
+        .setName('externals')
+        .setDescription(
+          'View / unlink external connections to your epic account.',
+        ),
     ),
 
   options: {
@@ -106,6 +122,8 @@ const Command: ICommand = {
       epicAccount.secret,
     );
     await client.user?.fetch();
+
+    const msg = (await interaction.fetchReply()) as Message;
 
     let res: any;
     if (subcmd === 'info') {
@@ -300,6 +318,95 @@ start /d "C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64
       await interaction.editReply({
         files: [receipts],
         content: `**${epicAccount.displayName}'s Receipts**`,
+      });
+    }
+
+    if (subcmd === 'externals') {
+      const externals = await client.http.sendEpicgamesRequest(
+        true,
+        'GET',
+        `${Endpoints.ACCOUNT_ID}/${epicAccount.accountId}/externalAuths`,
+        'fortnite',
+      );
+
+      if (externals.error) {
+        throw new Error(externals.error.message ?? externals.error.code);
+      }
+
+      const externalAuths = externals.response ?? [];
+
+      if (externalAuths.length === 0) {
+        throw new Error(
+          'No external accounts are connected to this epic account.',
+        );
+      }
+
+      const externalsEmbed = new MessageEmbed()
+        .setAuthor({
+          name: `${epicAccount.displayName}'s External Auths`,
+          iconURL: epicAccount.avatarUrl,
+        })
+        .setColor(bot._config.color)
+        .setTimestamp()
+        .setDescription(
+          externalAuths
+            .map(
+              (a: any) =>
+                `• **${capitalFirst(a.type)}**: ${
+                  a.externalDisplayName
+                } - Added ${time(new Date(a.dateAdded), 'd')}`,
+            )
+            .join('\n'),
+        );
+
+      const externalUnlinkOptions = new MessageSelectMenu()
+        .setCustomId('externalUnlink')
+        .setPlaceholder('Select an External Account to Unlink.')
+        .setOptions(
+          externalAuths.map((a: any) => ({
+            value: a.type,
+            label: capitalFirst(a.type),
+            description: a.externalDisplayName,
+          })),
+        );
+
+      await interaction.editReply({
+        content: ' ',
+        embeds: [externalsEmbed],
+        components: [
+          new MessageActionRow().setComponents(externalUnlinkOptions),
+        ],
+      });
+
+      const selected = await msg
+        .awaitMessageComponent({
+          filter: (i) => i.user.id === interaction.user.id,
+          time: 60 * 1000,
+        })
+        .catch(() => null);
+
+      if (!selected) {
+        await interaction.editReply({
+          components: [],
+        });
+        return;
+      }
+
+      await client.http.sendEpicgamesRequest(
+        true,
+        'DELETE',
+        `${Endpoints.ACCOUNT_ID}/${epicAccount.accountId}/externalAuths/${
+          (selected as SelectMenuInteraction).values[0]
+        }`,
+        'fortnite',
+      );
+
+      await interaction.editReply({
+        content: `**Successfully unlinked ${
+          (selected as SelectMenuInteraction).values[0]
+        } from your external connections.**`,
+        embeds: [externalsEmbed],
+        components: [],
       });
     }
   },
