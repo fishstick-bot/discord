@@ -43,6 +43,7 @@ const Command: ICommand = {
 **[Invite me](https://fishstickbot.com/invite)** to your server
 Join our **[Support Server](https://discord.gg/fishstick)**
 Follow us on **[Twitter](https://twitter.com/FishstickBot)**.
+Checkout my **[Documentation](https://docs.fishstickbot.com/commands)** for more information.
 
 **Commands • ${bot.commands.size}**
 • ${Emojis.star} - Premium Commands
