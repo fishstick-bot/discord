@@ -134,9 +134,9 @@ const Event: IEvent = {
       table += cmds
         .map(
           (cmd) =>
-            `| ${cmd.name.padEnd(biggestNameLength)} | ${cmd.description.padEnd(
-              biggestDescriptionLength,
-            )} |`,
+            `| \`${cmd.name.padEnd(
+              biggestNameLength,
+            )}\` | ${cmd.description.padEnd(biggestDescriptionLength)} |`,
         )
         .join('\n');
 
