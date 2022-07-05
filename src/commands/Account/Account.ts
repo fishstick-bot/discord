@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { MessageEmbed } from 'discord.js';
+import { MessageEmbed, MessageAttachment } from 'discord.js';
 import { SlashCommandBuilder, time } from '@discordjs/builders';
 import { Endpoints } from 'fnbr';
 
@@ -54,6 +54,13 @@ const Command: ICommand = {
     )
     .addSubcommand((c) =>
       c
+        .setName('launch')
+        .setDescription(
+          'Creates launch arguments to launch your fortnite account on Windows.',
+        ),
+    )
+    .addSubcommand((c) =>
+      c
         .setName('authorization-code')
         .setDescription('Get authorization code for your account.')
         .addStringOption((o) =>
@@ -67,6 +74,9 @@ const Command: ICommand = {
     )
     .addSubcommand((c) =>
       c.setName('2fa').setDescription('Claim your 2FA rewards.'),
+    )
+    .addSubcommand((c) =>
+      c.setName('receipts').setDescription('Get your account receipts.'),
     ),
 
   options: {
@@ -154,7 +164,11 @@ const Command: ICommand = {
       }
     }
 
-    if (subcmd === 'exchange-code' || subcmd === 'page') {
+    if (
+      subcmd === 'exchange-code' ||
+      subcmd === 'page' ||
+      subcmd === 'launch'
+    ) {
       const exchangeCode = await bot.fortniteManager.createExchangeCode(
         epicAccount.accountId,
       );
@@ -162,9 +176,16 @@ const Command: ICommand = {
       const pageUrl = `https://epicgames.com/id/exchange?exchangeCode=${exchangeCode}`;
 
       await interaction.editReply(
+        // eslint-disable-next-line no-nested-ternary
         subcmd === 'exchange-code'
           ? exchangeCode
-          : `Visit your account page **[here](${pageUrl})**.`,
+          : subcmd === 'page'
+          ? `Visit your account page **[here](${pageUrl})**.`
+          : `Log in to Fortnite Windows as **${epicAccount.displayName}**
+Copy and paste the text below into a Command Prompt window (cmd.exe) and hit enter. Valid for 5 minutes, until it's used, or until you log out.
+\`\`\`bat
+start /d "C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64" FortniteLauncher.exe -AUTH_LOGIN=unused -AUTH_PASSWORD=${exchangeCode} -AUTH_TYPE=exchangecode -epicapp=Fortnite -epicenv=Prod -EpicPortal -epicuserid=${epicAccount.accountId}
+\`\`\``,
       );
     }
 
@@ -250,6 +271,36 @@ const Command: ICommand = {
       await interaction.editReply(
         `Successfully claimed 2FA rewards for **${epicAccount.displayName}**.`,
       );
+    }
+
+    if (subcmd === 'receipts') {
+      const commoncore = await client.http.sendEpicgamesRequest(
+        true,
+        'POST',
+        `${Endpoints.MCP}/${epicAccount.accountId}/client/QueryProfile?profileId=common_core`,
+        'fortnite',
+        { 'Content-Type': 'application/json' },
+        {},
+      );
+
+      if (commoncore.error) {
+        throw new Error(commoncore.error.message ?? commoncore.error.code);
+      }
+
+      const receipts = new MessageAttachment(
+        Buffer.from(
+          (
+            commoncore.response?.profileChanges[0]?.profile?.stats?.attributes
+              ?.in_app_purchases?.receipts ?? []
+          ).join('\n'),
+        ),
+        `receipts_${epicAccount.accountId}.txt`,
+      );
+
+      await interaction.editReply({
+        files: [receipts],
+        content: `**${epicAccount.displayName}'s Receipts**`,
+      });
     }
   },
 };
