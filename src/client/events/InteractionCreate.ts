@@ -28,8 +28,11 @@ const Event: IEvent = {
         return;
       }
 
+      const isInDM = interaction.channel?.type === 'DM' ?? false;
       await interaction
-        .deferReply({ ephemeral: cmd.options.privateResponse })
+        .deferReply({
+          ephemeral: cmd.options.privateResponse && !isInDM,
+        })
         .catch(() => {});
 
       let user = await bot.userModel
