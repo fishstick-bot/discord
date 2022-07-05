@@ -46,10 +46,7 @@ const Command: ICommand = {
       epicAccount.secret,
     );
 
-    let stw: STWProfile = await client.getSTWProfile(epicAccount.accountId);
-    const refreshSTWProfile = async () => {
-      stw = await client.getSTWProfile(epicAccount.accountId);
-    };
+    const stw: STWProfile = await client.getSTWProfile(epicAccount.accountId);
 
     const tutorialCompleted =
       (stw!.items.find((i) => i.templateId === 'Quest:homebaseonboarding')
@@ -63,28 +60,7 @@ const Command: ICommand = {
 
     const stwData = JSON.parse(await fs.readFile('assets/STW.json', 'utf-8'));
 
-    const createBtn = (
-      id: string,
-      emoji: string,
-      label?: string,
-      disabled = false,
-      style: MessageButtonStyleResolvable = 'SECONDARY',
-    ) => {
-      const btn = new MessageButton()
-        .setCustomId(id)
-        .setEmoji(emoji)
-        .setDisabled(disabled)
-        .setStyle(style);
-
-      if (btn) {
-        if (label) {
-          btn.setLabel(label);
-        }
-      }
-
-      return btn;
-    };
-
+    let { selectedHeroLoadout } = stw.stats.stwLoadout;
     const createComponents = (disabled = false) => {
       const heroloadouts = stw.heroLoadouts;
 
@@ -103,7 +79,9 @@ const Command: ICommand = {
             new MessageButton()
               .setCustomId(loadout.id)
               .setDisabled(disabled)
-              .setStyle('SECONDARY')
+              .setStyle(
+                selectedHeroLoadout === loadout.id ? 'SUCCESS' : 'SECONDARY',
+              )
               .setLabel(
                 `${commander.powerLevel}⚡️ ${
                   stwData[commander.templateId.split(':')[1].toLowerCase()]
@@ -116,13 +94,12 @@ const Command: ICommand = {
         rows.push(row);
       }
 
-      const closeButton = createBtn(
-        'close',
-        Emojis.cross,
-        'Close',
-        disabled,
-        'DANGER',
-      );
+      const closeButton = new MessageButton()
+        .setCustomId('close')
+        .setEmoji(Emojis.cross)
+        .setDisabled(disabled)
+        .setStyle('DANGER')
+        .setLabel('Close');
 
       rows.push(new MessageActionRow().addComponents(closeButton));
 
@@ -149,6 +126,7 @@ const Command: ICommand = {
             return;
         }
 
+        selectedHeroLoadout = i.customId;
         await client.http.sendEpicgamesRequest(
           true,
           'POST',
