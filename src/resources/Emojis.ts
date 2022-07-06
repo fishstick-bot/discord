@@ -11,6 +11,7 @@ const Emojies = {
   research: '<:research:803433855393988608>',
   brxp: '<:xp:836010555868708924>',
   venturexp: '<:venturexp:849067894624223242>',
+  vbucks: '<:vbucks:803432012358615051>',
 
   'AccountResource:heroxp': '<:heroxp:849067890824708096>',
   'AccountResource:reagent_alteration_upgrade_vr':
