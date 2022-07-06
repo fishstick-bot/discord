@@ -42,19 +42,55 @@ class API {
       exposeRoute: true,
     });
 
-    this.handleRoutes();
+    await this.addSchemas();
+    await this.handleRoutes();
 
     await this.server.listen({
       port: this.bot._config.apiPort,
-      path: '/api',
     });
 
     this.logger.info(`API listening on port ${this.bot._config.apiPort}`);
+    this.server.printRoutes({ commonPrefix: false });
+  }
+
+  private async addSchemas() {
+    this.server.addSchema({
+      $id: 'Cosmetic',
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        name: { type: 'string' },
+        description: { type: 'string' },
+        type: { type: 'string' },
+        rarity: { type: 'string' },
+        series: { type: 'string', nullable: true },
+        set: { type: 'string', nullable: true },
+        introduction: {
+          type: 'object',
+          properties: {
+            season: { type: 'string' },
+            chapter: { type: 'string' },
+            seasonNumber: { type: 'number' },
+          },
+          nullable: true,
+        },
+        isExclusive: { type: 'boolean' },
+        isCrew: { type: 'boolean' },
+        isSTW: { type: 'boolean' },
+        isBattlePass: { type: 'boolean' },
+        isFreePass: { type: 'boolean' },
+        isItemShop: { type: 'boolean' },
+        isPlaystation: { type: 'boolean' },
+        isXbox: { type: 'boolean' },
+        isPromo: { type: 'boolean' },
+        image: { type: 'string' },
+      },
+    });
   }
 
   private async handleRoutes() {
     this.server.get(
-      '/ping',
+      '/api/ping',
       {
         schema: {
           response: {
@@ -68,11 +104,31 @@ class API {
         },
       },
       async (req, res) => {
-        this.logger.info(`GET /ping [${req.ip}]`);
+        this.logger.info(`GET /api/ping [${req.ip}]`);
 
         return {
           message: 'pong',
         };
+      },
+    );
+
+    this.server.get(
+      '/api/cosmetics',
+      {
+        schema: {
+          response: {
+            200: {
+              type: 'array',
+              items: { $ref: 'Cosmetic#' },
+            },
+          },
+        },
+      },
+      async (req, res) => {
+        this.logger.info(`GET /api/cosmetics [${req.ip}]`);
+
+        const cosmetics = this.bot.cosmeticService.parsedCosmetics;
+        return cosmetics;
       },
     );
   }
