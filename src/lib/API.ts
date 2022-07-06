@@ -1,5 +1,4 @@
-import express, { Express } from 'express';
-import compression from 'compression';
+import Fastify, { FastifyInstance } from 'fastify';
 
 import Bot from '../client/Client';
 import getLogger from '../Logger';
@@ -8,8 +7,8 @@ class API {
   // bot
   private bot: Bot;
 
-  // express app
-  private app: Express;
+  // server
+  public server: FastifyInstance;
 
   // logger for api
   public logger = getLogger('API');
@@ -17,27 +16,64 @@ class API {
   constructor(bot: Bot) {
     this.bot = bot;
 
-    this.app = express();
-    this.app.use(compression());
-    this.app.use((req, res, next) => {
-      this.logger.info(`${req.method} ${req.url} (${req.ip})`);
-      next();
-    });
+    this.server = Fastify({});
   }
 
   public async start() {
+    await this.server.register(import('@fastify/compress'), { global: false });
+    await this.server.register(import('@fastify/cors'), {
+      origin: '*',
+    });
+    await this.server.register(import('@fastify/swagger'), {
+      routePrefix: '/api/docs',
+      swagger: {
+        info: {
+          title: 'FishStick API',
+          description: 'FishStick Bot API',
+          version: '1.0.0',
+        },
+        // host: 'fishstickbot.com',
+        // schemes: ['https'],
+      },
+      uiConfig: {
+        docExpansion: 'full',
+        deepLinking: false,
+      },
+      exposeRoute: true,
+    });
+
     this.handleRoutes();
 
-    this.app.listen(this.bot._config.apiPort, async () => {
-      this.logger.info(`API listening on port ${this.bot._config.apiPort}`);
+    await this.server.listen({
+      port: this.bot._config.apiPort,
+      path: '/api',
     });
+
+    this.logger.info(`API listening on port ${this.bot._config.apiPort}`);
   }
 
   private async handleRoutes() {
-    this.app.get('/api/status', async (req, res) =>
-      res.json({
-        success: true,
-      }),
+    this.server.get(
+      '/ping',
+      {
+        schema: {
+          response: {
+            200: {
+              type: 'object',
+              properties: {
+                message: { type: 'string' },
+              },
+            },
+          },
+        },
+      },
+      async (req, res) => {
+        this.logger.info(`GET /ping [${req.ip}]`);
+
+        return {
+          message: 'pong',
+        };
+      },
     );
   }
 }

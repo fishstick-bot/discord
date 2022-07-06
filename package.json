@@ -42,6 +42,9 @@
   "dependencies": {
     "@discordjs/builders": "^0.15.0",
     "@discordjs/rest": "^0.5.0",
+    "@fastify/compress": "^6.1.0",
+    "@fastify/cors": "^8.0.0",
+    "@fastify/swagger": "^7.4.1",
     "approximate-number": "^2.1.0",
     "axios": "^0.27.2",
     "bufferutil": "^4.0.6",
@@ -54,6 +57,7 @@
     "dotenv": "^16.0.1",
     "erlpack": "discord/erlpack",
     "express": "^4.18.1",
+    "fastify": "^4.2.0",
     "fnbr": "^3.1.0",
     "glob": "^8.0.3",
     "moment": "^2.29.3",
