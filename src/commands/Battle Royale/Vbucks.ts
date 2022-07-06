@@ -131,10 +131,34 @@ const Command: ICommand = {
           iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
         })
         .setColor(bot._config.color)
-        .setTimestamp()
-        .setDescription('TODO');
+        .setTimestamp();
 
-      // TODO
+      const promises = (user.epicAccounts as IEpicAccount[]).map(async (a) => ({
+        displayName: a.displayName,
+        vbucksData: await getVBucksData(
+          await bot.fortniteManager.clientFromDeviceAuth(
+            a.accountId,
+            a.deviceId,
+            a.secret,
+          ),
+          a.accountId,
+        ),
+      }));
+      const responses = await Promise.all(promises);
+
+      embed.setDescription(
+        responses
+          .map(
+            (r) =>
+              `**${r.displayName} - ${
+                Emojis.vbucks
+              } ${r.vbucksData.total.toLocaleString()}**
+${Object.keys(r.vbucksData.breakdown)
+  .map((k) => `• **${r.vbucksData.breakdown[k]!.toLocaleString()}** - ${k}`)
+  .join('\n')}`,
+          )
+          .join('\n\n'),
+      );
     } else {
       const epicAccMtxData = await getVBucksData(client, epicAccount.accountId);
 
