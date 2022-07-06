@@ -32,11 +32,10 @@ class API {
           description: 'FishStick Bot API',
           version: '1.0.0',
         },
-        // host: 'fishstickbot.com',
-        // schemes: ['https'],
+        host: 'fishstickbot.com',
+        schemes: ['https'],
       },
       uiConfig: {
-        docExpansion: 'full',
         deepLinking: false,
       },
       exposeRoute: true,
