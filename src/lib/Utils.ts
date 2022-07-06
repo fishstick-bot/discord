@@ -10,7 +10,7 @@ const handleCommandError = async (
   interaction: CommandInteraction,
   e: any,
 ) => {
-  logger.error(e);
+  logger.error(typeof e === 'object' ? JSON.stringify(e) : `${e}`);
 
   let errorEmbed: MessageEmbed;
   if (e instanceof UserNotFoundError) {
