@@ -20,6 +20,7 @@ import {
   PremiumKeyModel,
 } from '../database/models';
 import CosmeticService from '../lib/CosmeticService';
+import STWMissionsService from '../lib/STWMissionsService';
 import API from '../lib/API';
 import FortniteManager from '../lib/FortniteManager';
 import type { ICommand } from '../structures/Command';
@@ -62,6 +63,9 @@ class Bot extends Client {
 
   // cosmetic service
   public cosmeticService = new CosmeticService(this);
+
+  // stw missions service
+  public stwMissionsService = new STWMissionsService(this);
 
   // bot api
   public botAPI = new API(this);
@@ -108,6 +112,9 @@ class Bot extends Client {
     if (this.isMainProcess) {
       // start cosmetics service
       this.cosmeticService.start();
+
+      // start stw missions service
+      this.stwMissionsService.start();
 
       // start bot api
       this.botAPI.start();

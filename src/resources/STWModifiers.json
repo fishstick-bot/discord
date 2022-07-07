@@ -1,0 +1,1094 @@
+{
+  "GM_QuestSpawn": {
+    "id": "gm_questspawn",
+    "name": "gm_questspawn",
+    "description": "",
+    "image": ""
+  },
+  "GMID_Volcanic": {
+    "id": "gmid_volcanic",
+    "name": "Volcanic",
+    "description": "The ground ruptures under a player, exploding for huge damage.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GMID_Vortex": {
+    "id": "gmid_vortex",
+    "name": "Vortex",
+    "description": "Enemy uses a a bolt of energy to pull heroes torwards it.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_OnLowHealth_Berserker": {
+    "id": "gm_ug_onlowhealth_berserker",
+    "name": "Berserker",
+    "description": "When enemy is near death it goes berserk, moving and attacking faster and dealing more damage.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnLowHealth-Enrage-128"
+  },
+  "GM_UG_OnDmgDealt_Knockback": {
+    "id": "gm_ug_ondmgdealt_knockback",
+    "name": "Knockback",
+    "description": "Melee attacks knock targets away",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_AOE_Pulse_DurationHeal": {
+    "id": "gm_ug_aoe_pulse_durationheal",
+    "name": "Healer",
+    "description": "Periodically heals itself and all nearby enemies.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GMID_Trail_Slowpool": {
+    "id": "gmid_trail_slowpool",
+    "name": "Slowing-Pools",
+    "description": "Leaves pools on the ground that slow players.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_BaseModifier_MiniBoss_4P_Smasher": {
+    "id": "gm_basemodifier_miniboss_4p_smasher",
+    "name": "gm_basemodifier_miniboss_4p_smasher",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_Smasher": {
+    "id": "gm_basemodifier_miniboss_1p_smasher",
+    "name": "gm_basemodifier_miniboss_1p_smasher",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_Husk": {
+    "id": "gm_basemodifier_miniboss_1p_husk",
+    "name": "gm_basemodifier_miniboss_1p_husk",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_Husky": {
+    "id": "gm_basemodifier_miniboss_1p_husky",
+    "name": "gm_basemodifier_miniboss_1p_husky",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_4P_Husky": {
+    "id": "gm_basemodifier_miniboss_4p_husky",
+    "name": "gm_basemodifier_miniboss_4p_husky",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_4P_Husk": {
+    "id": "gm_basemodifier_miniboss_4p_husk",
+    "name": "gm_basemodifier_miniboss_4p_husk",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_DUDEBRO_Smasher": {
+    "id": "gm_basemodifier_miniboss_dudebro_smasher",
+    "name": "gm_basemodifier_miniboss_dudebro_smasher",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_Husky_SpringQuest_2018_HuntMiniBoss": {
+    "id": "gm_basemodifier_miniboss_1p_husky_springquest_2018_huntminiboss",
+    "name": "gm_basemodifier_miniboss_1p_husky_springquest_2018_huntminiboss",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_Husk_SpringQuest_2018_HuntMiniBoss": {
+    "id": "gm_basemodifier_miniboss_1p_husk_springquest_2018_huntminiboss",
+    "name": "gm_basemodifier_miniboss_1p_husk_springquest_2018_huntminiboss",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_Smasher_SpringQuest_2018_HuntMiniBoss": {
+    "id": "gm_basemodifier_miniboss_1p_smasher_springquest_2018_huntminiboss",
+    "name": "gm_basemodifier_miniboss_1p_smasher_springquest_2018_huntminiboss",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_Smasher_EndlessMode": {
+    "id": "gm_basemodifier_miniboss_1p_smasher_endlessmode",
+    "name": "gm_basemodifier_miniboss_1p_smasher_endlessmode",
+    "description": "",
+    "image": ""
+  },
+  "GM_Elemental_Lightning": {
+    "id": "gm_elemental_lightning",
+    "name": "gm_elemental_lightning",
+    "description": "",
+    "image": ""
+  },
+  "GM_Elemental_Ice": {
+    "id": "gm_elemental_ice",
+    "name": "gm_elemental_ice",
+    "description": "",
+    "image": ""
+  },
+  "GM_Elemental_Fire": {
+    "id": "gm_elemental_fire",
+    "name": "gm_elemental_fire",
+    "description": "",
+    "image": ""
+  },
+  "GM_QuestSpawn_SpecialEvent_2018_BlockbusterHusky_Abilities": {
+    "id": "gm_questspawn_specialevent_2018_blockbusterhusky_abilities",
+    "name": "gm_questspawn_specialevent_2018_blockbusterhusky_abilities",
+    "description": "",
+    "image": ""
+  },
+  "GM_Enemy_OnDeath_SpawnPlayerSlowPool": {
+    "id": "gm_enemy_ondeath_spawnplayerslowpool",
+    "name": "Slowing Pools",
+    "description": "Enemies have a chance to leave a slowing pool on the ground when they die.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDeath-SpawnPlayerSlowPool-128"
+  },
+  "GM_Enemy_ApplySpeedMods": {
+    "id": "gm_enemy_applyspeedmods",
+    "name": "Frenzied",
+    "description": "Enemies have a movement and attack speed increase.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDmgReceived-SpeedBuff-128"
+  },
+  "DifficultyBoost01": {
+    "id": "difficultyboost01",
+    "name": "Combat difficulty has been increased!",
+    "description": "Combat Difficulty: Hard\r\n2+ Players recommended",
+    "image": "T-Icon-BluGloDiff"
+  },
+  "DifficultyBoost03": {
+    "id": "difficultyboost03",
+    "name": "Combat difficulty has been increased!",
+    "description": "Combat Difficulty: Extreme\r\n4 Players recommended",
+    "image": "T-Icon-BluGloDiff"
+  },
+  "DifficultyBoost04": {
+    "id": "difficultyboost04",
+    "name": "Combat difficulty has been increased!",
+    "description": "Combat Difficulty: Chaos\r\n4 Players recommended",
+    "image": "T-Icon-BluGloDiff"
+  },
+  "DifficultyBoost02": {
+    "id": "difficultyboost02",
+    "name": "Combat difficulty has been increased!",
+    "description": "Combat Difficulty: Very Hard\r\n3+ Players recommended",
+    "image": "T-Icon-BluGloDiff"
+  },
+  "DifficultyBoost05": {
+    "id": "difficultyboost05",
+    "name": "Combat difficulty has been increased!",
+    "description": "Combat Difficulty: Madness\r\n4 Players recommended",
+    "image": "T-Icon-BluGloDiff"
+  },
+  "GM_Enemy_MaxHealthIncrease_Major": {
+    "id": "gm_enemy_maxhealthincrease_major",
+    "name": "Husk Heartiness (Major)",
+    "description": "Husks have largely increased maximum health.",
+    "image": "T-Icon-Modifier-Neg-MaxHealthIncrease-Major-128"
+  },
+  "GM_Enemy_MaxHealthIncrease_Minor": {
+    "id": "gm_enemy_maxhealthincrease_minor",
+    "name": "Husk Heartiness (Minor)",
+    "description": "Husks have slightly increased maximum health.",
+    "image": "T-Icon-Modifier-Neg-MaxHealthIncrease-Minor-128"
+  },
+  "GM_Enemy_HideOnMinimap": {
+    "id": "gm_enemy_hideonminimap",
+    "name": "Uncharted Enemies",
+    "description": "Enemies don't show up on the minimap.",
+    "image": "T-Icon-Modifier-Neg-Enemy-HideOnMinimap-128"
+  },
+  "GM_Player_OnShieldDestroyed_AOE": {
+    "id": "gm_player_onshielddestroyed_aoe",
+    "name": "Concussive Shieldbreak",
+    "description": "When a player's shield is destroyed, nearby enemies take damage. Smaller enemies are likely to be knocked back.",
+    "image": "T-Icon-Modifier-Pos-Player-OnShieldDestroyed-AOE-128"
+  },
+  "GM_Player_ShieldBuff": {
+    "id": "gm_player_shieldbuff",
+    "name": "Shields Up!",
+    "description": "Hero shields are increased and regenerate at a faster rate",
+    "image": "T-Icon-Modifier-Pos-Player-OnShieldDestroyed-AOE-128"
+  },
+  "GM_Enemy_OnDeath_AreaHeal": {
+    "id": "gm_enemy_ondeath_areaheal",
+    "name": "Healing Deathburst",
+    "description": "When enemies die, they heal nearby enemies for a percentage of their maximum health.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDeath-AreaHeal-128"
+  },
+  "GM_Enemy_Ricochet": {
+    "id": "gm_enemy_ricochet",
+    "name": "Ricochet",
+    "description": "Enemies reflect a percentage of the ranged damage they suffer.",
+    "image": "T-Icon-Modifier-Neg-Enemy-Ricochet-128"
+  },
+  "GM_Player_LowGravity": {
+    "id": "gm_player_lowgravity",
+    "name": "Low G",
+    "description": "Gravity is reduced for heroes",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_LowG": {
+    "id": "gm_lowg",
+    "name": "Low G",
+    "description": "Gravity is decreased",
+    "image": "T-Icon-Modifier-Pos-Low-Gravity-128"
+  },
+  "GM_Player_MeleeSwingSpeed_Buff": {
+    "id": "gm_player_meleeswingspeed_buff",
+    "name": "Light Swings",
+    "description": "Swing your melee weapons faster!",
+    "image": "T-Icon-Modifier-Pos-EdgedDamage-Buff-128"
+  },
+  "GM_Enemy_KnockBackResist": {
+    "id": "gm_enemy_knockbackresist",
+    "name": "Unstoppable Force",
+    "description": "Knocking enemies back or making them stagger is more difficult.",
+    "image": "T-Icon-Modifier-Pos-Bldg-OnDeath-BuffEnemyEnvDmg-128"
+  },
+  "GM_Enemy_OnDmgDealt_Knockback": {
+    "id": "gm_enemy_ondmgdealt_knockback",
+    "name": "They Must Work Out!",
+    "description": "Enemy melee attacks knock heroes back",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDeath-ApplySpeedMods-128"
+  },
+  "GM_BaseHusk_OnDeath_Explode": {
+    "id": "gm_basehusk_ondeath_explode",
+    "name": "Exploding Deathbomb",
+    "description": "Husky Husks, Riot Husks, and Sploders spawn a time bomb when eliminated.",
+    "image": "T-Icon-Modifier-Neg-DeathBomb-128"
+  },
+  "GM_Player_OnDmgDealt_LifeLeech": {
+    "id": "gm_player_ondmgdealt_lifeleech",
+    "name": "Melee Life Leech",
+    "description": "Heroes heal by a percentage of the melee damage they deal.",
+    "image": "T-Icon-Modifier-Pos-Player-OnDmgDealt-LifeLeech-128"
+  },
+  "GM_Enemy_Ricochet_Major": {
+    "id": "gm_enemy_ricochet_major",
+    "name": "Ricochet (Major)",
+    "description": "Enemies reflect a percentage of the ranged damage they suffer.",
+    "image": "T-Icon-Modifier-Neg-Enemy-Ricochet-128"
+  },
+  "GM_Enemy_OnDmgReceived_SpeedBuff": {
+    "id": "gm_enemy_ondmgreceived_speedbuff",
+    "name": "Quickened",
+    "description": "Enemies gain movement speed for a time after taking damage.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDmgReceived-SpeedBuff-128"
+  },
+  "GM_Enemy_OnDeath_SpawnDamagePool": {
+    "id": "gm_enemy_ondeath_spawndamagepool",
+    "name": "Acid Pools",
+    "description": "Enemies have a chance to leave a damaging pool on the ground when they die.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDeath-SpawnEnemyRangeResistPool-128"
+  },
+  "GMID_FireDamage": {
+    "id": "gmid_firedamage",
+    "name": "Fire",
+    "description": "Burns targets struck for a short time. More damage to Wood. Resistant to Nature, weak to Water.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_FrontShield": {
+    "id": "gm_ug_frontshield",
+    "name": "Shielded",
+    "description": "This monster is protected by a rotating shield.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GMID_IceDamage": {
+    "id": "gmid_icedamage",
+    "name": "Water",
+    "description": "Slows targets struck for a short time. More damage to Stone. Resistant to Fire, weak to Nature.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_Fury": {
+    "id": "gm_ug_fury",
+    "name": "Frenzied",
+    "description": "This monster is faster and uses abilities more quickly",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_RustMonster": {
+    "id": "gm_ug_rustmonster",
+    "name": "Rusty",
+    "description": "Attacks made by and against this monster degrade your weapons",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_OnDmgDealt_Vampiric": {
+    "id": "gm_ug_ondmgdealt_vampiric",
+    "name": "Vampiric",
+    "description": "Restores a percentage of its health each time it deals damage.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GMID_HealPulse": {
+    "id": "gmid_healpulse",
+    "name": "Heal Pulse",
+    "description": "Heals all nearby enemies when attacked.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_AOECloud_RangeResistBuff": {
+    "id": "gm_ug_aoecloud_rangeresistbuff",
+    "name": "Smoke-Screen",
+    "description": "Spawns a large smoke screen around itself as it moves, reducing ranged damage against all enemies in the cloud.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDeath-SpawnDamagePool-64"
+  },
+  "GM_UG_Blaster_Miniboss_Starlight": {
+    "id": "gm_ug_blaster_miniboss_starlight",
+    "name": "gm_ug_blaster_miniboss_starlight",
+    "description": "",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_BaseModifier_MiniBoss_4P_StarlightSciBoss": {
+    "id": "gm_basemodifier_miniboss_4p_starlightsciboss",
+    "name": "gm_basemodifier_miniboss_4p_starlightsciboss",
+    "description": "",
+    "image": ""
+  },
+  "GM_BaseModifier_MiniBoss_1P_StarlightSciBoss": {
+    "id": "gm_basemodifier_miniboss_1p_starlightsciboss",
+    "name": "gm_basemodifier_miniboss_1p_starlightsciboss",
+    "description": "",
+    "image": ""
+  },
+  "GM_Player_MoveSpeed_Buff": {
+    "id": "gm_player_movespeed_buff",
+    "name": "Sprinters",
+    "description": "Player movement speed increased",
+    "image": "T-Icon-Modifier-Pos-Ninja-JumpHieght-Buff-128"
+  },
+  "GM_Player_Ranged_DamageReload_Buff": {
+    "id": "gm_player_ranged_damagereload_buff",
+    "name": "Quickshot",
+    "description": "Ranged weapons reload faster and do more damage.",
+    "image": "T-Icon-Modifier-Pos-AssaultRifle-DamageBuff-128"
+  },
+  "TestGameplayModifier": {
+    "id": "testgameplaymodifier",
+    "name": "Test Modifier",
+    "description": "Does test things.",
+    "image": ""
+  },
+  "GMut_Enemy_Level_Variance_C": {
+    "id": "gmut_enemy_level_variance_c",
+    "name": "gmut_enemy_level_variance_c",
+    "description": "",
+    "image": ""
+  },
+  "GM_Player_MetalBuildCostIncrease_Major": {
+    "id": "gm_player_metalbuildcostincrease_major",
+    "name": "Expensive Metal",
+    "description": "Metal structures cost significantly more to build.",
+    "image": "T-Icon-Modifier-Neg-MetalBuildCostIncrease-128"
+  },
+  "GM_Player_WoodBuildCostIncrease_Major": {
+    "id": "gm_player_woodbuildcostincrease_major",
+    "name": "Resource Demand: Wood (Major)",
+    "description": "Wood structures cost significantly more to build and repair.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_StoneBuildCostIncrease_Major": {
+    "id": "gm_player_stonebuildcostincrease_major",
+    "name": "Expensive Stone",
+    "description": "Stone structures cost significantly more to build.",
+    "image": "T-Icon-Modifier-Neg-StoneBuildCostIncrease-128"
+  },
+  "QuestSpawn_SpecialEvent_2018_BlockbusterHusky_Mutator_C": {
+    "id": "questspawn_specialevent_2018_blockbusterhusky_mutator_c",
+    "name": "questspawn_specialevent_2018_blockbusterhusky_mutator_c",
+    "description": "",
+    "image": ""
+  },
+  "GM_QuestSpawn_SpecialEvent_2018_BlockbusterHusky_EncounterTags": {
+    "id": "gm_questspawn_specialevent_2018_blockbusterhusky_encountertags",
+    "name": "Blockbuster Husky",
+    "description": "Get ready for a surprise!",
+    "image": "Icon-Class-Husk-Husky-Headshot"
+  },
+  "GM_Phoenix_Escalation": {
+    "id": "gm_phoenix_escalation",
+    "name": "Escalation",
+    "description": "Maintain an elimination streak to increase your power! Every\r\n30 eliminations your team will trigger an elemental burst\r\nthat hits nearby enemies and a 10% damage boost to weapons and ability damage, building up to a maximum of 100% extra damage. The streak will be lost if you go 20 seconds without an elimination.",
+    "image": "T-Icon-Modifier-Escalation-128"
+  },
+  "GM_Phoenix_SuperNinja": {
+    "id": "gm_phoenix_superninja",
+    "name": "Super Ninja",
+    "description": "Ability eliminations increase melee damage and attack speed by 50% for 10 seconds. Melee weapon eliminations reduce active cooldowns by 2 seconds. Shadowstance's benefits are doubled. Reduced ranged weapon and trap damage.",
+    "image": "T-Icon-Modifier-Super-Heroic-128"
+  },
+  "GM_Phoenix_SuperHusks_PlayerBenefits": {
+    "id": "gm_phoenix_superhusks_playerbenefits",
+    "name": "Super Treasure",
+    "description": "Great monsters mean great rewards! Players periodically spawn a chest full of valuable items when eliminating enemies. Tougher enemies drop chests more frequently.",
+    "image": "T-Icon-Modifier-SuperHusk-Treasure-128"
+  },
+  "GM_Phoenix_SuperConstructor": {
+    "id": "gm_phoenix_superconstructor",
+    "name": "Super Constructor",
+    "description": "Building costs are reduced by 66%. Melee Impact damage dealt is increased, and triggering Kinetic Overload reduces active cooldowns by 4 seconds. Reduced weapon damage.",
+    "image": "T-Icon-Modifier-Super-Heroic-128"
+  },
+  "GM_Phoenix_SuperHusks_Tank": {
+    "id": "gm_phoenix_superhusks_tank",
+    "name": "Super Tough Monsters",
+    "description": "Husky Husks and Smashers have increased resistance to trap and ranged weapon damage, and deal 100% increased damage to structures. They also move and attack 30% slower.",
+    "image": "T-Icon-Modifier-SuperHusk-Husk-128"
+  },
+  "GM_Phoenix_AcidRain": {
+    "id": "gm_phoenix_acidrain",
+    "name": "Acid Rain",
+    "description": "Stay under cover! Heroes suffer damage over time when not under a roof.",
+    "image": "T-Icon-Modifier-Acid-Rain-128"
+  },
+  "GM_Phoenix_RageMeter": {
+    "id": "gm_phoenix_ragemeter",
+    "name": "Rage",
+    "description": "No Energy regeneration - instead damaging enemies with weapons adds Energy. Abilities have improved cooldowns and effectiveness.",
+    "image": "T-Icon-Modifier-Rage-Meter-128"
+  },
+  "GM_Phoenix_SuperOutlander": {
+    "id": "gm_phoenix_superoutlander",
+    "name": "Super Outlander",
+    "description": "Anti-Material Charge costs 0 Energy. They gain a fragment every 50 seconds. Passive 30% damage buff to active abilities. Reduced weapon and trap damage.",
+    "image": "T-Icon-Modifier-Super-Heroic-128"
+  },
+  "GM_Phoenix_SuperHusks_Melee": {
+    "id": "gm_phoenix_superhusks_melee",
+    "name": "Super Melee Monsters",
+    "description": "Takers and melee-based Husks move and attack faster, and their attacks slow you by 30% for 5 seconds. Eliminating them stuns small enemies in a half tile radius for 1.5 seconds.",
+    "image": "T-Icon-Modifier-SuperHusk-Husk-128"
+  },
+  "GM_Phoenix_SuperHeroic": {
+    "id": "gm_phoenix_superheroic",
+    "name": "Super Soldier",
+    "description": "Headshot damage gets a x2 bonus. Ranged weapon eliminations reduce active cooldowns by 4 seconds. If Frag Grenade is equipped, every 6 ranged eliminations grant a grenade. Reduced melee weapon and trap damage.",
+    "image": "T-Icon-Modifier-Super-Heroic-128"
+  },
+  "GM_Phoenix_CloseQuarters": {
+    "id": "gm_phoenix_closequarters",
+    "name": "Short Range",
+    "description": "Enemies close to a player or defender suffer more damage; those far away suffer less. All enemies have a chance to a drop healing pickup when eliminated.",
+    "image": "T-Icon-Modifier-Close-Quarters-128"
+  },
+  "GM_Phoenix_SuperHusks_Ranged": {
+    "id": "gm_phoenix_superhusks_ranged",
+    "name": "Super Ranged Monsters",
+    "description": "Flingers, Pitchers and Lobbers throw 3 projectiles, while Zappers and Blasters fire twice as quickly. They also have 30% less health.",
+    "image": "T-Icon-Modifier-SuperHusk-Husk-128"
+  },
+  "GM_Player_CritReduction_Major": {
+    "id": "gm_player_critreduction_major",
+    "name": "Critical Failure",
+    "description": "Players can no longer crit with weapons.",
+    "image": "T-Icon-Modifier-CritReduction-Major-128"
+  },
+  "GM_Enemy_AbilityDmgIncrease_Minor": {
+    "id": "gm_enemy_abilitydmgincrease_minor",
+    "name": "Enemy Damage (Minor)",
+    "description": "Enemies deal slightly more damage.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_ShieldRegenRateDecrease_Major": {
+    "id": "gm_player_shieldregenratedecrease_major",
+    "name": "EMP",
+    "description": "Player shield regeneration rate is greatly reduced. ",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Enemy_Health_Stability_Increase": {
+    "id": "gm_enemy_health_stability_increase",
+    "name": "Tank",
+    "description": "Husks have much more health and are harder to slow, stun, and stagger.",
+    "image": "T-Icon-Modifier-Neg-EnemyHealthStabilityIncrease-128"
+  },
+  "GM_Player_NoShields": {
+    "id": "gm_player_noshields",
+    "name": "No Shields",
+    "description": "Hero shields are inactive. ",
+    "image": "T-Icon-Modifier-Neg-NoShields-128"
+  },
+  "GMID_Untrappable": {
+    "id": "gmid_untrappable",
+    "name": "Untrappable",
+    "description": "This enemy doesn't trigger traps.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GMID_OnDmgDealt_BuildingDOT": {
+    "id": "gmid_ondmgdealt_buildingdot",
+    "name": "Corrosive",
+    "description": "PLACEHOLDER",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_DamagePulse": {
+    "id": "gm_ug_damagepulse",
+    "name": "Damage-Pulse",
+    "description": "Damages all nearby players and structures when attacked.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GMID_ImmuneToAllButTraps": {
+    "id": "gmid_immunetoallbuttraps",
+    "name": "Trap-Vulnerable",
+    "description": "Enemy can only be damaged by traps.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_Base_Elite": {
+    "id": "gm_ug_base_elite",
+    "name": "Elite",
+    "description": "This monster is powerful",
+    "image": "Icon-Theater-3-M"
+  },
+  "GMID_ImmuneToRangeWeapons": {
+    "id": "gmid_immunetorangeweapons",
+    "name": "Ranged Weapon Immunity",
+    "description": "Enemies are resistant to range weapons, but vulnerable to melee weapons.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_Health_Stability_Increase": {
+    "id": "gm_ug_health_stability_increase",
+    "name": "Tank",
+    "description": "Enemy has much more health and is harder to slow, stun, and stagger.",
+    "image": "T-Icon-Modifier-Neg-EnemyHealthStabilityIncrease-128"
+  },
+  "GM_UG_OnDmgDealt_Shieldbreaker": {
+    "id": "gm_ug_ondmgdealt_shieldbreaker",
+    "name": "Shieldbreaker",
+    "description": "Deals increased shield damage, and targets will not regenerate shields for a moderate duration.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_OnHitWeakenBuildings": {
+    "id": "gm_ug_onhitweakenbuildings",
+    "name": "Wall-Weakening",
+    "description": "Buildings become increasingly vulnerable to damage for a short time after they are attacked by this enemy.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnHitWeakenBuildings-128"
+  },
+  "GMID_NatureDamage": {
+    "id": "gmid_naturedamage",
+    "name": "Nature",
+    "description": "Drains shield/energy from targets struck. More damage to Metal. Resistant to Water, weak to Fire.",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_Base_MiniBoss": {
+    "id": "gm_ug_base_miniboss",
+    "name": "Mini-Boss",
+    "description": "This monster is very powerful",
+    "image": "Icon-Theater-3-M"
+  },
+  "GMID_MinibossMod_ItemDef_Test": {
+    "id": "gmid_minibossmod_itemdef_test",
+    "name": "TEST",
+    "description": "PLACEHOLDER",
+    "image": "T-Icon-Modifier-Neg-OnDeath-Explode-128"
+  },
+  "GM_UG_BubbleShield": {
+    "id": "gm_ug_bubbleshield",
+    "name": "Bubble-Shield",
+    "description": "This monster has a protective bubble.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_Ricochet": {
+    "id": "gm_ug_ricochet",
+    "name": "Ricochet",
+    "description": "Enemy reflects a percentage of the ranged damage it suffers.",
+    "image": "T-Icon-Modifier-Neg-Enemy-Ricochet-128"
+  },
+  "GM_UG_SpawnAcidPool": {
+    "id": "gm_ug_spawnacidpool",
+    "name": "Acid-Pools",
+    "description": "Enemy leaves a trail of damaging pools on the ground.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_Trail_BuildingBlocker": {
+    "id": "gm_ug_trail_buildingblocker",
+    "name": "Building-Blocker",
+    "description": "Leaves pools on the ground that block building",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_Trail_MineLayer": {
+    "id": "gm_ug_trail_minelayer",
+    "name": "Mine-Layer",
+    "description": "This monster drops proximity mines",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_UG_Trail_BuildingDamagePool": {
+    "id": "gm_ug_trail_buildingdamagepool",
+    "name": "Rot-Wake",
+    "description": "Buildings rot in the wake of this monster",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_BaseModifier_MiniBoss_1P_Husky_Twine_DUDEBRO": {
+    "id": "gm_basemodifier_miniboss_1p_husky_twine_dudebro",
+    "name": "gm_basemodifier_miniboss_1p_husky_twine_dudebro",
+    "description": "",
+    "image": ""
+  },
+  "MiniBossEnablePrimaryMissionItem": {
+    "id": "minibossenableprimarymissionitem",
+    "name": "Epic Mini-Boss",
+    "description": "An Epic Mini-Boss may appear in this area.",
+    "image": "T-Icon-Modifier-Neg-Miniboss-128"
+  },
+  "ElementalZoneWaterEnableItem": {
+    "id": "elementalzonewaterenableitem",
+    "name": "Ice Storm",
+    "description": "Changes all elemental enemies to water.",
+    "image": "T-Icon-Modifier-Neg-Elemental-Water-128"
+  },
+  "ElementalZoneFireEnableItem": {
+    "id": "elementalzonefireenableitem",
+    "name": "Fire Storm",
+    "description": "Changes all elemental enemies to fire.",
+    "image": "T-Icon-Modifier-Neg-Elemental-Fire-128"
+  },
+  "ElementalZoneNatureEnableItem": {
+    "id": "elementalzonenatureenableitem",
+    "name": "Lightning Storm",
+    "description": "Changes all elemental enemies to nature.",
+    "image": "T-Icon-Modifier-Neg-Elemental-Nature-128"
+  },
+  "GM_Player_RangeDmgDealt_Debuffs_PlayerAccuracy": {
+    "id": "gm_player_rangedmgdealt_debuffs_playeraccuracy",
+    "name": "Guilty Gun",
+    "description": "Ranged accuracy is decreased for a short time after hitting a target.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_SMG_Damage_Buff": {
+    "id": "gm_player_smg_damage_buff",
+    "name": "Powerful SMGs",
+    "description": "SMGs do more damage.",
+    "image": "T-Icon-Modifier-Pos-SMG-DamageBuff-128"
+  },
+  "GM_Soldier_Damage_Buff": {
+    "id": "gm_soldier_damage_buff",
+    "name": "Adept Soldiers",
+    "description": "Soldiers do more damage.",
+    "image": "T-Icon-Modifier-Pos-Soldier-Damage-Buff-128"
+  },
+  "GM_Enemy_OnDmgDealt_SlowDownFoe": {
+    "id": "gm_enemy_ondmgdealt_slowdownfoe",
+    "name": "Slowing Attacks",
+    "description": "Whenever a player is struck by a melee attack, they move more slowly for a short time.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDmgDealt-SlowDownFoe-128"
+  },
+  "GM_Ninja_JumpHeight_Buff": {
+    "id": "gm_ninja_jumpheight_buff",
+    "name": "Leaping Ninjas",
+    "description": "Mantis Leap now deals AoE damage when landing.",
+    "image": "T-Icon-Modifier-Pos-Ninja-JumpHieght-Buff-128"
+  },
+  "GM_Outlander_HarvesterAttack_DamageBuff": {
+    "id": "gm_outlander_harvesterattack_damagebuff",
+    "name": "Reaping Time",
+    "description": "Outlander attacks with the harvester tool do more damage to the environment.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_EnergyRegen_Buff": {
+    "id": "gm_player_energyregen_buff",
+    "name": "Energized",
+    "description": "Energy regenerates faster",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_OnDmgReceived_DmgBuff": {
+    "id": "gm_enemy_ondmgreceived_dmgbuff",
+    "name": "Make Me Angry",
+    "description": "Each time the monster is attacked it becomes more powerful.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Enemy_OnDmgDealt_DOT": {
+    "id": "gm_enemy_ondmgdealt_dot",
+    "name": "Echo-Punch",
+    "description": "Enemy attacks inflict Damage-Over-Time",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Player_Trap_Reload_Increase": {
+    "id": "gm_player_trap_reload_increase",
+    "name": "Turbo Traps",
+    "description": "Faster reload time for traps.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Constructor_Hardware_DamageBuff": {
+    "id": "gm_constructor_hardware_damagebuff",
+    "name": "Hardware Constructors",
+    "description": "Constructors do more damage and crit more often with Hardware weapons.",
+    "image": "T-Icon-Modifier-Pos-Constructor-Blunt-Damage-Buff-128"
+  },
+  "GM_Player_AxesScythesDamage_Buff": {
+    "id": "gm_player_axesscythesdamage_buff",
+    "name": "Powerful Axes and Scythes",
+    "description": "Axe and Scythe weapons do more damage.",
+    "image": "T-Icon-Modifier-Pos-AxesScythesDamage-Buff-128"
+  },
+  "GM_Player_Explosive_DamageBuff": {
+    "id": "gm_player_explosive_damagebuff",
+    "name": "Powerful Explosives",
+    "description": "Explosive weapons do more damage.",
+    "image": "T-Icon-Modifier-Pos-Player-Explosive-DamageBuff-128"
+  },
+  "GM_Soldier_Sprint_Unlimited": {
+    "id": "gm_soldier_sprint_unlimited",
+    "name": "Mandatory PT",
+    "description": "Soldiers don't use energy while sprinting",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_SlowBuildTime": {
+    "id": "gm_player_slowbuildtime",
+    "name": "Paid by the Hour",
+    "description": "Buildings take longer to construct and repair.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_OnHitWeakenBuildings": {
+    "id": "gm_enemy_onhitweakenbuildings",
+    "name": "Wall Weakening",
+    "description": "Buildings become increasingly vulnerable to damage for a short time after they are attacked.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnHitWeakenBuildings-128"
+  },
+  "GM_Player_MeleeDamage_Buff": {
+    "id": "gm_player_meleedamage_buff",
+    "name": "Haymakers",
+    "description": "Player melee attacks do greatly increased damage",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_Level_Variance": {
+    "id": "gm_enemy_level_variance",
+    "name": "What Level are they!?!",
+    "description": "All enemy levels vary above/below the base level for the zone. (+10/-10)",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_SprintSpeed_Buff": {
+    "id": "gm_player_sprintspeed_buff",
+    "name": "Sprinters",
+    "description": "Player sprint speed increased",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_WeaponAndAbilityResist": {
+    "id": "gm_enemy_weaponandabilityresist",
+    "name": "Husk Hardiness",
+    "description": "Enemies take reduced damage from weapons and player abilities.",
+    "image": "T-Icon-Modifier-Neg-MaxHealthIncrease-Major-128"
+  },
+  "GM_Enemy_OnDeath_DropHealingGlobes": {
+    "id": "gm_enemy_ondeath_drophealingglobes",
+    "name": "gm_enemy_ondeath_drophealingglobes",
+    "description": "",
+    "image": "T-Icon-Modifier-Pos-Bldg-OnDeath-BuffEnemyEnvDmg-128"
+  },
+  "GM_Soldier_AssaultRifle_Buff": {
+    "id": "gm_soldier_assaultrifle_buff",
+    "name": "Headshot Soldiers",
+    "description": "Soldiers do more damage with Assault Rifles when scoring head shots.",
+    "image": "T-Icon-Modifier-Pos-Soldier-Assaultrifle-Damage-Buff-128"
+  },
+  "GM_Player_Trap_Durability_Increase": {
+    "id": "gm_player_trap_durability_increase",
+    "name": "Extended Warranty",
+    "description": "Increased durability on all traps.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Ninja_Damage_Buff": {
+    "id": "gm_ninja_damage_buff",
+    "name": "Adept Ninjas",
+    "description": "Ninjas do more damage.",
+    "image": "T-Icon-Modifier-Pos-Ninja-Damage-Buff-128"
+  },
+  "GM_Outlander_HarvesterEnv_DamageBuff": {
+    "id": "gm_outlander_harvesterenv_damagebuff",
+    "name": "Heavy Work",
+    "description": "Outlander attacks with the harvester tool do more damage.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Hero_Tech_Buff": {
+    "id": "gm_hero_tech_buff",
+    "name": "Adept Abilities",
+    "description": "Hero abilities do more damage.",
+    "image": "T-Icon-Modifier-Pos-Hero-Tech-Buff-128"
+  },
+  "GM_Player_Reflect": {
+    "id": "gm_player_reflect",
+    "name": "Reflective",
+    "description": "Player reflects a portion of melee damage back on the attacker.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_SniperRifle_DamageBuff": {
+    "id": "gm_player_sniperrifle_damagebuff",
+    "name": "Powerful Sniper Rifles",
+    "description": "Sniper Rifles do more damage.",
+    "image": "T-Icon-Modifier-Pos-SniperRifle-DamageBuff-128"
+  },
+  "GM_Enemy_OnDmgDealt_ReduceDmgFoe": {
+    "id": "gm_enemy_ondmgdealt_reducedmgfoe",
+    "name": "Slap-fest",
+    "description": "Players deal less damage after being struck by enemies",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Enemy_OnDmgDealt_LifeLeech": {
+    "id": "gm_enemy_ondmgdealt_lifeleech",
+    "name": "Life Leech Attacks",
+    "description": "Enemies restore health each time they deal damage.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDmgDealt-LifeLeech-128"
+  },
+  "GM_Player_OnDmgReceived_DmgShare": {
+    "id": "gm_player_ondmgreceived_dmgshare",
+    "name": "Shared Hero Damage",
+    "description": "Whenever a player loses health, allies suffer damage equal to a percentage of that amount.",
+    "image": "T-Icon-Modifier-Neg-Player-OnDmgReceived-DmgShare-128"
+  },
+  "GM_Constructor_Damage_Buff": {
+    "id": "gm_constructor_damage_buff",
+    "name": "Adept Constructors",
+    "description": "Constructors do more damage.",
+    "image": "T-Icon-Modifier-Pos-Constructor-Damage-Buff-128"
+  },
+  "GM_Player_PiercingDamage_Buff": {
+    "id": "gm_player_piercingdamage_buff",
+    "name": "Spear Fishing",
+    "description": "Piercing weapons do more damage",
+    "image": "T-Icon-Modifier-Pos-PiercingDamage-Buff-128"
+  },
+  "GM_Enemy_GroundZero": {
+    "id": "gm_enemy_groundzero",
+    "name": "Ground Zero",
+    "description": "Enemies start weaker than normal, but become more and more powerful over time.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Player_OnMeleeDmgDealt_SlowDownFoe": {
+    "id": "gm_player_onmeleedmgdealt_slowdownfoe",
+    "name": "Tase",
+    "description": "Enemies move more slowly after being struck by melee attacks.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_OnDeath_Knockback": {
+    "id": "gm_enemy_ondeath_knockback",
+    "name": "Bass Drop",
+    "description": "Everyone nearby is knocked back when an enemy dies.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Bldg_OnDeath_BuffEnemyEnvDmg": {
+    "id": "gm_bldg_ondeath_buffenemyenvdmg",
+    "name": "Rolling Destruction",
+    "description": "When a building is destroyed nearby monsters do more damage to buildings.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_Pistol_DamageBuff": {
+    "id": "gm_player_pistol_damagebuff",
+    "name": "Powerful Pistols",
+    "description": "Pistols do more damage.",
+    "image": "T-Icon-Modifier-Pos-Pistol-DamageBuff-128"
+  },
+  "GM_Enemy_OnEvnDmgDealt_LifeLeech": {
+    "id": "gm_enemy_onevndmgdealt_lifeleech",
+    "name": "Termites",
+    "description": "Enemies heal by a percentage of all damage dealt to buildings.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_DisableRepair": {
+    "id": "gm_player_disablerepair",
+    "name": "No Repairs",
+    "description": "Heroes can't repair buildings for one wave.",
+    "image": "T-Icon-Modifier-Neg-DisableRepair-128"
+  },
+  "GM_Tool_DamageBuff": {
+    "id": "gm_tool_damagebuff",
+    "name": "Tool Time",
+    "description": "Hardware weapons do more damage.",
+    "image": "T-Icon-Modifier-Pos-Tool-Damage-Buff-128"
+  },
+  "GM_Enemy_OnDeath_ApplySpeedMods": {
+    "id": "gm_enemy_ondeath_applyspeedmods",
+    "name": "Frenzied Deathburst",
+    "description": "When enemies die, they grant nearby enemies a brief increase in attack as well as both movement and attack speed.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDeath-ApplySpeedMods-128"
+  },
+  "GM_Player_Pistol_MiniBossDamageBuff": {
+    "id": "gm_player_pistol_minibossdamagebuff",
+    "name": "Powerful Pistols Versus Bosses",
+    "description": "Pistols do more damage versus bosses.",
+    "image": "T-Icon-Modifier-Pos-Pistol-DamageBuff-128"
+  },
+  "GM_Enemy_Thorns": {
+    "id": "gm_enemy_thorns",
+    "name": "Thorny",
+    "description": "Any melee hits to monsters causes some damage to the attacker.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Player_Sprint_Unlimited": {
+    "id": "gm_player_sprint_unlimited",
+    "name": "Infinite Wind",
+    "description": "Sprinting does not use energy",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_OnLowHealth_Enrage": {
+    "id": "gm_enemy_onlowhealth_enrage",
+    "name": "Enraged",
+    "description": "When enemies are near death they become enraged, dealing more damage.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnLowHealth-Enrage-128"
+  },
+  "GM_Player_EdgedDamage_Buff": {
+    "id": "gm_player_edgeddamage_buff",
+    "name": "Edgy",
+    "description": "Edged weapons do more damage",
+    "image": "T-Icon-Modifier-Pos-EdgedDamage-Buff-128"
+  },
+  "GM_Player_ShotGun_DamageBuff": {
+    "id": "gm_player_shotgun_damagebuff",
+    "name": "Powerful Shotguns",
+    "description": "Shotguns do more damage.",
+    "image": "T-Icon-Modifier-Pos-ShotGun-Damage-Buff-128"
+  },
+  "GM_Player_Damage_Buff": {
+    "id": "gm_player_damage_buff",
+    "name": "Heroic Heroes",
+    "description": "Heroes do more damage",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Trap_Buff_Major": {
+    "id": "gm_trap_buff_major",
+    "name": "Supreme Traps",
+    "description": "Traps deal heavy damage, fire frequently, and last much longer.",
+    "image": "T-Icon-Modifier-Pos-TrapBuff-128"
+  },
+  "GM_Player_BluntDamage_Buff": {
+    "id": "gm_player_bluntdamage_buff",
+    "name": "Powerful Clubs and Hardware",
+    "description": "Club and Hardware weapons do more damage.",
+    "image": "T-Icon-Modifier-Pos-BluntDamage-Buff-128"
+  },
+  "GM_HarvestingDisable": {
+    "id": "gm_harvestingdisable",
+    "name": "Harvesting Disabled",
+    "description": "Harvesting yields no resources.",
+    "image": "T-Icon-Modifier-Neg-NoHarvesting-128"
+  },
+  "GM_Constructor_Tech_Buff": {
+    "id": "gm_constructor_tech_buff",
+    "name": "Super Tools",
+    "description": "Increased Tech stat for Constructors",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Player_BuildCost_Buff": {
+    "id": "gm_player_buildcost_buff",
+    "name": "Building Benefit",
+    "description": "Build, Upgrade, and Repair costs reduced.",
+    "image": "T-Icon-Modifier-Pos-Constructor-BuildCost-Buff-128"
+  },
+  "GM_Trap_Buff": {
+    "id": "gm_trap_buff",
+    "name": "Powerful Traps",
+    "description": "Traps hit harder, fire more often, and last longer.",
+    "image": "T-Icon-Modifier-Pos-TrapBuff-128"
+  },
+  "GM_Player_AbilityCooldown_Buff": {
+    "id": "gm_player_abilitycooldown_buff",
+    "name": "Quick Cooling",
+    "description": "Ability cooldown times reduced",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Constructor_Blunt_DamageBuff": {
+    "id": "gm_constructor_blunt_damagebuff",
+    "name": "If I Had a Hammer",
+    "description": "Constructors do more damage with blunt weapons.",
+    "image": "T-Icon-Modifier-Pos-Constructor-Blunt-Damage-Buff-128"
+  },
+  "GM_Enemy_OnDeath_SpawnEnemySlowPool": {
+    "id": "gm_enemy_ondeath_spawnenemyslowpool",
+    "name": "Mourning Jog",
+    "description": "When enemies die they can spawn a pool that slows other enemies.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Axe_DamageBuff": {
+    "id": "gm_axe_damagebuff",
+    "name": "Timber!",
+    "description": "Axe weapons do more damage",
+    "image": "T-Icon-Modifier-Pos-Axe-Buff-128"
+  },
+  "GM_Outlander_Damage_Buff": {
+    "id": "gm_outlander_damage_buff",
+    "name": "Adept Outlanders",
+    "description": "Outlanders do more damage.",
+    "image": "T-Icon-Modifier-Pos-Outlander-Damage-Buff-128"
+  },
+  "GM_Ninja_Speed_Buff": {
+    "id": "gm_ninja_speed_buff",
+    "name": "Speed Tabi",
+    "description": "Ninja Heroes are faster.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_OnDeath_SpawnEnemyRangeResistPool": {
+    "id": "gm_enemy_ondeath_spawnenemyrangeresistpool",
+    "name": "Smoke Screens",
+    "description": "Enemies have a chance to create a smoke screen when they die, granting enemy damage resistance to ranged attacks.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDeath-SpawnDamagePool-128"
+  },
+  "GM_Outlander_Tech_Buff": {
+    "id": "gm_outlander_tech_buff",
+    "name": "Upgraded Outlanders",
+    "description": "Outlander abilities deal more damage.",
+    "image": "T-Icon-Modifier-Pos-Outlander-Tech-Buff-128"
+  },
+  "GM_Player_AssaultRifle_Damage_Buff": {
+    "id": "gm_player_assaultrifle_damage_buff",
+    "name": "Powerful Assault Rifles",
+    "description": "Assault Rifles do more damage.",
+    "image": "T-Icon-Modifier-Pos-AssaultRifle-DamageBuff-128"
+  },
+  "GM_Player_SpearSwordDamage_Buff": {
+    "id": "gm_player_spearsworddamage_buff",
+    "name": "Powerful Swords and Spears",
+    "description": "Spear and Sword weapons do more damage.",
+    "image": "T-Icon-Modifier-Pos-PiercingDamage-Buff-128"
+  },
+  "GM_Player_OnDmgDealt_Taunt": {
+    "id": "gm_player_ondmgdealt_taunt",
+    "name": "Taunting",
+    "description": "Enemies move faster but are more vulnerable to damage when attacked.",
+    "image": "Icon-Theater-1-M"
+  },
+  "GM_Enemy_CCImmune": {
+    "id": "gm_enemy_ccimmune",
+    "name": "Unstoppable Husks",
+    "description": "Husks are immune to crowd-control.  Stuns, Slows, and Knockbacks will not affect husks. Decoy cannot be activated.",
+    "image": "Icon-Theater-3-M"
+  },
+  "GM_Player_MeleeKnockback_Buff": {
+    "id": "gm_player_meleeknockback_buff",
+    "name": "Knockback Melee Attacks",
+    "description": "Player melee attacks do increased knockback.",
+    "image": "T-Icon-Modifier-Pos-Player-MeleeKnockback-Buff-128"
+  },
+  "GM_Ninja_AbilityRate_Buff": {
+    "id": "gm_ninja_abilityrate_buff",
+    "name": "Focused Ninjas",
+    "description": "Ninja ability cool downs and energy costs are reduced.",
+    "image": "T-Icon-Modifier-Pos-Ninja-AbilityRate-Buff-128"
+  },
+  "GM_Player_Energy_DamageBuff": {
+    "id": "gm_player_energy_damagebuff",
+    "name": "Powerful Energy Attacks",
+    "description": "Player energy attacks do more damage.",
+    "image": "T-Icon-Modifier-Pos-Player-Energy-DamageBuff-128"
+  },
+  "GM_Soldier_AbilityRate_Buff": {
+    "id": "gm_soldier_abilityrate_buff",
+    "name": "Well Drilled Soldiers",
+    "description": "Soldier ability cool downs and energy costs are reduced.",
+    "image": "T-Icon-Modifier-Pos-Soldier-AbilityRate-Buff-128"
+  },
+  "GM_Constructor_BuildCost_Buff": {
+    "id": "gm_constructor_buildcost_buff",
+    "name": "Building Constructors",
+    "description": "Build, Upgrade, and Repair costs reduced for Constructors.",
+    "image": "T-Icon-Modifier-Pos-Constructor-BuildCost-Buff-128"
+  },
+  "GM_BaseHusk_OnDmgDealt_MetalCorrosion": {
+    "id": "gm_basehusk_ondmgdealt_metalcorrosion",
+    "name": "Metal Corrosion",
+    "description": "Basic husk melee attacks cause metal buildings to corrode, periodically damaging them for a time.",
+    "image": "T-Icon-Modifier-Neg-Enemy-OnDmgDealt-MetalCorrosion-128"
+  },
+  "GM_ImmuneToTraps": {
+    "id": "gm_immunetotraps",
+    "name": "Immune To Traps",
+    "description": "Enemies do not trigger traps.",
+    "image": "T-Icon-Modifier-Pos-Bldg-OnDeath-BuffEnemyEnvDmg-128"
+  },
+  "GM_Ninja_Sword_DamageBuff": {
+    "id": "gm_ninja_sword_damagebuff",
+    "name": "Sword Ninjas",
+    "description": "Ninjas do more damage and crit more often with swords.",
+    "image": "T-Icon-Modifier-Pos-Ninja-Sword-DamageBuff-128"
+  },
+  "GM_Player_OnRepair_TakeDamage": {
+    "id": "gm_player_onrepair_takedamage",
+    "name": "Blood, Sweat, and Tears",
+    "description": "Heroes take damage when they repair buildings",
+    "image": "T-Icon-Modifier-Neg-Player-OnRepair-TakeDamage-128"
+  }
+}

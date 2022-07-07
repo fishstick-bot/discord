@@ -8,7 +8,7 @@ const myFormat = printf(
   ({ level, message, label: _label }) =>
     `${moment.utc().format('HH:mm:ss')} | ${level
       .toUpperCase()
-      .padEnd(7)} | ${_label.toUpperCase().padEnd(17)} | ${message}`,
+      .padEnd(7)} | ${_label.toUpperCase().padEnd(20)} | ${message}`,
 );
 
 const getLogger = (name: string) =>

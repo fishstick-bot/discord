@@ -85,6 +85,46 @@ class API {
         image: { type: 'string' },
       },
     });
+
+    this.server.addSchema({
+      $id: 'STWMission',
+      type: 'object',
+      properties: {
+        id: { type: 'string' },
+        show: { type: 'boolean' },
+        missionType: { type: 'string' },
+        icon: { type: 'string' },
+        area: { type: 'string' },
+        biome: { type: 'string' },
+        powerLevel: { type: 'number' },
+        isGroupMission: { type: 'boolean' },
+        modifiers: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              description: { type: 'string' },
+              icon: { type: 'string', nullable: true },
+            },
+          },
+        },
+        rewards: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'string' },
+              name: { type: 'string' },
+              rarity: { type: 'string' },
+              repeatable: { type: 'boolean' },
+              amount: { type: 'number' },
+            },
+          },
+        },
+      },
+    });
   }
 
   private async handleRoutes() {
@@ -128,6 +168,26 @@ class API {
 
         const cosmetics = this.bot.cosmeticService.parsedCosmetics;
         return cosmetics;
+      },
+    );
+
+    this.server.get(
+      '/api/stwMissions',
+      {
+        schema: {
+          response: {
+            200: {
+              type: 'array',
+              items: { $ref: 'STWMission#' },
+            },
+          },
+        },
+      },
+      async (req, res) => {
+        this.logger.info(`GET /api/stwMissions [${req.ip}]`);
+
+        const { missions } = this.bot.stwMissionsService;
+        return missions;
       },
     );
   }
