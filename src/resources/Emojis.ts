@@ -102,6 +102,8 @@ const Emojies = {
     '<:shieldregen:827148048559505438>',
   'Homebase.Worker.SetBonus.IsTrapDamageLow':
     '<:trapdamage:827148030351769622>',
+
+  Gold: '<:gold:849062318306099231>',
 };
 
 export default Emojies;

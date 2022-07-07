@@ -190,6 +190,26 @@ class API {
         return missions;
       },
     );
+
+    this.server.get(
+      '/api/stwVbucksMissions',
+      {
+        schema: {
+          response: {
+            200: {
+              type: 'array',
+              items: { $ref: 'STWMission#' },
+            },
+          },
+        },
+      },
+      async (req, res) => {
+        this.logger.info(`GET /api/stwVbucksMissions [${req.ip}]`);
+
+        const { mtxAlerts } = this.bot.stwMissionsService;
+        return mtxAlerts;
+      },
+    );
   }
 }
 

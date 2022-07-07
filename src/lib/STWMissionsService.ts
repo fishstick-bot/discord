@@ -70,6 +70,22 @@ class STWMissionsService {
     );
   }
 
+  public get mtxAlerts(): ISTWMission[] {
+    return this.missions.filter((m) =>
+      m.rewards.some((r) => r.id === 'AccountResource:currency_mtxswap'),
+    );
+  }
+
+  public get totalMtx(): number {
+    return this.mtxAlerts
+      .map(
+        (m) =>
+          m.rewards.find((r) => r.id === 'AccountResource:currency_mtxswap')!
+            .amount,
+      )
+      .reduce((a, b) => a + b, 0);
+  }
+
   private async fetchMissions(): Promise<ISTWMission[]> {
     let start = Date.now();
     try {
