@@ -88,6 +88,20 @@ const Emojies = {
   pickaxe: '<:pickaxe:993629891583033354>',
   buildrepairspeed: '<:buildrepairspeed:993629945362387014>',
   buildinghealth: '<:building_health:993629911405309963>',
+
+  'Homebase.Worker.SetBonus.IsResistanceLow':
+    '<:resistance:827148065579597846>',
+  'Homebase.Worker.SetBonus.IsTrapDurabilityHigh':
+    '<:trapdura:827148015340617769>',
+  'Homebase.Worker.SetBonus.IsAbilityDamageLow':
+    '<:ability:827148142038089758>',
+  'Homebase.Worker.SetBonus.IsFortitudeLow': '<:fortitude:803327857056284722>',
+  'Homebase.Worker.SetBonus.IsRangedDamageLow': '<:ranged:827148084055375924>',
+  'Homebase.Worker.SetBonus.IsMeleeDamageLow': '<:melee:827150104301404220>',
+  'Homebase.Worker.SetBonus.IsShieldRegenLow':
+    '<:shieldregen:827148048559505438>',
+  'Homebase.Worker.SetBonus.IsTrapDamageLow':
+    '<:trapdamage:827148030351769622>',
 };
 
 export default Emojies;

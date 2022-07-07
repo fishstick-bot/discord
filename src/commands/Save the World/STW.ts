@@ -106,6 +106,9 @@ const Command: ICommand = {
     }
 
     const stwData = JSON.parse(await fs.readFile('assets/STW.json', 'utf-8'));
+    const stwSurvivorBonuses = JSON.parse(
+      await fs.readFile('assets/SurvivorSquadBonuses.json', 'utf-8'),
+    );
     const venturesData = JSON.parse(
       await fs.readFile('assets/PhoenixLevelRewardsTable.json', 'utf-8'),
     );
@@ -142,6 +145,31 @@ const Command: ICommand = {
       let backpackSize = 50;
       let storageSize = 0;
       let researchPoints = 0;
+      const survivorSquadBonuses: {
+        [key: string]: any;
+      } = {};
+      Object.values(stw?.survivorSquads!).forEach((squad) => {
+        const squadBonus: {
+          [key: string]: number;
+        } = {};
+        squad.forEach((s: any) => {
+          if (s.setBonus) {
+            if (!squadBonus[s.setBonus]) {
+              squadBonus[s.setBonus] = 0;
+            }
+            squadBonus[s.setBonus] += 1;
+          }
+        });
+        Object.keys(squadBonus).forEach((bonus) => {
+          if (!survivorSquadBonuses[bonus]) {
+            survivorSquadBonuses[bonus] = 0;
+          }
+          survivorSquadBonuses[bonus] +=
+            Math.floor(
+              squadBonus[bonus] / stwSurvivorBonuses[bonus].minimumSurvivors,
+            ) * parseInt(stwSurvivorBonuses[bonus].bonus, 10);
+        });
+      });
       const ssds: {
         [key: string]: number;
       } = {
@@ -215,6 +243,7 @@ const Command: ICommand = {
 
       return {
         mfa,
+        survivorSquadBonuses,
         backpackSize,
         storageSize,
         researchPoints,
@@ -233,11 +262,16 @@ const Command: ICommand = {
         ssds,
         endurances,
         brxp,
+        survivorSquadBonuses,
       } = getSTWStats();
 
       const embed = rawEmbed()
         .setDescription(
-          `• Account Level: **${stw?.stats.actualLevel.toLocaleString()}**
+          `• Account Level: **${(
+            stw?.stats.actualLevel ??
+            stw?.stats.level ??
+            0
+          ).toLocaleString()}**
 • Backpack Size: **${backpackSize}**
 • Storage Size: **${storageSize}**
 • Zones Completed: **${stw?.stats.matchesPlayed.toLocaleString()}**
@@ -258,9 +292,12 @@ const Command: ICommand = {
                   (stw?.stats.researchLevels! as any)[s]
                 }`,
             )
-            .join(' ')} ${
-            Emojis.research
-          } ${researchPoints.toLocaleString()}**`,
+            .join(' ')} ${Emojis.research} ${researchPoints.toLocaleString()}**
+• ${Object.keys(survivorSquadBonuses)
+            .map(
+              (b) => `${(Emojis as any)[b]!} **+${survivorSquadBonuses[b]}%**`,
+            )
+            .join(' ')}`,
         )
         .addField(
           'SSD Completions',

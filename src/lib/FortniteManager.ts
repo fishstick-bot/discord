@@ -89,6 +89,8 @@ class FortniteManager {
       fetchFriends: false,
       // eslint-disable-next-line no-console
       // debug: console.log,
+      // eslint-disable-next-line no-console
+      // httpDebug: console.log,
     });
     await client.login();
     this.clients.set(client.user!.id, client);
