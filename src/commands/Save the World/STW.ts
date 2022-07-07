@@ -16,6 +16,7 @@ import approx from 'approximate-number';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
+import type ISTWMission from '../../structures/STWMission';
 import Emojis from '../../resources/Emojis';
 import Sort from '../../lib/Sort';
 import drawSTWResources from '../../lib/images/STWResources';
@@ -115,6 +116,12 @@ const Command: ICommand = {
     const stwQuests = JSON.parse(
       await fs.readFile('assets/STWQuests.json', 'utf-8'),
     );
+    const stwMissions = (
+      await client.http.send(
+        'GET',
+        `http://localhost:${bot._config.apiPort}/api/stwMissions`,
+      )
+    ).response.data as ISTWMission[];
 
     const rawEmbed = () => {
       const embed = new MessageEmbed()
@@ -666,6 +673,62 @@ ${questData.reward
       return embed;
     };
 
+    const createSTWCompletedAlertsEmbed = () => {
+      if (stwMissions.length === 0) {
+        throw new Error('No STW missions found in bot data.');
+      }
+
+      const completed =
+        (
+          stw?.stats.missionAlertRedemptionRecord?.map((a) => ({
+            alert: stwMissions.find((m) => m.id === a.missionAlertId),
+            time: a.evictClaimDataAfterUtc,
+          })) ?? []
+        ).filter((a) => a && a.alert !== undefined) ?? [];
+
+      const embeds = [];
+
+      if (completed.length === 0) {
+        return [
+          rawEmbed()
+            .setTitle(
+              `[${stw?.powerLevel.toFixed(2)}] ${
+                player ?? epicAccount.displayName
+              }'s STW Completed Alerts`,
+            )
+            .setDescription(`No completed alerts found.`),
+        ];
+      }
+
+      for (let i = 0; i < completed.length; i += 10) {
+        const embed = rawEmbed().setTitle(
+          `[${stw?.powerLevel.toFixed(2)}] ${
+            player ?? epicAccount.displayName
+          }'s STW Completed Alerts`,
+        );
+        embed.setDescription(
+          completed
+            .slice(i, i + 10)
+            .map(
+              (a) =>
+                `• ~~**[${a.alert!.powerLevel}] ${a.alert!.missionType}**~~
+${a.alert!.area}
+${a
+  .alert!.rewards.filter((r) => !r.repeatable)
+  .map(
+    (r) => `${(Emojis as any)[r.id] ?? r.id} **${r.amount.toLocaleString()}x**`,
+  )
+  .join(' ')}`,
+            )
+            .join('\n\n'),
+        );
+
+        embeds.push(embed);
+      }
+
+      return embeds;
+    };
+
     const createBtns = (disabled = false) => {
       const refreshButton = new MessageButton()
         .setCustomId('refresh')
@@ -732,6 +795,13 @@ ${questData.reward
               default: mode === 'stwweeklyquests',
               description: 'View Save the World Weekly Quests progress.',
             },
+            {
+              label: 'Save the World Completed Alerts',
+              value: 'stwcompletedalerts',
+              default: mode === 'stwcompletedalerts',
+              description:
+                'View Save the World Completed Mission Alerts for the day.',
+            },
           ])
           .setDisabled(disabled),
       );
@@ -796,6 +866,10 @@ ${questData.reward
 
           case 'stwweeklyquests':
             embeds.push(createSTWWeeklyQuestsEmbed());
+            break;
+
+          case 'stwcompletedalerts':
+            embeds.push(...createSTWCompletedAlertsEmbed());
             break;
         }
 
