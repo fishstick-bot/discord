@@ -89,6 +89,8 @@ const Emojis = {
   buildrepairspeed: '<:buildrepairspeed:993629945362387014>',
   buildinghealth: '<:building_health:993629911405309963>',
 
+  ventures: '<:ventures:806442530198519808>',
+
   'Homebase.Worker.SetBonus.IsResistanceLow':
     '<:resistance:827148065579597846>',
   'Homebase.Worker.SetBonus.IsTrapDurabilityHigh':

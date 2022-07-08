@@ -19,8 +19,8 @@ const gap = 60 * mult;
 const imgX = 500 * mult;
 const imgY = 530 * mult;
 
-const drawSTWResource = async (item: KeyValuePair) => {
-  const outpath = `./STWResources/${item.id}.png`;
+const drawSTWInventoryItem = async (item: KeyValuePair) => {
+  const outpath = `./STWInventory/${item.id}.png`;
 
   const canvas = new Canvas(imgX, imgX);
   const ctx = canvas.getContext('2d');
@@ -78,10 +78,11 @@ const drawSTWResource = async (item: KeyValuePair) => {
   return outpath;
 };
 
-const drawSTWResources = async (
+const drawSTWInventory = async (
   items: KeyValuePair,
   epicname: string,
   username: string,
+  inventoryType: string,
   png = true,
 ) => {
   const renderedLength = Math.ceil(Math.sqrt(items.length));
@@ -103,6 +104,8 @@ const drawSTWResources = async (
   let featuredY = gap * 2 + 128 * headerScale;
   let rendered = 0;
 
+  const pl = await loadImage('./assets/STW.png');
+
   // eslint-disable-next-line no-restricted-syntax
   for await (const item of items) {
     ctx.fillStyle = '#fff';
@@ -119,9 +122,9 @@ const drawSTWResources = async (
 
     let img;
     try {
-      img = await loadImage(`./STWResources/${item.id}.png`);
+      img = await loadImage(`./STWInventory/${item.id}.png`);
     } catch (e) {
-      img = await loadImage(await drawSTWResource(item));
+      img = await loadImage(await drawSTWInventoryItem(item));
     }
     ctx.drawImage(img, featuredX, featuredY);
 
@@ -136,6 +139,22 @@ const drawSTWResources = async (
     );
     ctx.shadowBlur = 0;
 
+    if (item.pl) {
+      ctx.drawImage(
+        pl,
+        featuredX,
+        featuredY + imgX * 0.05,
+        imgX * 0.3,
+        imgX * 0.3,
+      );
+      ctx.shadowBlur = 35;
+      ctx.font = `italic ${imgX * 0.2}px Burbank Big Rg Bk`;
+      ctx.shadowColor = '#000';
+      ctx.fillStyle = '#fff';
+      ctx.fillText(item.pl, featuredX + imgX * 0.25, featuredY + imgX * 0.25);
+      ctx.shadowBlur = 0;
+    }
+
     featuredX += imgX + gap;
     // eslint-disable-next-line no-plusplus
     rendered++;
@@ -145,16 +164,16 @@ const drawSTWResources = async (
     }
   }
 
-  if (!cache.stw) {
-    cache.stw = await loadImage('./assets/STW.png');
+  if (!cache.inventory) {
+    cache.inventory = await loadImage('./assets/STW.png');
   }
 
   drawWatermarks(
     ctx,
-    cache.stw,
+    cache.inventory,
     headerScale,
-    'RESOURCES',
-    `${items.length.toLocaleString()} Resources`,
+    'INVENTORY',
+    `${items.length.toLocaleString()} Items`,
     epicname,
     username,
     true,
@@ -167,4 +186,4 @@ const drawSTWResources = async (
   });
 };
 
-export default drawSTWResources;
+export default drawSTWInventory;

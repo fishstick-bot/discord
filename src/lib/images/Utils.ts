@@ -52,6 +52,112 @@ export function drawBackground(
   ctx.fillRect(0, 0, cX, cY);
 }
 
+// export function drawWatermarks(
+//   ctx: CanvasRenderingContext2D,
+//   icon: Image,
+//   scale: number,
+//   title: string,
+//   subtitle: string,
+//   epicname?: string,
+//   username?: string,
+//   promo: boolean = true,
+//   gap: number = 60 * 0.5,
+//   imgY: number = 530 * 0.5,
+// ) {
+//   // DRAW ICON OF IMAGE
+//   ctx.drawImage(
+//     icon,
+//     gap,
+//     gap,
+//     (imgY * 1.5 - gap) * scale,
+//     (imgY * 1.5 - gap) * scale,
+//   );
+
+//   // DRAW VECTOR NEXT TO ICON
+//   ctx.fillStyle = '#b1b0b1';
+
+//   const vectorSize = (imgY * 1.5 - gap) * scale;
+//   const vectorStartX = (imgY * 1.5 + gap) * scale + gap;
+//   const vectorStartY = gap;
+//   const vectorGap = gap;
+
+//   ctx.beginPath();
+//   ctx.moveTo(vectorStartX, vectorStartY);
+//   ctx.lineTo(
+//     vectorStartX + vectorGap * 2 * scale,
+//     vectorStartY + vectorGap * 2 * scale,
+//   );
+//   ctx.lineTo(vectorStartX - vectorGap * scale, vectorStartY + vectorSize);
+//   ctx.lineTo(
+//     vectorStartX - vectorGap * 2 * scale,
+//     vectorStartY + vectorSize - vectorGap * scale,
+//   );
+//   ctx.closePath();
+//   ctx.fill();
+
+//   // DRAW TITLE
+//   ctx.fillStyle = '#ffffff';
+//   ctx.textBaseline = 'middle';
+//   ctx.font = `italic ${imgY * 0.9 * scale}px Burbank Big Rg Bk`;
+//   ctx.fillText(
+//     title,
+//     vectorStartX + vectorGap * 3 * scale,
+//     imgY * 1.5 * scale -
+//       gap * scale * (scale === 1 ? 1.5 : 1) -
+//       imgY * 0.7 * scale,
+//   );
+
+//   // DRAW SUBTITLE
+//   ctx.fillStyle = '#b1b0b1';
+//   ctx.textBaseline = 'middle';
+//   ctx.font = `italic ${imgY * 0.7 * scale}px Burbank Big Rg Bk`;
+//   ctx.fillText(
+//     subtitle.toUpperCase(),
+//     vectorStartX + vectorGap * scale * (scale === 1 ? 1.5 : 1),
+//     imgY * 1.5 * scale - gap * scale * (scale === 1 ? 1.5 : 1),
+//   );
+
+//   // DRAW EPICNAME
+//   if (epicname) {
+//     ctx.fillStyle = '#ffffff';
+//     ctx.textBaseline = 'middle';
+//     ctx.font = `italic ${imgY * 0.9 * scale}px Burbank Big Rg Bk`;
+//     ctx.fillText(
+//       epicname,
+//       ctx.canvas.width - ctx.measureText(epicname).width - gap * 2,
+//       imgY * 1.5 * scale -
+//         gap * scale * (scale === 1 ? 1.5 : 1) -
+//         imgY * 0.7 * scale,
+//     );
+//   }
+
+//   // DRAW USERNAME
+//   if (username) {
+//     ctx.fillStyle = '#b1b0b1';
+//     ctx.textBaseline = 'middle';
+//     ctx.font = `italic ${imgY * 0.7 * scale}px Burbank Big Rg Bk`;
+//     ctx.fillText(
+//       username,
+//       ctx.canvas.width -
+//         ctx.measureText(username).width -
+//         gap * 2 * (scale === 1 ? 1.5 : 1),
+//       imgY * 1.5 * scale - gap * scale * (scale === 1 ? 1.5 : 1),
+//     );
+//   }
+
+//   // DRAW DISCORD.GG/FISHSTICK
+//   if (promo) {
+//     ctx.fillStyle = '#ffffff';
+//     ctx.textBaseline = 'middle';
+//     ctx.font = `italic 50px Burbank Big Rg Bk`;
+//     ctx.fillText(
+//       'discord.gg/Fishstick',
+//       (ctx.canvas.width - ctx.measureText('discord.gg/fishstick').width) / 2,
+//       ctx.canvas.height - 40,
+//     );
+//   }
+// }
+
 export function drawWatermarks(
   ctx: CanvasRenderingContext2D,
   icon: Image,
@@ -62,35 +168,28 @@ export function drawWatermarks(
   username?: string,
   promo: boolean = true,
   gap: number = 60 * 0.5,
-  imgY: number = 530 * 0.5,
 ) {
   // DRAW ICON OF IMAGE
-  ctx.drawImage(
-    icon,
-    gap,
-    gap,
-    (imgY * 1.5 - gap) * scale,
-    (imgY * 1.5 - gap) * scale,
-  );
+  ctx.drawImage(icon, gap, gap, 128 * scale, 128 * scale);
 
   // DRAW VECTOR NEXT TO ICON
   ctx.fillStyle = '#b1b0b1';
 
-  const vectorSize = (imgY * 1.5 - gap) * scale;
-  const vectorStartX = (imgY * 1.5 + gap) * scale + gap;
-  const vectorStartY = gap;
+  const vectorSize = 112 * scale;
+  const vectorStartX = gap + 128 * scale;
+  const vectorStartY = gap + 8 * scale;
   const vectorGap = gap;
 
   ctx.beginPath();
   ctx.moveTo(vectorStartX, vectorStartY);
   ctx.lineTo(
-    vectorStartX + vectorGap * 2 * scale,
-    vectorStartY + vectorGap * 2 * scale,
+    vectorStartX + (vectorGap / 2) * scale,
+    vectorStartY + vectorGap * scale,
   );
-  ctx.lineTo(vectorStartX - vectorGap * scale, vectorStartY + vectorSize);
+  ctx.lineTo(vectorStartX - (vectorGap / 2) * scale, vectorStartY + vectorSize);
   ctx.lineTo(
-    vectorStartX - vectorGap * 2 * scale,
-    vectorStartY + vectorSize - vectorGap * scale,
+    vectorStartX - vectorGap * scale,
+    vectorStartY + vectorSize - (vectorGap / 2) * scale,
   );
   ctx.closePath();
   ctx.fill();
@@ -98,36 +197,28 @@ export function drawWatermarks(
   // DRAW TITLE
   ctx.fillStyle = '#ffffff';
   ctx.textBaseline = 'middle';
-  ctx.font = `italic ${imgY * 0.9 * scale}px Burbank Big Rg Bk`;
-  ctx.fillText(
-    title,
-    vectorStartX + vectorGap * 3 * scale,
-    imgY * 1.5 * scale -
-      gap * scale * (scale === 1 ? 1.5 : 1) -
-      imgY * 0.7 * scale,
-  );
+  ctx.font = `italic ${72 * scale}px Burbank Big Rg Bk`;
+  ctx.fillText(title, gap + (128 + 44) * scale, gap + 55 * scale);
 
   // DRAW SUBTITLE
   ctx.fillStyle = '#b1b0b1';
   ctx.textBaseline = 'middle';
-  ctx.font = `italic ${imgY * 0.7 * scale}px Burbank Big Rg Bk`;
+  ctx.font = `italic ${40 * scale}px Burbank Big Rg Bk`;
   ctx.fillText(
     subtitle.toUpperCase(),
-    vectorStartX + vectorGap * scale * (scale === 1 ? 1.5 : 1),
-    imgY * 1.5 * scale - gap * scale * (scale === 1 ? 1.5 : 1),
+    gap + (128 + 44) * scale,
+    gap + 112 * scale,
   );
 
   // DRAW EPICNAME
   if (epicname) {
     ctx.fillStyle = '#ffffff';
     ctx.textBaseline = 'middle';
-    ctx.font = `italic ${imgY * 0.9 * scale}px Burbank Big Rg Bk`;
+    ctx.font = `italic ${72 * scale}px Burbank Big Rg Bk`;
     ctx.fillText(
       epicname,
       ctx.canvas.width - ctx.measureText(epicname).width - gap * 2,
-      imgY * 1.5 * scale -
-        gap * scale * (scale === 1 ? 1.5 : 1) -
-        imgY * 0.7 * scale,
+      gap + 55 * scale,
     );
   }
 
@@ -135,13 +226,13 @@ export function drawWatermarks(
   if (username) {
     ctx.fillStyle = '#b1b0b1';
     ctx.textBaseline = 'middle';
-    ctx.font = `italic ${imgY * 0.7 * scale}px Burbank Big Rg Bk`;
+    ctx.font = `italic ${40 * scale}px Burbank Big Rg Bk`;
     ctx.fillText(
       username,
       ctx.canvas.width -
         ctx.measureText(username).width -
         gap * 2 * (scale === 1 ? 1.5 : 1),
-      imgY * 1.5 * scale - gap * scale * (scale === 1 ? 1.5 : 1),
+      gap + 112 * scale,
     );
   }
 
@@ -149,11 +240,11 @@ export function drawWatermarks(
   if (promo) {
     ctx.fillStyle = '#ffffff';
     ctx.textBaseline = 'middle';
-    ctx.font = `italic 50px Burbank Big Rg Bk`;
+    ctx.font = `italic ${40 * scale}px Burbank Big Rg Bk`;
     ctx.fillText(
       'discord.gg/Fishstick',
       (ctx.canvas.width - ctx.measureText('discord.gg/fishstick').width) / 2,
-      ctx.canvas.height - 40,
+      ctx.canvas.height - 40 * scale,
     );
   }
 }
