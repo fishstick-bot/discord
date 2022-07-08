@@ -217,7 +217,7 @@ export function drawWatermarks(
     ctx.font = `italic ${72 * scale}px Burbank Big Rg Bk`;
     ctx.fillText(
       epicname,
-      ctx.canvas.width - ctx.measureText(epicname).width - gap * 2,
+      ctx.canvas.width - ctx.measureText(epicname).width - gap,
       gap + 55 * scale,
     );
   }
@@ -229,9 +229,7 @@ export function drawWatermarks(
     ctx.font = `italic ${40 * scale}px Burbank Big Rg Bk`;
     ctx.fillText(
       username,
-      ctx.canvas.width -
-        ctx.measureText(username).width -
-        gap * 2 * (scale === 1 ? 1.5 : 1),
+      ctx.canvas.width - ctx.measureText(username).width - gap,
       gap + 112 * scale,
     );
   }
