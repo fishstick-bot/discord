@@ -64,16 +64,7 @@ const getItems = async (
     return {
       id: i.templateId.split(':')[1].toLowerCase(),
       quantity: i.quantity,
-      pl: isSchematic
-        ? calcSTWNonSurvivorPowerLevel(
-            (/_(c|uc|r|vr|sr|ur)_(?=(crystal|ore|t))/.exec(
-              i.templateId,
-            )?.[1] as any) ?? 'c',
-            i.attributes.level,
-            (parseInt(/t([0-9]+)$/.exec(i.templateId)?.[1] ?? '', 10) as any) ??
-              0,
-          )
-        : null,
+      pl,
     };
   });
 
