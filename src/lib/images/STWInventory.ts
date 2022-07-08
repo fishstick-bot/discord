@@ -59,9 +59,19 @@ const drawSTWInventoryItem = async (item: KeyValuePair) => {
   // draw the background
   ctx.drawImage(bgImg, 0, 0, imgX, imgX);
 
-  // draw the item
-  const img = await loadImage(`./STWImages/${item.id}.png`);
-  ctx.drawImage(img, 0 + imgX * 0.05, 0 + imgX * 0.05, imgX * 0.9, imgX * 0.9);
+  try {
+    // draw the item
+    const img = await loadImage(`./STWImages/${item.id}.png`);
+    ctx.drawImage(
+      img,
+      0 + imgX * 0.05,
+      0 + imgX * 0.05,
+      imgX * 0.9,
+      imgX * 0.9,
+    );
+  } catch (e) {
+    // ignore the error
+  }
 
   try {
     // save the file
@@ -94,7 +104,7 @@ const drawSTWInventory = async (
     gap +
     renderedLength * gap +
     headerScale * 128 +
-    headerScale * 75;
+    headerScale * 80;
   const canvas = new Canvas(cX, cY);
   const ctx = canvas.getContext('2d');
 

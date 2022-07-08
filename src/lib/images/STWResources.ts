@@ -93,7 +93,7 @@ const drawSTWResources = async (
     gap +
     renderedLength * gap +
     headerScale * 128 +
-    headerScale * 75;
+    headerScale * 80;
   const canvas = new Canvas(cX, cY);
   const ctx = canvas.getContext('2d');
 
