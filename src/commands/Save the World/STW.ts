@@ -70,6 +70,8 @@ const Command: ICommand = {
     );
 
     let playerAccountID: string | null = null;
+    let psn: string | null = null;
+    let xbl: string | null = null;
     if (player) {
       const playerAccount = await bot.fortniteManager.searchPlayer(
         epicAccount.accountId,
@@ -84,6 +86,8 @@ const Command: ICommand = {
       if (playerAccount.displayName) {
         player = playerAccount.displayName;
       }
+      psn = playerAccount.psn;
+      xbl = playerAccount.xbl;
     }
 
     let stw: STWProfile | null = null;
@@ -274,16 +278,20 @@ const Command: ICommand = {
 
       const embed = rawEmbed()
         .setDescription(
-          `• Account Level: **${(
+          `${psn ? `• ${Emojis.psn} **${psn}**\n` : ''}${
+            xbl ? `• ${Emojis.xbl} **${xbl}**\n` : ''
+          }• Account Level: **${(
             stw?.stats.actualLevel ??
             stw?.stats.level ??
             0
           ).toLocaleString()}**
 • Backpack Size: **${backpackSize}**
 • Storage Size: **${storageSize}**
-• Zones Completed: **${stw?.stats.matchesPlayed.toLocaleString()}**
-• Collection Book Level: **${stw?.stats.collectionBookMaxXPLevel?.toLocaleString()}**
-• Unslot Cost: **${stw?.stats.unslotMtxSpend.toLocaleString()}**
+• Zones Completed: **${(stw?.stats.matchesPlayed ?? 0).toLocaleString()}**
+• Collection Book Level: **${(
+            stw?.stats.collectionBookMaxXPLevel ?? 0
+          )?.toLocaleString()}**
+• Unslot Cost: **${(stw?.stats.unslotMtxSpend ?? 0).toLocaleString()}**
 • FORT Stats: **${Object.keys(stw?.FORTStats!)
             .map(
               (s) =>

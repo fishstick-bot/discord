@@ -243,6 +243,8 @@ class FortniteManager {
 
     let searchedAccountId: string | null = null;
     let searchedDisplayName: string | null = null;
+    let psn: string | null = null;
+    let xbl: string | null = null;
 
     if (prefix.length === 32) {
       const accountIdSearch = await client.getProfile(prefix);
@@ -254,6 +256,8 @@ class FortniteManager {
       return {
         accountId: accountIdSearch.id,
         displayName: accountIdSearch.displayName ?? accountIdSearch.id,
+        psn,
+        xbl,
       };
     }
 
@@ -271,6 +275,8 @@ class FortniteManager {
         ) {
           searchedAccountId = s.id;
           searchedDisplayName = match.value ?? s.id;
+          psn = s.externalAuths.psn?.externalDisplayName ?? null;
+          xbl = s.externalAuths.xbl?.externalDisplayName ?? null;
           break;
         }
       }
@@ -289,45 +295,8 @@ ${probableMatches}`);
     return {
       accountId: searchedAccountId!,
       displayName: searchedDisplayName!,
-    };
-  }
-
-  public async getSTWProfile(
-    accountId: string,
-    player: string,
-  ): Promise<STWProfile> {
-    if (!this.clients.has(accountId)) {
-      throw new Error('No client found for this account.');
-    }
-
-    const client = this.clients.get(accountId)!;
-
-    const stw = await client.getSTWProfile(player);
-
-    const mfa = stw.stats.mfaRewardClaimed;
-    let backpackSize = 50;
-    const storageSize = 0;
-
-    // eslint-disable-next-line no-restricted-syntax
-    for (const item of stw.items) {
-      if (item.templateId === 'HomebaseNode:skilltree_backpacksize') {
-        backpackSize = item.quantity * 20;
-      }
-    }
-
-    if (mfa) {
-      backpackSize += 10;
-    }
-
-    return {
-      // stw resources for the profile
-      resources: stw.resources.map((r) => ({
-        id: r.templateId.split(':')[1],
-        quantity: r.quantity,
-      })),
-      accountLevel: stw.stats.actualLevel,
-      backpackSize,
-      storageSize,
+      psn,
+      xbl,
     };
   }
 }

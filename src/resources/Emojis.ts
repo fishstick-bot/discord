@@ -1,4 +1,4 @@
-const Emojies = {
+const Emojis = {
   cross: '<:no:901487039474696232>',
   tick: '<:tick:901487022005436477>',
   star: '<:star:907276087174778900>',
@@ -104,6 +104,10 @@ const Emojies = {
     '<:trapdamage:827148030351769622>',
 
   Gold: '<:gold:849062318306099231>',
+
+  epicgames: '<:epic:994979613488992287>',
+  xbl: '<:xbox:994979639023906898>',
+  psn: '<:ps4:994979582392414358>',
 };
 
-export default Emojies;
+export default Emojis;
