@@ -189,13 +189,13 @@ This menu contains special items you want to view in your locker image.
     );
     const ownedStyles = items
       .map((i) =>
-        (i.variants ?? []).map((v: any) =>
+        (i.attributes.variants ?? []).map((v: any) =>
           (v.owned ?? []).map((o: any) =>
             `${i.templateId.split(':')[1]}-${o}`.toLowerCase(),
           ),
         ),
       )
-      .flat();
+      .flat(2);
 
     let allItems: any = await client.http.send(
       'GET',
