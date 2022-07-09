@@ -106,6 +106,20 @@ class Bot extends Client {
       `Logged in as ${this.user?.tag} [${(Date.now() - start).toFixed(2)}ms]`,
     );
 
+    // set bot status
+    this.user?.setActivity({
+      type: 'PLAYING',
+      name: `/help in ${await this.getGuildCount()} servers`,
+    });
+
+    // set bot status every 5mins
+    setInterval(async () => {
+      this.user?.setActivity({
+        type: 'PLAYING',
+        name: `/help in ${await this.getGuildCount()} servers`,
+      });
+    }, 5 * 60 * 1000);
+
     // connect to database
     await connectToDatabase();
 
