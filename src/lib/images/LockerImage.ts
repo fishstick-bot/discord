@@ -1,6 +1,9 @@
 // import { Canvas, loadImage, FontLibrary } from 'skia-canvas';
-import { registerFont, loadImage, Canvas } from 'canvas';
+import { registerFont, loadImage, Canvas, Image } from 'canvas';
 // import { promises as fs } from 'fs';
+import fs from 'fs';
+
+import { roundRect, drawBackground, drawWatermarks } from './Utils';
 
 // FontLibrary.use('Burbank Big Regular', 'assets/Fonts/BurbankBigRegular-Black.otf');
 registerFont('./assets/Fonts/BurbankBigRegular-Black.otf', {
@@ -13,7 +16,7 @@ interface KeyValuePair {
 }
 
 const mult = 0.5;
-// const gap = 60 * mult;
+const gap = 60 * mult;
 const imgX = 500 * mult;
 const imgY = 530 * mult;
 let fontSize: number;
@@ -43,6 +46,8 @@ const getCachedImage = async (
   return canvas;
 };
 
+const cache: { [key: string]: Image } = {};
+
 const overlayColors: KeyValuePair = {
   common: 'rgba(96,170,58,1)',
   uncommon: 'rgba(96,170,58,1)',
@@ -62,7 +67,9 @@ const overlayColors: KeyValuePair = {
   gaminglegends: 'rgba(117,108,235,1)',
 };
 
-const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
+const drawLockerItem = async (item: KeyValuePair) => {
+  const outpath = `./Cosmetics/${item.type}/${item.rarity}/${item.id}.png`;
+
   const canvas = new Canvas(imgX, imgY);
   const ctx = canvas.getContext('2d');
 
@@ -344,14 +351,102 @@ const drawLockerItem = async (item: KeyValuePair): Promise<Buffer> => {
 
   ctx.fillText(rarityText, imgX / 2, imgY * 0.885);
 
-  const buffer = canvas.toBuffer('image/png');
-  // await fs.writeFile('test.png', buffer);
-  return buffer;
+  try {
+    // save the file
+    await fs.promises.writeFile(outpath, canvas.toBuffer('image/png'));
+  } catch (e) {
+    let outdir: any = outpath.split('/');
+    outdir.pop();
+    outdir = outdir.join('/');
+    await fs.promises.mkdir(outdir, {
+      recursive: true,
+    });
+
+    // save the file
+    await fs.promises.writeFile(outpath, canvas.toBuffer('image/png'));
+  }
+
+  return outpath;
 };
 
-const drawLocker = async (items: KeyValuePair[]): Promise<Buffer> => {
-  items.sort();
-  throw new Error('Not implemented');
+const drawLocker = async (
+  items: KeyValuePair[],
+  epicname: string,
+  username: string,
+  png = false,
+): Promise<Buffer> => {
+  const renderedLength = Math.ceil(Math.sqrt(items.length));
+
+  const cX = imgX * renderedLength + gap + renderedLength * gap;
+  const headerScale = cX / 2000;
+  const cY =
+    imgY * Math.ceil(items.length / renderedLength) +
+    gap +
+    renderedLength * gap +
+    headerScale * 128 +
+    headerScale * 80;
+  const canvas = new Canvas(cX, cY); // create a canvas
+  const ctx = canvas.getContext('2d'); // get the context
+
+  drawBackground(ctx, cX, cY);
+
+  let featuredX = gap;
+  let featuredY = gap * 2 + 128 * headerScale;
+  let rendered = 0;
+
+  // eslint-disable-next-line no-restricted-syntax
+  for await (const item of items) {
+    ctx.fillStyle = '#fff';
+    roundRect(
+      ctx,
+      featuredX - gap / 4,
+      featuredY - gap / 4,
+      imgX + gap / 2,
+      imgY + gap / 2,
+      10,
+      true,
+      false,
+    );
+
+    let img;
+    try {
+      img = await loadImage(
+        `./Cosmetics/${item.type}/${item.rarity}/${item.id}.png`,
+      );
+    } catch (e) {
+      img = await loadImage(await drawLockerItem(item));
+    }
+    ctx.drawImage(img, featuredX, featuredY);
+
+    featuredX += imgX + gap;
+    // eslint-disable-next-line no-plusplus
+    rendered++;
+    if (rendered % renderedLength === 0) {
+      featuredX = gap;
+      featuredY += imgY + gap;
+    }
+  }
+
+  if (!cache.lockerIcon) {
+    cache.lockerIcon = await loadImage('./assets/LockerIcon.png');
+  }
+
+  drawWatermarks(
+    ctx,
+    cache.lockerIcon,
+    headerScale,
+    'LOCKER',
+    `${items.length.toLocaleString()} Cosmetics`,
+    epicname,
+    username,
+    true,
+    gap,
+  );
+
+  return canvas.toBuffer('image/jpeg', {
+    // eslint-disable-next-line no-nested-ternary
+    quality: png ? undefined : items.length > 196 ? 0.8 : 1,
+  });
 };
 
 export { drawLockerItem, drawLocker };

@@ -17,14 +17,38 @@ const priority: {
   dark: 14,
   frozen: 15,
   mythic: 16,
-  crew: 17,
-  exclusive: 18,
+  stw: 17,
+  crew: 18,
+  exclusive: 19,
 };
 
 const Sort = (items: any) => {
   items.sort((a: any, b: any) => {
-    const aPriority = priority[a.rarity] || 0;
-    const bPriority = priority[b.rarity] || 0;
+    let aRarity = a.rarity;
+    let bRarity = b.rarity;
+
+    if (a.isSTW) {
+      aRarity = 'stw';
+    }
+    if (a.isCrew) {
+      aRarity = 'crew';
+    }
+    if (a.isExclusive) {
+      aRarity = 'exclusive';
+    }
+
+    if (b.isSTW) {
+      bRarity = 'stw';
+    }
+    if (b.isCrew) {
+      bRarity = 'crew';
+    }
+    if (b.isExclusive) {
+      bRarity = 'exclusive';
+    }
+
+    const aPriority = priority[aRarity] || 0;
+    const bPriority = priority[bRarity] || 0;
 
     // if (bPriority - aPriority == 0) {
     //     return a.name.localeCompare(b.name);
