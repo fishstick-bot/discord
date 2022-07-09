@@ -1,4 +1,3 @@
-import { Interaction } from 'discord.js';
 import { promisify } from 'util';
 
 import type IEvent from '../../structures/Event';
@@ -9,7 +8,12 @@ const logger = getLogger('COMMAND');
 
 const Event: IEvent = {
   name: 'ready',
-  run: async (bot, interaction: Interaction) => {
+  run: async (bot) => {
+    bot.user?.setActivity({
+      type: 'PLAYING',
+      name: `/help in ${await bot.getGuildCount()} servers`,
+    });
+
     setInterval(async () => {
       bot.user?.setActivity({
         type: 'PLAYING',
