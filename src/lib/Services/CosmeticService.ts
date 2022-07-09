@@ -4,17 +4,18 @@ import type { Types } from 'mongoose';
 import { promisify } from 'util';
 import fs from 'fs';
 
-import Bot from '../client/Client';
-import getLogger from '../Logger';
-import Exclusives from '../resources/Exclusives.json';
-import Crew from '../resources/Crew.json';
+import Service from '../../structures/Service';
+import Bot from '../../client/Client';
+import getLogger from '../../Logger';
+import Exclusives from '../../resources/Exclusives.json';
+import Crew from '../../resources/Crew.json';
 import {
   ICosmetic,
   ICosmeticRarity,
   ICosmeticSeries,
   ICosmeticType,
   ICosmeticSet,
-} from '../database/models/typings';
+} from '../../database/models/typings';
 
 const wait = promisify(setTimeout);
 
@@ -22,10 +23,10 @@ interface KeyValuePair {
   [key: string]: any;
 }
 
-class CosmeticService {
+class CosmeticService implements Service {
   private bot: Bot;
 
-  public logger = getLogger('COSMETICS SERVICE');
+  private logger = getLogger('COSMETICS SERVICE');
 
   public cosmetics: Collection<string, ICosmetic> = new Collection();
 

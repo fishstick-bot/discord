@@ -1,9 +1,10 @@
 import Fastify, { FastifyInstance } from 'fastify';
 
-import Bot from '../client/Client';
-import getLogger from '../Logger';
+import Service from '../../structures/Service';
+import type Bot from '../../client/Client';
+import getLogger from '../../Logger';
 
-class API {
+class API implements Service {
   // bot
   private bot: Bot;
 
@@ -11,7 +12,7 @@ class API {
   public server: FastifyInstance;
 
   // logger for api
-  public logger = getLogger('API');
+  private logger = getLogger('API');
 
   constructor(bot: Bot) {
     this.bot = bot;

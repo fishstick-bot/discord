@@ -19,9 +19,9 @@ import {
   SurvivorSquadPresetModel,
   PremiumKeyModel,
 } from '../database/models';
-import CosmeticService from '../lib/CosmeticService';
-import STWMissionsService from '../lib/STWMissionsService';
-import API from '../lib/API';
+import CosmeticService from '../lib/Services/CosmeticService';
+import STWMissionsService from '../lib/Services/STWMissionsService';
+import API from '../lib/Services/API';
 import FortniteManager from '../lib/FortniteManager';
 import type { ICommand } from '../structures/Command';
 import type IEvent from '../structures/Event';

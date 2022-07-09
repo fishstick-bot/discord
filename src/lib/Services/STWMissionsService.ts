@@ -8,14 +8,15 @@ import { promisify } from 'util';
 import cron from 'node-cron';
 import { Endpoints, STWWorldInfoData } from 'fnbr';
 
-import Bot from '../client/Client';
-import getLogger from '../Logger';
+import Service from '../../structures/Service';
+import Bot from '../../client/Client';
+import getLogger from '../../Logger';
 // import STWItems from '../../assets/STW.json';
-import Modifiers from '../resources/STWModifiers.json';
-import STWMissionTypes from '../resources/STWMissionTypes.json';
-import STWBiomes from '../resources/STWBiomes.json';
-import ISTWMission from '../structures/STWMission';
-import STWMissionImages from '../resources/STWMissionImages';
+import Modifiers from '../../resources/STWModifiers.json';
+import STWMissionTypes from '../../resources/STWMissionTypes.json';
+import STWBiomes from '../../resources/STWBiomes.json';
+import ISTWMission from '../../structures/STWMission';
+import STWMissionImages from '../../resources/STWMissionImages';
 
 interface KeyValuePair {
   [key: string]: any;
@@ -30,10 +31,10 @@ Object.keys(Modifiers).forEach((key) => {
 
 const wait = promisify(setTimeout);
 
-class STWMissionsService {
+class STWMissionsService implements Service {
   private bot: Bot;
 
-  public logger = getLogger('STW MISSIONS SERVICE');
+  private logger = getLogger('STW MISSIONS SERVICE');
 
   private _rawMissionData: STWWorldInfoData;
   public missions: ISTWMission[];
