@@ -4,6 +4,8 @@ interface IConfig {
   readonly discordToken: string;
   readonly ownerDiscordID: string;
   readonly developmentGuild: string;
+  readonly dailyRewardsChannel: string;
+  readonly freeLlamasChannel: string;
   readonly suggestionsChannel: string;
   readonly mongoUri: string;
   readonly apiPort: number;

@@ -25,6 +25,7 @@ import API from '../lib/Services/API';
 import FortniteManager from '../lib/FortniteManager';
 import type { ICommand } from '../structures/Command';
 import type IEvent from '../structures/Event';
+import type Task from '../structures/Task';
 
 const globPromisify = promisify(glob);
 
@@ -132,13 +133,16 @@ class Bot extends Client {
 
       // start bot api
       this.botAPI.start();
-
-      // load commands
-      await this._loadCommands();
-
-      // load event listeners
-      await this._loadEventListeners();
     }
+
+    // load commands
+    await this._loadCommands();
+
+    // load event listeners
+    await this._loadEventListeners();
+
+    // load tasks
+    await this._loadTasks();
   }
 
   public get isMainProcess(): boolean {
@@ -192,6 +196,28 @@ class Bot extends Client {
       `Loaded ${eventFiles.length} events [${(Date.now() - start).toFixed(
         2,
       )}ms]`,
+    );
+  }
+
+  private async _loadTasks(): Promise<void> {
+    if (!this.isMainProcess) return;
+
+    const start = Date.now();
+    const taskFiles = await globPromisify(
+      `${__dirname}/../lib/Tasks/**/*{.ts,.js}`,
+    );
+
+    await Promise.all(
+      taskFiles.map(async (file) => {
+        // eslint-disable-next-line new-cap
+        const task: Task = new (await import(file)).default(this);
+        task.start();
+        this.logger.debug(`Loaded task ${file.split('.')[0].split('/').pop()}`);
+      }),
+    );
+
+    this.logger.info(
+      `Loaded ${taskFiles.length} tasks [${(Date.now() - start).toFixed(2)}ms]`,
     );
   }
 }

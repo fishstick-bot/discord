@@ -293,6 +293,7 @@ const Command: ICommand = {
           await interaction.editReply(
             `${Emojis.cross} ${target!.tag} is not premium.`,
           );
+          return;
         }
 
         if (targetUser.isPartner) {

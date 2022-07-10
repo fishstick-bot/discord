@@ -123,18 +123,18 @@ const Command: ICommand = {
         .setImage('attachment://AuthCode.png')
         .setDescription(
           `**How to Login**
-          **• Step 1**: Click on the Epic Games button below or this [URL](https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode).
-          
-          **• Step 2**: Copy the 32 digit code next to "authorizationCode".
-          Example: **aabbccddeeff11223344556677889900**
-          
-          **• Step 3**: Click on the Submit Code button below and submit your authorization code.
-          
-          **• Step 4**: You are finished.
-          
-          ⚠️ We recommend that you only log into accounts that you have email access to.
-          
-          **This message will timeout in 5 minutes.**`,
+**• Step 1**: Click on the Epic Games button below or this [URL](https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode).
+
+**• Step 2**: Copy the 32 digit code next to "authorizationCode".
+Example: **aabbccddeeff11223344556677889900**
+
+**• Step 3**: Click on the Submit Code button below and submit your authorization code.
+
+**• Step 4**: You are finished.
+
+⚠️ We recommend that you only log into accounts that you have email access to.
+
+**This message will timeout in 5 minutes.**`,
         );
 
       const authcodeImg = new MessageAttachment(
