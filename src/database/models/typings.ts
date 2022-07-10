@@ -6,3 +6,5 @@ export {
   ICosmeticSet,
   ICosmeticType,
 } from './Cosmetic/typings';
+export { ISurvivorSquadPreset, IEpicAccount, IUser } from './User/typings';
+export { IPremiumKey } from './PremiumKey/typings';

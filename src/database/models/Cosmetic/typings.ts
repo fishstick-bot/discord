@@ -31,22 +31,22 @@ export interface ICosmeticIntroducedIn {
 }
 
 export interface ICosmetic {
-    id: string;
-    name: string;
-    description: string;
-    type: Schema.Types.ObjectId | ICosmeticType;
-    rarity: Schema.Types.ObjectId | ICosmeticRarity;
-    series?: Schema.Types.ObjectId | ICosmeticSeries;
-    set?: Schema.Types.ObjectId | ICosmeticSet;
-    introduction?: ICosmeticIntroducedIn;
-    image: Buffer | null;
-    searchTags: string[];
-    gameplayTags: string[];
-    metaTags: string[];
-    showcaseVideo?: string;
-    path: string;
-    addedAt: Date;
-    shopHistory: Date[];
-    isExclusive: boolean;
-    isCrew: boolean;
-  }
+  id: string;
+  name: string;
+  description: string;
+  type: Schema.Types.ObjectId | ICosmeticType;
+  rarity: Schema.Types.ObjectId | ICosmeticRarity;
+  series?: Schema.Types.ObjectId | ICosmeticSeries;
+  set?: Schema.Types.ObjectId | ICosmeticSet;
+  introduction?: ICosmeticIntroducedIn;
+  image: string;
+  searchTags: string[];
+  gameplayTags: string[];
+  metaTags: string[];
+  showcaseVideo?: string;
+  path: string;
+  addedAt: Date;
+  shopHistory: Date[];
+  isExclusive: boolean;
+  isCrew: boolean;
+}

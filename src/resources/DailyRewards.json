@@ -1,0 +1,1682 @@
+[
+  {
+    "amount": 300,
+    "templateId": "AccountResource:heroxp",
+    "name": "Hero XP"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_custom_firecracker_r",
+    "name": "Rare Firecracker Pistol"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_defender_r",
+    "name": "Rare Defender"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_vr",
+    "name": "Epic Hero"
+  },
+  {
+    "amount": 50,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_manager_r",
+    "name": "Epic Lead Survivor"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_worker_vr",
+    "name": "Epic Survivor"
+  },
+  {
+    "amount": 1,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_sr",
+    "name": "Legendary Hero"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_manager_r",
+    "name": "Epic Lead Survivor"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_sr",
+    "name": "Legendary Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_sr",
+    "name": "Legendary Hero"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_sr",
+    "name": "Legendary Hero"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 800,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 800,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 300,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_hero_r",
+    "name": "Rare Hero"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost",
+    "name": "XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 10,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_ranged_r",
+    "name": "Rare Ranged Weapon Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 3,
+    "templateId": "ConsumableAccountItem:smallxpboost_gift",
+    "name": "Teammate XP Boost"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_choice_trap_r",
+    "name": "Rare Trap Schematic"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t02",
+    "name": "Lightning in a Bottle"
+  },
+  {
+    "amount": 150,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  },
+  {
+    "amount": 15,
+    "templateId": "AccountResource:reagent_c_t01",
+    "name": "Pure Drop of Rain"
+  },
+  {
+    "amount": 20,
+    "templateId": "AccountResource:eventcurrency_scaling",
+    "name": "Gold"
+  },
+  {
+    "amount": 2,
+    "templateId": "AccountResource:voucher_basicpack",
+    "name": "Mini Reward Llama"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_melee_r",
+    "name": "Rare Melee Weapon Schematic"
+  },
+  {
+    "amount": 1,
+    "templateId": "CardPack:cardpack_bronze",
+    "name": "Upgrade Llama"
+  },
+  {
+    "amount": 5,
+    "templateId": "AccountResource:reagent_c_t03",
+    "name": "Eye of the Storm"
+  },
+  {
+    "amount": 1000,
+    "templateId": "Currency:mtxgiveaway",
+    "name": "V-bucks"
+  }
+]

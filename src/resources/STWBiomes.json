@@ -1,0 +1,75 @@
+[
+  {
+    "zoneThemePatterns": ["_TheSuburbs_", "_Onboarding_Suburban_"],
+    "name": "Suburbs"
+  },
+  {
+    "zoneThemePatterns": ["_TheGrasslands_", "_Onboarding_Grasslands_"],
+    "name": "Grasslands"
+  },
+  {
+    "zoneThemePatterns": ["_TheIndustrialPark_"],
+    "name": "Industrial Park"
+  },
+  {
+    "zoneThemePatterns": ["_TheCity_"],
+    "name": "City"
+  },
+  {
+    "zoneThemePatterns": ["_TheForest_", "_Onboarding_Forest_"],
+    "name": "Forest"
+  },
+  {
+    "zoneThemePatterns": ["_Route99_"],
+    "name": "Thunder Route 99"
+  },
+  {
+    "zoneThemePatterns": ["_GhostTown_"],
+    "name": "Ghost Town"
+  },
+  {
+    "zoneThemePatterns": ["_Lakeside_"],
+    "name": "Lakeside"
+  },
+  {
+    "zoneThemePatterns": ["_Desert_"],
+    "name": "Desert"
+  },
+  {
+    "zoneThemePatterns": ["_Island01_"],
+    "name": "Tropical"
+  },
+  {
+    "zoneThemePatterns": ["_Desert_Monument_"],
+    "name": "Desert Monument"
+  },
+  {
+    "zoneThemePatterns": ["_BuildOff_"],
+    "name": "Build Off"
+  },
+  {
+    "zoneThemePatterns": ["_StabilizeTheRift_"],
+    "name": "Stabilize The Rift"
+  },
+  {
+    "zoneThemePatterns": ["_VindermansLab_"],
+    "name": "Doctor Vinderman's Lab"
+  },
+  {
+    "zoneThemePatterns": ["_PlankHarbor_"],
+    "name": "Plank Harbor"
+  },
+  {
+    "zoneThemePatterns": ["_TheOutpost_"],
+    "name": "Stormshield"
+  },
+  {
+    "zoneThemePatterns": ["_DUDEBRO_"],
+    "name": "The Portal"
+  },
+  {
+    "zoneThemePatterns": ["_PerfMem_"],
+    "name": "Test Mission",
+    "comment": "These exist in the API, but appear to be test missions."
+  }
+]

@@ -1,0 +1,142 @@
+[
+  {
+    "missionGeneratorPatterns": ["_1GateNoBonus_", "_1Gate_", "_Cat1FtS_"],
+    "name": "Fight the Storm",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["_2Gates_"],
+    "name": "Fight Category 2 Storm",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["_3Gates_", "_PlankHarbor3Gate_"],
+    "name": "Fight Category 3 Storm",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["_4Gates_"],
+    "name": "Fight Category 4 Storm",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["BuildtheRadarGrid"],
+    "name": "Build The Radar Grid",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["FightTheGunslinger"],
+    "name": "Fight The Gunslinger",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["_RtS_"],
+    "name": "Repair The Shelter",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["_LtR_"],
+    "name": "Launch The Rocket",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["EtShelter"],
+    "name": "Evacuate The Shelter",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["DeployTheProbe"],
+    "name": "Deploy The Probe",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["BuildOff"],
+    "name": "Constructor Build-Off",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": [
+      "RideTheLightning",
+      "_RtL_",
+      "_LtB_",
+      "LaunchTheBalloon"
+    ],
+    "name": "Ride The Lightning",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["StabilizeTheRift"],
+    "name": "Stabilize The Rift",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["BuildTheMemorial"],
+    "name": "Build The Memorial",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["EliminateAndCollect"],
+    "name": "Eliminate And Collect",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["RefuelTheBase"],
+    "name": "Refuel The Homebase",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["RetrieveTheData", "_RtD_"],
+    "name": "Retrieve The Data",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["VindermanMansion"],
+    "name": "Doctor Vinderman's Mansion",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["Resupply"],
+    "name": "Resupply",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["_EvacuateTheSurvivors", "EtSurvivors"],
+    "name": "Rescue The Survivors",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["_HitTheRoad_"],
+    "name": "Hit The Road (Sightseeing)",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["_DtE_", "DestroyTheEncampments"],
+    "name": "Destroy The Encampments",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["_DtB_"],
+    "name": "Deliver The Bomb",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["TheOutpost"],
+    "name": "Stormshield Defense",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["Onboarding"],
+    "name": "Onboarding",
+    "show": false
+  },
+  {
+    "missionGeneratorPatterns": ["_DUDEBRO_"],
+    "name": "Storm King",
+    "show": true
+  },
+  {
+    "missionGeneratorPatterns": ["PerfMem"],
+    "name": "Test Mission",
+    "show": false
+  }
+]

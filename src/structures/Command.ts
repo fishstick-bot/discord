@@ -1,25 +1,40 @@
 import type { CommandInteraction } from 'discord.js';
-import type { SlashCommandBuilder } from '@discordjs/builders';
+import type {
+  SlashCommandBuilder,
+  SlashCommandSubcommandsOnlyBuilder,
+} from '@discordjs/builders';
+import type { Document, Types } from 'mongoose';
+import { IUser } from '../database/models/typings';
 
 import Bot from '../client/Client';
 
-type ExecuteCommand = (bot: Bot, interaction: CommandInteraction) => Promise<void>;
+type RunCommand = (
+  bot: Bot,
+  interaction: CommandInteraction,
+  user: Document<unknown, any, IUser> &
+    IUser & {
+      _id: Types.ObjectId;
+    },
+) => Promise<void>;
 
 interface CommandOptions {
-    privateResponse?: boolean;
+  privateResponse?: boolean;
 
-    premiumOnly?: boolean;
-    partnerOnly?: boolean;
-    ownerOnly?: boolean;
+  premiumOnly?: boolean;
+  partnerOnly?: boolean;
+  ownerOnly?: boolean;
+  needsEpicAccount?: boolean;
 }
 
 export interface ICommand {
-    name: string;
-    category: string;
+  name: string;
 
-    slashCommandBuilder: SlashCommandBuilder;
+  slashCommandBuilder:
+    | SlashCommandBuilder
+    | SlashCommandSubcommandsOnlyBuilder
+    | Omit<SlashCommandBuilder, 'addSubcommand' | 'addSubcommandGroup'>;
 
-    options: CommandOptions;
+  options: CommandOptions;
 
-    execute: ExecuteCommand;
+  run: RunCommand;
 }
