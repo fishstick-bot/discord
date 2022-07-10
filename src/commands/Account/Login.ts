@@ -102,15 +102,19 @@ const Command: ICommand = {
 
     if (selected.customId === 'saveNewAccount') {
       if (bot.loginCooldowns.has(interaction.user.id)) {
-        await interaction.editReply({
-          content: `You must wait ${
-            (bot.loginCooldowns.get(interaction.user.id)! - Date.now()) / 1000
-          }s before you can use login new command again.`,
-          embeds: [],
-          components: [],
-          files: [],
-        });
-        return;
+        const wait =
+          (bot.loginCooldowns.get(interaction.user.id)! - Date.now()) / 1000;
+        if (wait > 0) {
+          await interaction.editReply({
+            content: `You must wait ${
+              (bot.loginCooldowns.get(interaction.user.id)! - Date.now()) / 1000
+            }s before you can use login new command again.`,
+            embeds: [],
+            components: [],
+            files: [],
+          });
+          return;
+        }
       }
 
       const newAccountEmbed = new MessageEmbed()
@@ -189,6 +193,9 @@ Example: **aabbccddeeff11223344556677889900**
         time: 5 * 60 * 1000,
       });
       bot.loginCooldowns.set(interaction.user.id, Date.now() + 5 * 60 * 1000);
+      setTimeout(() => {
+        bot.loginCooldowns.delete(interaction.user.id);
+      }, 5 * 60 * 1000);
 
       collector.on('collect', async (i) => {
         try {
