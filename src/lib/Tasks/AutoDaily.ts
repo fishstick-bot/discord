@@ -22,8 +22,6 @@ class AutoDaily implements Task {
   public async start() {
     this.logger.info('Registering auto daily task');
 
-    this.runTask();
-
     cron.schedule(
       '0 0 * * *',
       async () => {
@@ -37,6 +35,9 @@ class AutoDaily implements Task {
   }
 
   private async runTask() {
+    const start = Date.now();
+    this.logger.info('Running auto daily task');
+
     const logChannel = (await this.bot.channels.fetch(
       this.bot._config.dailyRewardsChannel,
     )) as TextChannel;
@@ -69,6 +70,10 @@ class AutoDaily implements Task {
         embeds: [embed],
       });
     }
+
+    this.logger.info(
+      `Auto daily task finished [${(Date.now() - start).toFixed(2)}ms[]`,
+    );
   }
 
   private async claimDailyReward(epicAccount: IEpicAccount) {

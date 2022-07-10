@@ -80,6 +80,7 @@ class Bot extends Client {
       partials: ['CHANNEL'],
       allowedMentions: {
         repliedUser: false,
+        parse: ['users', 'roles'],
       },
       presence: {
         status: 'online',
