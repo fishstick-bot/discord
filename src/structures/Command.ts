@@ -6,7 +6,7 @@ import type {
 import type { Document, Types } from 'mongoose';
 
 import Bot from '../client/Client';
-import { IUser } from '../database/models/typings';
+import { IUser, IGuild } from '../database/models/typings';
 
 type RunCommand = (
   bot: Bot,
@@ -15,6 +15,12 @@ type RunCommand = (
     IUser & {
       _id: Types.ObjectId;
     },
+  guild:
+    | (Document<unknown, any, IGuild> &
+        IGuild & {
+          _id: Types.ObjectId;
+        })
+    | null,
 ) => Promise<void>;
 
 interface CommandOptions {

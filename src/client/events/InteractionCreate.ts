@@ -5,7 +5,6 @@ import type IEvent from '../../structures/Event';
 import getLogger from '../../Logger';
 import Emojies from '../../resources/Emojis';
 import { IEpicAccount } from '../../database/models/typings';
-import UserNotFoundError from '../../structures/UserNotFoundError';
 import { handleCommandError } from '../../lib/Utils';
 
 const wait = promisify(setTimeout);
@@ -56,6 +55,20 @@ const Event: IEvent = {
           }`,
         );
         return;
+      }
+
+      let guild = interaction.guildId
+        ? await bot.guildModel
+            .findOne({
+              id: interaction.guildId,
+            })
+            .exec()
+        : null;
+
+      if (!guild && interaction.guildId) {
+        guild = await bot.guildModel.create({
+          id: interaction.guildId,
+        });
       }
 
       if (cmd.options.partnerOnly && !user.isPartner) {
@@ -141,7 +154,7 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
       }, (isPremium ? bot.cooldown / 2 : bot.cooldown) * 1000);
 
       try {
-        await cmd.run(bot, interaction, user);
+        await cmd.run(bot, interaction, user, guild);
       } catch (e: any) {
         await handleCommandError(bot, user, logger, interaction, e);
       }
