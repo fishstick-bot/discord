@@ -71,6 +71,13 @@ const Event: IEvent = {
         });
       }
 
+      if (cmd.options.guildOnly && !guild) {
+        await interaction.editReply(
+          'You can only use this command in a server.',
+        );
+        return;
+      }
+
       if (cmd.options.partnerOnly && !user.isPartner) {
         await interaction.editReply(
           'You must be Fishstick Partner to use this command, for more information make a ticket in [our support server](https://discord.gg/fishstick)',

@@ -26,6 +26,7 @@ type RunCommand = (
 interface CommandOptions {
   privateResponse?: boolean;
 
+  guildOnly?: boolean;
   premiumOnly?: boolean;
   partnerOnly?: boolean;
   ownerOnly?: boolean;
