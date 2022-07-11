@@ -139,6 +139,10 @@ Example: **aabbccddeeff11223344556677889900**
 ⚠️ We recommend that you only log into accounts that you have email access to.
 
 **This message will timeout in 5 minutes.**`,
+        )
+        .addField(
+          'New to switch accounts?',
+          'Use [this link](https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode&prompt=login) instead.',
         );
 
       const authcodeImg = new MessageAttachment(
