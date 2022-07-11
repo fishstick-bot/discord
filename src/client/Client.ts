@@ -18,6 +18,7 @@ import {
   EpicAccountModel,
   SurvivorSquadPresetModel,
   PremiumKeyModel,
+  GuildModel,
 } from '../database/models';
 import CosmeticService from '../lib/Services/CosmeticService';
 import STWMissionsService from '../lib/Services/STWMissionsService';
@@ -61,6 +62,9 @@ class Bot extends Client {
 
   // premium key model
   public premiumKeyModel = PremiumKeyModel;
+
+  // guild model
+  public guildModel = GuildModel;
 
   // cosmetic service
   public cosmeticService = new CosmeticService(this);
