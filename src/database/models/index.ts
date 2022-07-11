@@ -11,6 +11,8 @@ import SurvivorSquadPresetModel from './User/SurvivorSquadPreset';
 
 import PremiumKeyModel from './PremiumKey';
 
+import GuildModel from './Guild';
+
 export {
   CosmeticModel,
   CosmeticTypeModel,
@@ -22,4 +24,5 @@ export {
   EpicAccountModel,
   SurvivorSquadPresetModel,
   PremiumKeyModel,
+  GuildModel,
 };

@@ -87,6 +87,12 @@ class STWMissionsService implements Service {
       .reduce((a, b) => a + b, 0);
   }
 
+  public get legendarySurvivorAlerts(): ISTWMission[] {
+    return this.missions.filter((m) =>
+      m.rewards.some((r) => r.id === 'Worker:workerbasic_sr_t01'),
+    );
+  }
+
   private async fetchMissions(): Promise<ISTWMission[]> {
     let start = Date.now();
     try {

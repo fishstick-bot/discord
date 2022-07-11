@@ -4,4 +4,6 @@ export interface IGuild {
   premiumUntil: Date;
 
   itemShopChannelId?: string;
+  vbucksAlertsChannelId?: string;
+  legendarySurvivorAlertsChannelId?: string;
 }

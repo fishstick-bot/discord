@@ -211,6 +211,26 @@ class API implements Service {
         return mtxAlerts;
       },
     );
+
+    this.server.get(
+      '/api/stwLegendarySurvivorMissions',
+      {
+        schema: {
+          response: {
+            200: {
+              type: 'array',
+              items: { $ref: 'STWMission#' },
+            },
+          },
+        },
+      },
+      async (req, res) => {
+        this.logger.info(`GET /api/stwLegendarySurvivorMissions [${req.ip}]`);
+
+        const { legendarySurvivorAlerts } = this.bot.stwMissionsService;
+        return legendarySurvivorAlerts;
+      },
+    );
   }
 }
 
