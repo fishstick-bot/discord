@@ -28,6 +28,18 @@ const handleCommandError = async (
         (user.epicAccounts as IEpicAccount[]).forEach((a) => {
           bot.fortniteManager.removeAccount(a.accountId);
         });
+
+        await interaction
+          .editReply({
+            content:
+              'Refreshing auth session for your epic account, please retry the command.',
+            embeds: [],
+            components: [],
+            files: [],
+          })
+          // eslint-disable-next-line no-console
+          .catch(console.error);
+        return;
       }
     }
 
@@ -54,6 +66,7 @@ const handleCommandError = async (
         content: ' ',
         embeds: [errorEmbed],
         components: [],
+        files: [],
       })
       // eslint-disable-next-line no-console
       .catch(console.error);
