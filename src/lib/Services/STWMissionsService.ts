@@ -7,6 +7,7 @@ import * as fs from 'fs';
 import { promisify } from 'util';
 import cron from 'node-cron';
 import { Endpoints, STWWorldInfoData } from 'fnbr';
+import { MessageEmbed, TextChannel } from 'discord.js';
 
 import Service from '../../structures/Service';
 import Bot from '../../client/Client';
@@ -17,6 +18,7 @@ import STWMissionTypes from '../../resources/STWMissionTypes.json';
 import STWBiomes from '../../resources/STWBiomes.json';
 import ISTWMission from '../../structures/STWMission';
 import STWMissionImages from '../../resources/STWMissionImages';
+import Emojis from '../../resources/Emojis';
 
 interface KeyValuePair {
   [key: string]: any;
@@ -62,7 +64,58 @@ class STWMissionsService implements Service {
       async () => {
         await this.fetchMissions();
 
-        // TODO: post to discord channels / twitter ig?
+        const { mtxAlerts, legendarySurvivorAlerts } = this;
+
+        if (mtxAlerts.length > 0) {
+          const embed = new MessageEmbed()
+            .setColor(this.bot._config.color)
+            .setTimestamp()
+            .setTitle('Save the World Mission Alerts')
+            .setAuthor({
+              name: 'V-Bucks Alerts',
+            })
+            .setDescription(this.formatMissions(mtxAlerts))
+            .setFooter({
+              text: `${mtxAlerts
+                .map(
+                  (m) =>
+                    m.rewards.find(
+                      (r) => r.id === 'AccountResource:currency_mtxswap',
+                    )?.amount ?? 0,
+                )
+                .reduce((a, b) => a + b, 0)} V-Bucks today`,
+            });
+
+          for await (const guild of this.bot.guildModel.find({
+            vbucksAlertsChannelId: { $ne: '' },
+          })) {
+            await this.postToChannel(guild.vbucksAlertsChannelId, ' ', [embed]);
+          }
+        }
+
+        if (legendarySurvivorAlerts.length > 0) {
+          const embed = new MessageEmbed()
+            .setColor(this.bot._config.color)
+            .setTimestamp()
+            .setTitle('Save the World Mission Alerts')
+            .setAuthor({
+              name: 'Legendary Survivor Alerts',
+            })
+            .setDescription(this.formatMissions(legendarySurvivorAlerts))
+            .setFooter({
+              text: `${legendarySurvivorAlerts.length} Legendary Survivors today`,
+            });
+
+          for await (const guild of this.bot.guildModel.find({
+            legendarySurvivorAlertsChannelId: { $ne: '' },
+          })) {
+            await this.postToChannel(
+              guild.legendarySurvivorAlertsChannelId,
+              ' ',
+              [embed],
+            );
+          }
+        }
       },
       {
         scheduled: true,
@@ -382,6 +435,48 @@ class STWMissionsService implements Service {
       modifiers: parsedModifiers,
       rewards: parsedRewards,
     };
+  }
+
+  private formatMissions(missions: ISTWMission[]) {
+    return missions
+      .map(
+        (m) => `• **[${m.powerLevel}] ${m.missionType}${
+          m.show ? '' : ' (Hidden)'
+        }**
+${m.biome} - ${m.area}
+${m.rewards
+  .map(
+    (r) =>
+      `**${
+        (Emojis as any)[r.id] ?? (Emojis as any)[r.name] ?? r.name
+      } ${r.amount.toLocaleString()}x ${
+        r.repeatable ? '' : ' (Alert Reward)'
+      }**`,
+  )
+  .join('\n')}`,
+      )
+      .join('\n\n');
+  }
+
+  private async postToChannel(
+    channelId: string,
+    message: string,
+    embeds: MessageEmbed[],
+  ) {
+    try {
+      const channel = (await this.bot.channels.fetch(channelId)) as TextChannel;
+
+      if (channel) {
+        await channel
+          .send({
+            content: message,
+            embeds,
+          })
+          .catch(() => {});
+      }
+    } catch (e) {
+      this.logger.error(`Error posting to channel ${channelId}: ${e}`);
+    }
   }
 }
 

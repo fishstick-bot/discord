@@ -102,7 +102,7 @@ const Command: ICommand = {
         );
       } else {
         embed.setFooter({
-          text: `${stwLegendarySurvivorAlerts.length} V-Bucks today`,
+          text: `${stwLegendarySurvivorAlerts.length} Legendary Survivors today`,
         });
         embed.setDescription(formatMissions(stwLegendarySurvivorAlerts));
       }
