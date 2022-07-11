@@ -5,16 +5,6 @@ import AuthClients from 'fnbr/dist/resources/AuthClients';
 import Bot from '../client/Client';
 import UserNotFoundError from '../structures/UserNotFoundError';
 
-export interface STWProfile {
-  resources: {
-    id: string;
-    quantity: number;
-  }[];
-  accountLevel: number;
-  backpackSize: number;
-  storageSize: number;
-}
-
 class FortniteManager {
   private bot: Bot;
 
@@ -70,7 +60,16 @@ class FortniteManager {
     secret: string,
   ) {
     if (this.clients.has(accountId)) {
-      return this.clients.get(accountId)!;
+      const cachedClient = this.clients.get(accountId)!;
+
+      const cachedClientAuth = cachedClient.auth.auths.get('fortnite');
+      if (
+        cachedClientAuth &&
+        cachedClientAuth.token &&
+        cachedClientAuth.token.length > 0
+      ) {
+        return cachedClient;
+      }
     }
 
     const client = new Client({
