@@ -11,6 +11,26 @@ import type { ICommand } from '../../structures/Command';
 import type ISTWMission from '../../structures/STWMission';
 import Emojis from '../../resources/Emojis';
 
+const formatMissions = (missions: ISTWMission[]) =>
+  missions
+    .map(
+      (m) => `• **[${m.powerLevel}] ${m.missionType}${
+        m.show ? '' : ' (Hidden)'
+      }**
+${m.biome} - ${m.area}
+${m.rewards
+  .map(
+    (r) =>
+      `**${
+        (Emojis as any)[r.id] ?? (Emojis as any)[r.name] ?? r.name
+      } ${r.amount.toLocaleString()}x ${
+        r.repeatable ? '' : ' (Alert Reward)'
+      }**`,
+  )
+  .join('\n')}`,
+    )
+    .join('\n\n');
+
 const Command: ICommand = {
   name: 'alerts',
 
@@ -19,6 +39,11 @@ const Command: ICommand = {
     .setDescription('View Save the World Mission Alerts.')
     .addSubcommand((c) =>
       c.setName('vbucks').setDescription('View V-Bucks alerts.'),
+    )
+    .addSubcommand((c) =>
+      c
+        .setName('legendary-survivors')
+        .setDescription('View Legendary Survivor alerts.'),
     )
     .addSubcommand((c) =>
       c.setName('view').setDescription('View all Mission Alerts.'),
@@ -60,26 +85,26 @@ const Command: ICommand = {
             )
             .reduce((a, b) => a + b, 0)} V-Bucks today`,
         });
+        embed.setDescription(formatMissions(mtxAlerts));
+      }
+    }
+
+    if (subCommand === 'legendary-survivors') {
+      const stwLegendarySurvivorAlerts = (
+        await axios.get(
+          `http://localhost:${bot._config.apiPort}/api/stwLegendarySurvivorMissions`,
+        )
+      ).data as ISTWMission[];
+
+      if (stwLegendarySurvivorAlerts.length === 0) {
         embed.setDescription(
-          mtxAlerts
-            .map(
-              (m) => `• **[${m.powerLevel}] ${m.missionType}${
-                m.show ? '' : ' (Hidden)'
-              }**
-${m.biome} - ${m.area}
-${m.rewards
-  .map(
-    (r) =>
-      `**${
-        (Emojis as any)[r.id] ?? (Emojis as any)[r.name] ?? r.name
-      } ${r.amount.toLocaleString()}x ${
-        r.repeatable ? '' : ' (Alert Reward)'
-      }**`,
-  )
-  .join('\n')}`,
-            )
-            .join('\n\n'),
+          `No ${Emojis.vbucks} Legendary Survivor alerts are currently available.`,
         );
+      } else {
+        embed.setFooter({
+          text: `${stwLegendarySurvivorAlerts.length} V-Bucks today`,
+        });
+        embed.setDescription(formatMissions(stwLegendarySurvivorAlerts));
       }
     }
 
