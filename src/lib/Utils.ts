@@ -20,42 +20,46 @@ const handleCommandError = async (
   interaction: CommandInteraction,
   e: any,
 ) => {
-  logger.error(`${e}`);
+  try {
+    logger.error(`${e}`);
 
-  if (bot && user) {
-    if (`${e}`.includes('Sorry the refresh token')) {
-      (user.epicAccounts as IEpicAccount[]).forEach((a) => {
-        bot.fortniteManager.removeAccount(a.accountId);
-      });
+    if (bot && user) {
+      if (`${e}`.includes('Sorry the refresh token')) {
+        (user.epicAccounts as IEpicAccount[]).forEach((a) => {
+          bot.fortniteManager.removeAccount(a.accountId);
+        });
+      }
     }
-  }
 
-  let errorEmbed: MessageEmbed;
-  if (e instanceof UserNotFoundError) {
-    errorEmbed = new MessageEmbed()
-      .setTitle(`${Emojies.cross} USER NOT FOUND`)
-      .setColor('RED')
-      .setDescription(e.message)
-      .setTimestamp();
-  } else {
-    errorEmbed = new MessageEmbed()
-      .setTitle(`${Emojies.cross} NOT THE LLAMA YOU'RE LOOKING FOR`)
-      .setColor('RED')
-      .setDescription(
-        `An error occured while running the command ${interaction.commandName}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
-      )
-      .addField('Stack', `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``)
-      .setTimestamp();
-  }
+    let errorEmbed: MessageEmbed;
+    if (e instanceof UserNotFoundError) {
+      errorEmbed = new MessageEmbed()
+        .setTitle(`${Emojies.cross} USER NOT FOUND`)
+        .setColor('RED')
+        .setDescription(e.message)
+        .setTimestamp();
+    } else {
+      errorEmbed = new MessageEmbed()
+        .setTitle(`${Emojies.cross} NOT THE LLAMA YOU'RE LOOKING FOR`)
+        .setColor('RED')
+        .setDescription(
+          `An error occured while running the command ${interaction.commandName}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
+        )
+        .addField('Stack', `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``)
+        .setTimestamp();
+    }
 
-  await interaction
-    .editReply({
-      content: ' ',
-      embeds: [errorEmbed],
-      components: [],
-    })
-    // eslint-disable-next-line no-console
-    .catch(console.error);
+    await interaction
+      .editReply({
+        content: ' ',
+        embeds: [errorEmbed],
+        components: [],
+      })
+      // eslint-disable-next-line no-console
+      .catch(console.error);
+  } catch (error) {
+    logger.error(`SEVERE COMMAND ERROR - ${error}`);
+  }
 };
 
 export { handleCommandError };
