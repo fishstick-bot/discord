@@ -1,16 +1,34 @@
 /* eslint-disable import/prefer-default-export */
 import { CommandInteraction, MessageEmbed } from 'discord.js';
 import type { Logger } from 'winston';
+import type { Document, Types } from 'mongoose';
 
+import Bot from '../client/Client';
 import UserNotFoundError from '../structures/UserNotFoundError';
 import Emojies from '../resources/Emojis';
+import { IEpicAccount, IUser } from '../database/models/typings';
 
 const handleCommandError = async (
+  bot: Bot | undefined,
+  user:
+    | (Document<unknown, any, IUser> &
+        IUser & {
+          _id: Types.ObjectId;
+        })
+    | undefined,
   logger: Logger,
   interaction: CommandInteraction,
   e: any,
 ) => {
   logger.error(`${e}`);
+
+  if (bot && user) {
+    if (`${e}`.includes('Sorry the refresh token')) {
+      (user.epicAccounts as IEpicAccount[]).forEach((a) => {
+        bot.fortniteManager.removeAccount(a.accountId);
+      });
+    }
+  }
 
   let errorEmbed: MessageEmbed;
   if (e instanceof UserNotFoundError) {

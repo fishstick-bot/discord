@@ -77,7 +77,13 @@ class Pagination {
           });
         }
       } catch (e) {
-        await handleCommandError(getLogger('COMMAND'), interaction, e);
+        await handleCommandError(
+          undefined,
+          undefined,
+          getLogger('COMMAND'),
+          interaction,
+          e,
+        );
         collector.stop('handleError');
       }
     });

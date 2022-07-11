@@ -143,7 +143,7 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
       try {
         await cmd.run(bot, interaction, user);
       } catch (e: any) {
-        await handleCommandError(logger, interaction, e);
+        await handleCommandError(bot, user, logger, interaction, e);
       }
 
       const random = Math.floor(Math.random() * 100) + 1;

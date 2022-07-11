@@ -30,7 +30,7 @@ class FortniteManager {
         authorizationCode: code,
         checkEULA: true,
         killOtherTokens: false,
-        createLauncherSession: false,
+        createLauncherSession: true,
       },
       connectToXMPP: false,
       createParty: false,
@@ -77,7 +77,7 @@ class FortniteManager {
       auth: {
         checkEULA: true,
         killOtherTokens: false,
-        createLauncherSession: false,
+        createLauncherSession: true,
         deviceAuth: {
           accountId,
           deviceId,
@@ -96,6 +96,18 @@ class FortniteManager {
     this.clients.set(client.user!.id, client);
 
     return this.clients.get(accountId)!;
+  }
+
+  public async removeAccount(accountId: string) {
+    try {
+      await this.clients
+        .get(accountId)
+        ?.logout()
+        .catch(() => {});
+      this.clients.delete(accountId);
+    } catch (e) {
+      // ignore the error
+    }
   }
 
   public async getAccountInfo(accountId: string) {

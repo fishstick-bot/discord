@@ -4,9 +4,9 @@ import type {
   SlashCommandSubcommandsOnlyBuilder,
 } from '@discordjs/builders';
 import type { Document, Types } from 'mongoose';
-import { IUser } from '../database/models/typings';
 
 import Bot from '../client/Client';
+import { IUser } from '../database/models/typings';
 
 type RunCommand = (
   bot: Bot,

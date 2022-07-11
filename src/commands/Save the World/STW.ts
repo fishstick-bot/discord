@@ -887,7 +887,13 @@ ${a
           files,
         });
       } catch (e) {
-        await handleCommandError(getLogger('COMMAND'), interaction, e);
+        await handleCommandError(
+          bot,
+          user,
+          getLogger('COMMAND'),
+          interaction,
+          e,
+        );
         collector.stop('handleError');
       }
     });

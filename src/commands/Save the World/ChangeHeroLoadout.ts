@@ -64,12 +64,18 @@ const Command: ICommand = {
     const createComponents = (disabled = false) => {
       const heroloadouts = stw.heroLoadouts;
 
+      if (heroloadouts.length === 0) {
+        throw new Error(
+          'You do not have any hero loadouts. You must create one before you can change it.',
+        );
+      }
+
       const rows = [];
 
       for (let i = 0; i < heroloadouts.length; i += 3) {
         const row = new MessageActionRow();
 
-        for (let j = 0; j < 3; j += 1) {
+        for (let j = 0; j < heroloadouts.slice(i, i + 3).length; j += 1) {
           const loadout = heroloadouts.slice(i, i + 3)[j];
           const commander = stw.heroes.find(
             (h) => h.id === loadout.commanderSlot,
@@ -144,7 +150,13 @@ const Command: ICommand = {
           components: createComponents(),
         });
       } catch (e) {
-        await handleCommandError(getLogger('COMMAND'), interaction, e);
+        await handleCommandError(
+          bot,
+          user,
+          getLogger('COMMAND'),
+          interaction,
+          e,
+        );
         collector.stop('handleError');
       }
     });

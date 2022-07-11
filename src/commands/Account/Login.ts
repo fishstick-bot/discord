@@ -266,6 +266,17 @@ Example: **aabbccddeeff11223344556677889900**
                 });
               }
 
+              if (
+                (user.epicAccounts as IEpicAccount[]).find(
+                  (a) => a.accountId === loginacc.accountId,
+                )
+              ) {
+                await modalSubmit.editReply(
+                  `You already have this account logged in.`,
+                );
+                return;
+              }
+
               user.selectedEpicAccount = epicAcc.accountId;
               user.epicAccounts.push(epicAcc._id as any);
               await user.save();
@@ -312,7 +323,13 @@ Example: **aabbccddeeff11223344556677889900**
             }
           }
         } catch (e) {
-          await handleCommandError(getLogger('COMMAND'), interaction, e);
+          await handleCommandError(
+            bot,
+            user,
+            getLogger('COMMAND'),
+            interaction,
+            e,
+          );
           collector.stop('handleError');
         }
       });
