@@ -251,10 +251,10 @@ This menu contains special items you want to view in your locker image.
       iconURL: epicAccount.avatarUrl,
     });
 
-    // split locker in chunks of 750
-    for (let i = 0; i < items.length; i += 750) {
+    // split locker in chunks of 500
+    for (let i = 0; i < items.length; i += 500) {
       const start = Date.now();
-      const chunkedItems = items.slice(i, i + 750);
+      const chunkedItems = items.slice(i, i + 500);
       // eslint-disable-next-line no-await-in-loop
       const img = await drawLocker(
         chunkedItems,
