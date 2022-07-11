@@ -24,7 +24,10 @@ const handleCommandError = async (
     logger.error(`${e}`);
 
     if (bot && user) {
-      if (`${e}`.includes('Sorry the refresh token')) {
+      if (
+        `${e}`.includes('Sorry the refresh token') ||
+        `${e}`.includes('Malformed auth token')
+      ) {
         (user.epicAccounts as IEpicAccount[]).forEach((a) => {
           bot.fortniteManager.removeAccount(a.accountId);
         });
