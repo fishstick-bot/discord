@@ -58,7 +58,6 @@ const Command: ICommand = {
           value: account.accountId,
           label: account.displayName,
           description: account.accountId,
-          default: user.selectedEpicAccount === account.accountId,
         })),
       );
 
