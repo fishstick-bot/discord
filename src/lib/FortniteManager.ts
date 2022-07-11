@@ -268,8 +268,8 @@ class FortniteManager {
       return {
         accountId: accountIdSearch.id,
         displayName: accountIdSearch.displayName ?? accountIdSearch.id,
-        psn,
-        xbl,
+        psn: accountIdSearch.externalAuths.psn?.externalDisplayName ?? null,
+        xbl: accountIdSearch.externalAuths.xbl?.externalDisplayName ?? null,
       };
     }
 
@@ -278,7 +278,6 @@ class FortniteManager {
     let probableMatches = '';
     // eslint-disable-next-line no-restricted-syntax
     for (const s of search) {
-      console.log(s);
       // eslint-disable-next-line no-restricted-syntax
       for (const match of s.matches) {
         probableMatches += `• ${match.platform}:${match.value} - \`${s.id}\`\n`;
