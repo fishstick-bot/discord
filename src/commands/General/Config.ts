@@ -58,9 +58,10 @@ const Command: ICommand = {
     const channel = interaction.options.getChannel('channel');
 
     if (!interaction.memberPermissions!.has('MANAGE_GUILD')) {
-      return interaction.editReply(
+      await interaction.editReply(
         'You do not have permission to manage this server.',
       );
+      return;
     }
 
     switch (subcmd) {
