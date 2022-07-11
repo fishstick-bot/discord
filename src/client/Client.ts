@@ -91,6 +91,7 @@ class Bot extends Client {
           },
         ],
       },
+      restRequestTimeout: 30 * 1000,
       shards: Cluster.data.SHARD_LIST,
       shardCount: Cluster.data.TOTAL_SHARDS,
     });
