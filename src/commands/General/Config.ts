@@ -57,6 +57,12 @@ const Command: ICommand = {
     const subcmd = interaction.options.getSubcommand();
     const channel = interaction.options.getChannel('channel');
 
+    if (!interaction.memberPermissions!.has('MANAGE_GUILD')) {
+      return interaction.editReply(
+        'You do not have permission to manage this server.',
+      );
+    }
+
     switch (subcmd) {
       case 'itemshop':
         guild!.itemShopChannelId = channel!.id;
