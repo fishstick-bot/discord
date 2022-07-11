@@ -228,7 +228,7 @@ Example: **aabbccddeeff11223344556677889900**
               .catch(() => null);
             if (!modalSubmit) return;
 
-            await modalSubmit.deferReply({ ephemeral: true });
+            await modalSubmit.deferReply();
 
             const authorizationCode =
               modalSubmit.fields.getTextInputValue('authCodeInput');
