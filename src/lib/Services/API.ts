@@ -132,6 +132,36 @@ class API implements Service {
         },
       },
     });
+
+    this.server.addSchema({
+      $id: 'BRCatalogItem',
+      type: 'object',
+      properties: {
+        mainId: { type: 'string' },
+        displayName: { type: 'string' },
+        displayDescription: { type: 'string' },
+        displayType: { type: 'string' },
+        mainType: { type: 'string' },
+        offerId: { type: 'string' },
+        displayAssets: {},
+        firstReleaseDate: { type: 'string' },
+        previousReleaseDate: { type: 'string' },
+        giftAllowed: { type: 'boolean' },
+        buyAllowed: { type: 'boolean' },
+        price: {},
+        rarity: {},
+        series: {},
+        banner: {},
+        offerTag: {},
+        granted: {},
+        priority: {},
+        section: {},
+        groupIndex: {},
+        storeName: { type: 'string' },
+        tileSize: { type: 'string' },
+        categories: {},
+      },
+    });
   }
 
   private async handleRoutes() {
@@ -235,6 +265,35 @@ class API implements Service {
 
         const { legendarySurvivorAlerts } = this.bot.stwMissionsService;
         return legendarySurvivorAlerts;
+      },
+    );
+
+    this.server.get(
+      '/api/catalog/br',
+      {
+        schema: {
+          response: {
+            200: {
+              type: 'object',
+              properties: {
+                date: { type: 'string' },
+                uid: { type: 'string' },
+                data: {
+                  type: 'array',
+                  items: {
+                    $ref: 'BRCatalogItem#',
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      async (req, res) => {
+        this.logger.info(`GET /api/catalog [${req.ip}]`);
+
+        const { brCatalog } = this.bot.catalogService;
+        return brCatalog;
       },
     );
   }

@@ -22,6 +22,7 @@ import {
 } from '../database/models';
 import CosmeticService from '../lib/Services/CosmeticService';
 import STWMissionsService from '../lib/Services/STWMissionsService';
+import CatalogService from '../lib/Services/CatalogService';
 import API from '../lib/Services/API';
 import FortniteManager from '../lib/FortniteManager';
 import type { ICommand } from '../structures/Command';
@@ -73,6 +74,9 @@ class Bot extends Client {
 
   // stw missions service
   public stwMissionsService = new STWMissionsService(this);
+
+  // catalog service
+  public catalogService = new CatalogService(this);
 
   // bot api
   public botAPI = new API(this);
@@ -142,6 +146,9 @@ class Bot extends Client {
 
       // start stw missions service
       this.stwMissionsService.start();
+
+      // start catalog service
+      this.catalogService.start();
 
       // start bot api
       this.botAPI.start();
