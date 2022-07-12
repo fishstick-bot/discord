@@ -1,4 +1,5 @@
 import Fastify, { FastifyInstance } from 'fastify';
+import { join } from 'path';
 
 import Service from '../../structures/Service';
 import type Bot from '../../client/Client';
@@ -41,6 +42,10 @@ class API implements Service {
       },
       exposeRoute: true,
     });
+    this.server.register(import('@fastify/static'), {
+      root: join(__dirname, '../', '../', '../', 'Shop'),
+      prefix: '/api/shop/',
+    });
 
     await this.addSchemas();
     await this.handleRoutes();
@@ -50,7 +55,8 @@ class API implements Service {
     });
 
     this.logger.info(`API listening on port ${this.bot._config.apiPort}`);
-    this.server.printRoutes({ commonPrefix: false });
+    // eslint-disable-next-line no-console
+    console.log(this.server.printRoutes({ commonPrefix: false }));
   }
 
   private async addSchemas() {
