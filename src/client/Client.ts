@@ -1,5 +1,6 @@
 import { Client, Intents, Collection, WebhookClient } from 'discord.js';
 import Cluster from 'discord-hybrid-sharding';
+import T from 'twit';
 import glob from 'glob';
 import { promisify } from 'util';
 
@@ -40,7 +41,11 @@ class Bot extends Client {
   // cluster client
   public cluster = new Cluster.Client(this);
 
+  // bot logging webhook
   public loggingWebhook: WebhookClient;
+
+  // twitter api client for the bot
+  public twitterApi: T;
 
   // commands
   public commands: Collection<string, ICommand> = new Collection();
@@ -111,6 +116,13 @@ class Bot extends Client {
 
     this.loggingWebhook = new WebhookClient({
       url: this._config.loggingWebhook,
+    });
+
+    this.twitterApi = new T({
+      consumer_key: process.env.TWITTER_CONSUMER_KEY!,
+      consumer_secret: process.env.TWITTER_CONSUMER_SECRET!,
+      access_token: process.env.TWITTER_ACCESS_TOKEN!,
+      access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET!,
     });
   }
 
