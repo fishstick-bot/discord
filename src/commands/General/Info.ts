@@ -2,6 +2,8 @@ import { MessageEmbed, version } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import ms from 'ms';
 import os from 'os';
+// @ts-ignore
+import approx from 'approximate-number';
 
 import type { ICommand } from '../../structures/Command';
 
@@ -23,6 +25,7 @@ const Command: ICommand = {
       .setTimestamp()
       .setColor(bot._config.color)
       .addField('📁 Guilds', `${await bot.getGuildCount()}`, true)
+      .addField('👽 Users', `${approx(await bot.getApproxUserCount())}`, true)
       .addField(
         '⏳ Memory Usage',
         `**All Clusters**: ${(

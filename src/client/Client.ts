@@ -165,6 +165,20 @@ class Bot extends Client {
     }
   }
 
+  public async getApproxUserCount(): Promise<number> {
+    try {
+      return (
+        await this.cluster.broadcastEval((c) =>
+          c.guilds.cache.map((g) => g.memberCount),
+        )
+      )
+        .flat()
+        .reduce((prev: number, value: number) => Number(prev + value), 0);
+    } catch (e) {
+      return 0;
+    }
+  }
+
   private async _loadCommands(): Promise<void> {
     const start = Date.now();
     const commandFiles = await globPromisify(
