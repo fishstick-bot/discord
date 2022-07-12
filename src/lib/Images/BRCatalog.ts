@@ -251,7 +251,6 @@ const drawShop = async (items: KeyValuePair[]) => {
       img = await loadImage(await drawShopItem(item, i));
       ctx.drawImage(img, featuredX, featuredY);
     } catch (e) {
-      console.error(e);
       // IGNORE ERROR
     }
 
