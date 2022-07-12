@@ -38,12 +38,12 @@ class CatalogService implements Service {
 
   public async start() {
     await this.fetchBRCatalog();
-    await this.postBrShopToTwitter();
 
     cron.schedule(
       '0 0 * * *',
       async () => {
         await this.fetchBRCatalog();
+        await this.postBrShopToTwitter();
 
         const embed = new MessageEmbed()
           .setColor(this.bot._config.color)
