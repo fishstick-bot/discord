@@ -1,10 +1,12 @@
 import axios from 'axios';
 import { promisify } from 'util';
 import cron from 'node-cron';
+import * as fs from 'fs';
 
 import Service from '../../structures/Service';
 import Bot from '../../client/Client';
 import getLogger from '../../Logger';
+import drawShop from '../Images/BRCatalog';
 
 const wait = promisify(setTimeout);
 
@@ -47,7 +49,7 @@ class CatalogService implements Service {
   }
 
   private async fetchBRCatalog(): Promise<BRCatalog> {
-    const start = Date.now();
+    let start = Date.now();
     try {
       const res = (
         await axios.get(
@@ -66,6 +68,13 @@ class CatalogService implements Service {
 
       this.logger.info(
         `Fetched BR Catalog [${(Date.now() - start).toFixed(2)}ms]`,
+      );
+
+      start = Date.now();
+      const img = await drawShop(this.brCatalog.data);
+      await fs.promises.writeFile(`./Shop/BR/${this.brCatalog.date}.png`, img);
+      this.logger.info(
+        `Generated BR Catalog Image [${(Date.now() - start).toFixed(2)}ms]`,
       );
 
       return this.brCatalog;

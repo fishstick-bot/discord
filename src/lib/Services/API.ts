@@ -43,8 +43,8 @@ class API implements Service {
       exposeRoute: true,
     });
     this.server.register(import('@fastify/static'), {
-      root: join(__dirname, '../', '../', '../', 'Shop'),
-      prefix: '/api/shop/',
+      root: join(__dirname, '../', '../', '../', 'Shop', 'BR'),
+      prefix: '/api/catalog/br/img/',
     });
 
     await this.addSchemas();
