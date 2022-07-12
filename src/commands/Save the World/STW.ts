@@ -19,7 +19,7 @@ import type { IEpicAccount } from '../../database/models/typings';
 import type ISTWMission from '../../structures/STWMission';
 import Emojis from '../../resources/Emojis';
 import Sort from '../../lib/Sort';
-import drawSTWResources from '../../lib/images/STWResources';
+import drawSTWResources from '../../lib/Images/STWResources';
 import getLogger from '../../Logger';
 import { handleCommandError } from '../../lib/Utils';
 

@@ -14,7 +14,7 @@ import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
 import Sort from '../../lib/Sort';
-import { drawLocker } from '../../lib/images/LockerImage';
+import { drawLocker } from '../../lib/Images/LockerImage';
 
 const customIds: {
   [key: string]: string;

@@ -16,7 +16,7 @@ import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
 import Sort from '../../lib/Sort';
-import drawSTWInventory from '../../lib/images/STWInventory';
+import drawSTWInventory from '../../lib/Images/STWInventory';
 
 const getItems = async (
   client: Client,
