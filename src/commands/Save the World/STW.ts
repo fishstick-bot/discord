@@ -300,11 +300,25 @@ const Command: ICommand = {
                 ].toLocaleString()}`,
             )
             .join(' ')}**
-• Research: **${Object.keys(stw?.stats.researchLevels!)
+• Research: **${Object.keys(
+            (stw?.stats.researchLevels ?? {
+              fortitude: 0,
+              resistance: 0,
+              offense: 0,
+              tech: 0,
+            })!,
+          )
             .map(
               (s) =>
                 `${(Emojis as any)[s]!} ${
-                  (stw?.stats.researchLevels! as any)[s]
+                  (
+                    (stw?.stats.researchLevels ?? {
+                      fortitude: 0,
+                      resistance: 0,
+                      offense: 0,
+                      tech: 0,
+                    })! as any
+                  )[s]
                 }`,
             )
             .join(' ')} ${Emojis.research} ${researchPoints.toLocaleString()}**

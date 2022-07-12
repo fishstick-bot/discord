@@ -36,8 +36,8 @@ const Command: ICommand = {
       })
       .setDescription(
         `To switch to a different account use the drop down menu below.
-        To save a new account, click the **Save New Account** button below.
-        This message will timeout in 60 seconds.`,
+To save a new account, click the **Save New Account** button below.
+This message will timeout in 60 seconds.`,
       )
       .setColor(bot._config.color);
 
@@ -303,10 +303,10 @@ Example: **aabbccddeeff11223344556677889900**
                       } You have been successfully logged into **${
                         epicAcc.displayName
                       }**.
-                    You are a ${
-                      isPremium ? 'premium' : 'regular'
-                    } member so I have enabled these perks by default.
-                    • Automatic Daily Login Reward
+You are a ${
+                        isPremium ? 'premium' : 'regular'
+                      } member so I have enabled these perks by default.
+• Automatic Daily Login Reward
                     ${
                       isPremium
                         ? `\n• Automatic Free Llamas\n• Automatic Research`
