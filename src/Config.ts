@@ -12,7 +12,7 @@ class Config implements IConfig {
   readonly mongoUri: string;
   readonly apiPort: number;
   readonly color: ColorResolvable;
-  readonly coinbaseApiKey: string;
+  readonly loggingWebhook: string;
 
   constructor() {
     this.discordToken = process.env.DISCORD_TOKEN!;
@@ -24,7 +24,7 @@ class Config implements IConfig {
     this.mongoUri = process.env.MONGO_URI!;
     this.apiPort = Number(process.env.API_PORT!);
     this.color = 'AQUA';
-    this.coinbaseApiKey = process.env.COINBASE_API_KEY!;
+    this.loggingWebhook = process.env.LOGGING_WEBHOOK!;
   }
 }
 

@@ -10,7 +10,7 @@ interface IConfig {
   readonly mongoUri: string;
   readonly apiPort: number;
   readonly color: ColorResolvable;
-  readonly coinbaseApiKey: string;
+  readonly loggingWebhook: string;
 }
 
 export default IConfig;
