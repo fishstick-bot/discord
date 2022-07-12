@@ -167,7 +167,7 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
       }
 
       const random = Math.floor(Math.random() * 100) + 1;
-      if (random < 5) {
+      if (random < 3) {
         await interaction.channel
           ?.send(
             `**You can support the bot by donating on any of the following payment methods:**
