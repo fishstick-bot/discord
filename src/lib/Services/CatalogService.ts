@@ -2,6 +2,8 @@ import axios from 'axios';
 import { promisify } from 'util';
 import cron from 'node-cron';
 import * as fs from 'fs';
+import sharp from 'sharp';
+import moment from 'moment';
 
 import Service from '../../structures/Service';
 import Bot from '../../client/Client';
@@ -35,11 +37,13 @@ class CatalogService implements Service {
 
   public async start() {
     await this.fetchBRCatalog();
+    await this.postToTwitter();
 
     cron.schedule(
       '0 0 * * *',
       async () => {
         await this.fetchBRCatalog();
+        await this.postToTwitter();
       },
       {
         scheduled: true,
@@ -85,6 +89,56 @@ class CatalogService implements Service {
       return this.fetchBRCatalog();
     }
   }
+
+  private async postToTwitter(): Promise<void> {
+    const start = Date.now();
+    try {
+      const { twitterApi } = this.bot;
+
+      const title = `#Fortnite Battle Royale Item Shop | ${moment
+        .utc()
+        .format('Do MMMM YYYY')}`;
+
+      const res1 = await twitterApi.post('media/upload', {
+        media_data: (
+          await sharp(
+            await fs.promises.readFile(`./Shop/BR/${this.brCatalog.date}.png`),
+          )
+            .toFormat('jpeg')
+            .resize(2000)
+            .toBuffer()
+        ).toString('base64'),
+      });
+      const metaParams = {
+        media_id: (res1.data as any).media_id_string,
+        alt_text: {
+          text: title,
+        },
+      };
+      const res2 = await twitterApi.post('media/metadata/create', metaParams);
+      const res3 = await twitterApi.post('statuses/update', {
+        status: title,
+        media_ids: [(res1.data as any).media_id_string],
+      });
+
+      this.bot.loggingWebhook.send(
+        `Posted BR Shop to Twitter - ${(res3.data as any).text}`,
+      );
+      this.logger.info(
+        `Posted BR Shop to Twitter [${(Date.now() - start).toFixed(2)}ms]`,
+      );
+    } catch (e: any) {
+      this.logger.error(`Error posting to Twitter: ${e}`);
+
+      await this.bot.loggingWebhook.send(
+        `Error posting to Twitter: ${e}
+
+\`\`\`${e.stack}\`\`\``,
+      );
+    }
+  }
+
+  // private async postToDiscordChannels(): Promise<void> {}
 }
 
 export default CatalogService;
