@@ -240,6 +240,11 @@ This menu contains special items you want to view in your locker image.
 
     items = Sort(items);
 
+    if (items.length === 0) {
+      await interaction.editReply(`You don't have any items in your locker.`);
+      return;
+    }
+
     await interaction.editReply({
       content: `Rendering locker image for ${items.length} items${Emojis.loading}`,
       embeds: [],
