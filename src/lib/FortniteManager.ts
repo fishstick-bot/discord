@@ -20,7 +20,7 @@ class FortniteManager {
         authorizationCode: code,
         checkEULA: true,
         killOtherTokens: false,
-        createLauncherSession: true,
+        createLauncherSession: false,
       },
       connectToXMPP: false,
       createParty: false,
@@ -76,7 +76,7 @@ class FortniteManager {
       auth: {
         checkEULA: true,
         killOtherTokens: false,
-        createLauncherSession: true,
+        createLauncherSession: false,
         deviceAuth: {
           accountId,
           deviceId,

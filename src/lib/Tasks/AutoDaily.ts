@@ -76,7 +76,10 @@ class AutoDaily implements Task {
     );
   }
 
-  private async claimDailyReward(epicAccount: IEpicAccount) {
+  private async claimDailyReward(
+    epicAccount: IEpicAccount,
+    retry = true,
+  ): Promise<string> {
     let result = '';
 
     try {
@@ -154,6 +157,16 @@ Tomorrow - **${rewardsByDay[daysLoggedIn + 1]?.amount ?? 0}x ${
         } catch (err) {
           // ignore
         }
+      }
+
+      // handle token errors
+      if (
+        (`${e}`.includes('Sorry the refresh token') ||
+          `${e}`.includes('Malformed auth token')) &&
+        retry
+      ) {
+        await this.bot.fortniteManager.removeAccount(epicAccount.accountId);
+        return this.claimDailyReward(epicAccount, false);
       }
 
       result = `${Emojis.cross} **${epicAccount.displayName}**
