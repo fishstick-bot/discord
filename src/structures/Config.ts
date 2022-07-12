@@ -11,6 +11,7 @@ interface IConfig {
   readonly apiPort: number;
   readonly color: ColorResolvable;
   readonly loggingWebhook: string;
+  readonly fortniteApiIoApiKey: string;
 }
 
 export default IConfig;

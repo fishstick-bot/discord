@@ -13,6 +13,7 @@ class Config implements IConfig {
   readonly apiPort: number;
   readonly color: ColorResolvable;
   readonly loggingWebhook: string;
+  readonly fortniteApiIoApiKey: string;
 
   constructor() {
     this.discordToken = process.env.DISCORD_TOKEN!;
@@ -25,6 +26,7 @@ class Config implements IConfig {
     this.apiPort = Number(process.env.API_PORT!);
     this.color = 'AQUA';
     this.loggingWebhook = process.env.LOGGING_WEBHOOK!;
+    this.fortniteApiIoApiKey = process.env.FORTNITE_API_IO_API_KEY!;
   }
 }
 
