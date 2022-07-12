@@ -1,3 +1,4 @@
+import { MessageEmbed, TextChannel } from 'discord.js';
 import axios from 'axios';
 import { promisify } from 'util';
 import cron from 'node-cron';
@@ -37,13 +38,29 @@ class CatalogService implements Service {
 
   public async start() {
     await this.fetchBRCatalog();
-    await this.postToTwitter();
+    await this.postBrShopToTwitter();
 
     cron.schedule(
       '0 0 * * *',
       async () => {
         await this.fetchBRCatalog();
-        await this.postToTwitter();
+
+        const embed = new MessageEmbed()
+          .setColor(this.bot._config.color)
+          .setTimestamp()
+          .setTitle(
+            `Battle Royale Item Shop | ${moment.utc().format('Do MMMM YYYY')}`,
+          )
+          .setImage(
+            `https://fishstickbot.com/api/catalog/br/img/${this.brCatalog.date}.png`,
+          );
+
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const guild of this.bot.guildModel.find({
+          itemShopChannelId: { $ne: '' },
+        })) {
+          await this.postToChannel(guild.itemShopChannelId, ' ', [embed]);
+        }
       },
       {
         scheduled: true,
@@ -90,7 +107,7 @@ class CatalogService implements Service {
     }
   }
 
-  private async postToTwitter(): Promise<void> {
+  private async postBrShopToTwitter(): Promise<void> {
     const start = Date.now();
     try {
       const { twitterApi } = this.bot;
@@ -138,7 +155,26 @@ class CatalogService implements Service {
     }
   }
 
-  // private async postToDiscordChannels(): Promise<void> {}
+  private async postToChannel(
+    channelId: string,
+    message: string,
+    embeds: MessageEmbed[],
+  ) {
+    try {
+      const channel = (await this.bot.channels.fetch(channelId)) as TextChannel;
+
+      if (channel) {
+        await channel
+          .send({
+            content: message,
+            embeds,
+          })
+          .catch(() => {});
+      }
+    } catch (e) {
+      this.logger.error(`Error posting to channel ${channelId}: ${e}`);
+    }
+  }
 }
 
 export default CatalogService;
