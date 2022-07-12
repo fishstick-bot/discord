@@ -5,6 +5,8 @@ import 'dotenv/config';
 
 import Config from './Config';
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
 const webhook = new WebhookClient({
   url: new Config().loggingWebhook,
 });
@@ -19,12 +21,16 @@ const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
 
 manager.on('clusterCreate', async (cluster) => {
   console.log(`Launched cluster ${cluster.id}`);
-  await webhook.send(`Launched cluster ${cluster.id}`);
+  if (!isDevelopment) {
+    await webhook.send(`Launched cluster ${cluster.id}`);
+  }
 });
 
 manager.on('debug', async (msg) => {
   console.log('[DEBUG]', msg);
-  await webhook.send(`\`\`\`${msg}\`\`\``);
+  if (!isDevelopment) {
+    await webhook.send(`\`\`\`${msg}\`\`\``);
+  }
 });
 
 manager.spawn({
@@ -32,7 +38,9 @@ manager.spawn({
 });
 
 process.on('SIGINT', async () => {
-  await webhook.send('Shutting down...');
+  if (!isDevelopment) {
+    await webhook.send('Shutting down...');
+  }
   manager.clusters.forEach(async (cluster) => {
     try {
       cluster.process?.kill();
@@ -56,7 +64,9 @@ process.on('unhandledRejection', async (error: any) => {
     embed.addField('Stack', `\`\`\`${error.stack}\`\`\``);
   }
 
-  await webhook.send({
-    embeds: [embed],
-  });
+  if (!isDevelopment) {
+    await webhook.send({
+      embeds: [embed],
+    });
+  }
 });
