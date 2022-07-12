@@ -53,7 +53,7 @@
     "coinbase-commerce-node": "^1.0.4",
     "compression": "^1.7.4",
     "discord-api-types": "^0.35.0",
-    "discord-hybrid-sharding": "^1.6.5",
+    "discord-hybrid-sharding": "github:meister03/discord-hybrid-sharding",
     "discord.js": "^13.8.1",
     "dotenv": "^16.0.1",
     "erlpack": "discord/erlpack",

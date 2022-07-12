@@ -1,4 +1,4 @@
-import { Client, Intents, Collection } from 'discord.js';
+import { Client, Intents, Collection, WebhookClient } from 'discord.js';
 import Cluster from 'discord-hybrid-sharding';
 import glob from 'glob';
 import { promisify } from 'util';
@@ -38,6 +38,8 @@ class Bot extends Client {
 
   // cluster client
   public cluster = new Cluster.Client(this);
+
+  public loggingWebhook: WebhookClient;
 
   // commands
   public commands: Collection<string, ICommand> = new Collection();
@@ -102,6 +104,10 @@ class Bot extends Client {
 
     this._config = new Config();
     this.logger = getLogger(`BOT (CLUSTER ${this.cluster.id})`);
+
+    this.loggingWebhook = new WebhookClient({
+      url: this._config.loggingWebhook,
+    });
   }
 
   // start the bot
