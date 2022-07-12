@@ -1,9 +1,14 @@
 /* eslint-disable no-console */
+import { WebhookClient, MessageEmbed } from 'discord.js';
 import Cluster from 'discord-hybrid-sharding';
+import 'dotenv/config';
 
-require('dotenv').config();
+import Config from './Config';
 
-console.log(__dirname);
+const webhook = new WebhookClient({
+  url: new Config().loggingWebhook,
+});
+
 const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
   totalShards: 'auto',
   totalClusters: 'auto',
@@ -12,17 +17,22 @@ const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
   token: process.env.DISCORD_TOKEN!,
 });
 
-manager.on('clusterCreate', (cluster) => {
+manager.on('clusterCreate', async (cluster) => {
   console.log(`Launched cluster ${cluster.id}`);
+  await webhook.send(`Launched cluster ${cluster.id}`);
 });
 
-manager.on('debug', console.log);
+manager.on('debug', async (msg) => {
+  console.log('[DEBUG]', msg);
+  await webhook.send(`\`\`\`${msg}\`\`\``);
+});
 
 manager.spawn({
   timeout: -1,
 });
 
 process.on('SIGINT', async () => {
+  await webhook.send('Shutting down...');
   manager.clusters.forEach(async (cluster) => {
     try {
       cluster.process?.kill();
@@ -34,6 +44,19 @@ process.on('SIGINT', async () => {
   });
 });
 
-process.on('unhandledRejection', (error) => {
+process.on('unhandledRejection', async (error: any) => {
   console.error(error);
+  const embed = new MessageEmbed()
+    .setTitle('Unhandled rejection')
+    .setDescription(`${error}`)
+    .setColor('RED')
+    .setTimestamp();
+
+  if (error?.stack) {
+    embed.addField('Stack', `\`\`\`${error.stack}\`\`\``);
+  }
+
+  await webhook.send({
+    embeds: [embed],
+  });
 });

@@ -121,7 +121,7 @@ const Command: ICommand = {
 
     const collector = msg.createMessageComponentCollector({
       filter: (i) => i.user.id === interaction.user.id,
-      time: 5 * 60 * 1000,
+      time: 30 * 60 * 1000,
     });
 
     collector.on('collect', async (i) => {
