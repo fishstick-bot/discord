@@ -138,6 +138,24 @@ Tomorrow - **${rewardsByDay[daysLoggedIn + 1]?.amount ?? 0}x ${
         rewardsByDay[daysLoggedIn + 1]?.name ?? 'Unknown Item'
       }**`;
     } catch (e: any) {
+      // disable auto daily if user don't has game access
+      if (`${e}`.includes('Daily rewards require game access')) {
+        try {
+          await this.bot.epicAccountModel.findOneAndUpdate(
+            {
+              accountId: epicAccount.accountId,
+            },
+            {
+              $set: {
+                autoDaily: false,
+              },
+            },
+          );
+        } catch (err) {
+          // ignore
+        }
+      }
+
       result = `${Emojis.cross} **${epicAccount.displayName}**
 ${e}`;
     }
