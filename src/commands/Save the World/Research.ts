@@ -154,7 +154,7 @@ const Command: ICommand = {
         }
 
         if (i.customId !== 'research') {
-          await client.http.sendEpicgamesRequest(
+          const res = await client.http.sendEpicgamesRequest(
             true,
             'POST',
             `${Endpoints.MCP}/${epicAccount.accountId}/client/PurchaseResearchStatUpgrade?profileId=campaign`,
@@ -166,6 +166,10 @@ const Command: ICommand = {
               nodeId: i.customId,
             },
           );
+
+          if (res.error) {
+            await interaction.followUp(res.error.message);
+          }
         } else {
           const researchCollector =
             stw.items.find(
@@ -175,7 +179,7 @@ const Command: ICommand = {
             )?.id ?? null;
 
           if (researchCollector) {
-            await client.http.sendEpicgamesRequest(
+            const res = await client.http.sendEpicgamesRequest(
               true,
               'POST',
               `${Endpoints.MCP}/${epicAccount.accountId}/client/ClaimCollectedResources?profileId=campaign`,
@@ -187,6 +191,10 @@ const Command: ICommand = {
                 collectorsToClaim: [researchCollector],
               },
             );
+
+            if (res.error) {
+              await interaction.followUp(res.error.message);
+            }
           }
         }
         await refreshSTWProfile();

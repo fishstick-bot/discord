@@ -202,7 +202,7 @@ const Command: ICommand = {
             return;
         }
 
-        await client.http.sendEpicgamesRequest(
+        const res = await client.http.sendEpicgamesRequest(
           true,
           'POST',
           `${Endpoints.MCP}/${epicAccount.accountId}/client/PurchaseOrUpgradeHomebaseNode?profileId=campaign`,
@@ -214,6 +214,11 @@ const Command: ICommand = {
             nodeId: i.customId,
           },
         );
+
+        if (res.error) {
+          await interaction.followUp(res.error.message);
+        }
+
         await refreshSTWProfile();
 
         await interaction.editReply({
