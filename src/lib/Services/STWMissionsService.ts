@@ -60,7 +60,7 @@ class STWMissionsService implements Service {
     await this.fetchMissions();
 
     cron.schedule(
-      '0 0 * * *',
+      '1 0 * * *',
       async () => {
         await this.fetchMissions();
 

@@ -40,7 +40,7 @@ class CatalogService implements Service {
     await this.fetchBRCatalog();
 
     cron.schedule(
-      '0 0 * * *',
+      '1 0 * * *',
       async () => {
         await this.fetchBRCatalog();
         await this.postBrShopToTwitter();
