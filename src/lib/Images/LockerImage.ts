@@ -373,7 +373,6 @@ const drawLocker = async (
   items: KeyValuePair[],
   epicname: string,
   username: string,
-  png = false,
 ): Promise<Buffer> => {
   const renderedLength = Math.ceil(Math.sqrt(items.length));
 
@@ -444,8 +443,7 @@ const drawLocker = async (
   );
 
   return canvas.toBuffer('image/jpeg', {
-    // eslint-disable-next-line no-nested-ternary
-    quality: png ? undefined : items.length > 196 ? 0.8 : 1,
+    quality: items.length > 350 ? 0.5 : 0.8,
   });
 };
 
