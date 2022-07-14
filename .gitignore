@@ -113,3 +113,4 @@ dist
 # test
 test.js
 test.json
+test/
