@@ -25,6 +25,7 @@ class FortniteManager {
       connectToXMPP: false,
       createParty: false,
       fetchFriends: false,
+      restartOnInvalidRefresh: true,
     });
     await client.login();
     this.clients.set(client.user!.id, client);
@@ -86,6 +87,7 @@ class FortniteManager {
       connectToXMPP: false,
       createParty: false,
       fetchFriends: false,
+      restartOnInvalidRefresh: true,
       // eslint-disable-next-line no-console
       // debug: console.log,
       // eslint-disable-next-line no-console
