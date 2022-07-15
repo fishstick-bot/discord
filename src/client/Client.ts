@@ -27,6 +27,7 @@ import CatalogService from '../lib/Services/CatalogService';
 import API from '../lib/Services/API';
 import FortniteManager from '../lib/FortniteManager';
 import type { ICommand } from '../structures/Command';
+import type { ILegacyCommand } from '../structures/LegacyCommand';
 import type IEvent from '../structures/Event';
 import type Task from '../structures/Task';
 
@@ -49,6 +50,7 @@ class Bot extends Client {
 
   // commands
   public commands: Collection<string, ICommand> = new Collection();
+  public legacyCommands: Collection<string, ILegacyCommand> = new Collection();
   public cooldown = 4; // for premium, cooldown is half of regular cooldown
   public cooldowns: Collection<string, Collection<string, number>> =
     new Collection();
@@ -222,6 +224,27 @@ class Bot extends Client {
       `Loaded ${this.commands.size} commands [${(Date.now() - start).toFixed(
         2,
       )}ms]`,
+    );
+  }
+
+  private async _loadLegacyCommands(): Promise<void> {
+    const start = Date.now();
+    const commandFiles = await globPromisify(
+      `${__dirname}/../legacy_commands/**/*{.ts,.js}`,
+    );
+
+    await Promise.all(
+      commandFiles.map(async (file) => {
+        const command: ILegacyCommand = (await import(file)).default;
+        this.legacyCommands.set(command.name, command);
+        this.logger.debug(`Loaded legacy command ${command.name}`);
+      }),
+    );
+
+    this.logger.info(
+      `Loaded ${this.legacyCommands.size} legacy commands [${(
+        Date.now() - start
+      ).toFixed(2)}ms]`,
     );
   }
 
