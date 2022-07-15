@@ -170,6 +170,7 @@ class Bot extends Client {
 
     // load commands
     await this._loadCommands();
+    await this._loadLegacyCommands();
 
     // load event listeners
     await this._loadEventListeners();

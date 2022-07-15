@@ -3,7 +3,7 @@ import { MessageAttachment } from 'discord.js';
 import type { ILegacyCommand } from '../../structures/LegacyCommand';
 
 const Command: ILegacyCommand = {
-  name: 'generatedocs',
+  name: 'generate-docs',
 
   options: {
     ownerOnly: true,
