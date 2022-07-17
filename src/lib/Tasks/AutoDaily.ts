@@ -38,9 +38,9 @@ class AutoDaily implements Task {
     const start = Date.now();
     this.logger.info('Running auto daily task');
 
-    const logChannel = (await this.bot.channels.fetch(
-      this.bot._config.dailyRewardsChannel,
-    )) as TextChannel;
+    const logChannel = (await this.bot.channels
+      .fetch(this.bot._config.freeLlamasChannel)
+      .catch(() => null)) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const user of this.bot.userModel.find({})) {
@@ -65,14 +65,18 @@ class AutoDaily implements Task {
           ).join('\n\n'),
         );
 
-      await logChannel.send({
+      if (!logChannel) {
+        this.logger.warning('Log channel not found');
+      }
+
+      await logChannel?.send({
         content: userMention(user.id),
         embeds: [embed],
       });
     }
 
     this.logger.info(
-      `Auto daily task finished [${(Date.now() - start).toFixed(2)}ms[]`,
+      `Auto daily task finished [${(Date.now() - start).toFixed(2)}ms]`,
     );
   }
 
@@ -141,8 +145,11 @@ Tomorrow - **${rewardsByDay[daysLoggedIn + 1]?.amount ?? 0}x ${
         rewardsByDay[daysLoggedIn + 1]?.name ?? 'Unknown Item'
       }**`;
     } catch (e: any) {
-      // disable auto daily if user don't has game access
-      if (`${e}`.includes('Daily rewards require game access')) {
+      // disable auto subscription if user don't has game access / if account credentials invalid
+      if (
+        `${e}`.includes('Daily rewards require game access') ||
+        `${e}`.includes('account you are using is not active')
+      ) {
         try {
           await this.bot.epicAccountModel.findOneAndUpdate(
             {

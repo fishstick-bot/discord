@@ -1,13 +1,11 @@
 import { TextChannel, MessageEmbed } from 'discord.js';
 import { userMention } from '@discordjs/builders';
-import cron from 'node-cron';
-import { Endpoints } from 'fnbr';
+import { Endpoints, Client } from 'fnbr';
 
 import Task from '../../structures/Task';
 import Bot from '../../client/Client';
 import getLogger from '../../Logger';
 import type { IEpicAccount } from '../../database/models/typings';
-import StwDailyRewards from '../../resources/DailyRewards.json';
 import Emojis from '../../resources/Emojis';
 
 class AutoFreeLlamas implements Task {
@@ -31,12 +29,15 @@ class AutoFreeLlamas implements Task {
     const start = Date.now();
     this.logger.info('Running auto free llamas task');
 
-    const logChannel = (await this.bot.channels.fetch(
-      this.bot._config.freeLlamasChannel,
-    )) as TextChannel;
+    const logChannel = (await this.bot.channels
+      .fetch(this.bot._config.freeLlamasChannel)
+      .catch(() => null)) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const user of this.bot.userModel.find({})) {
+      const isPremium =
+        user.premiumUntil.getTime() > Date.now() || user.isPartner;
+
       const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
         (a) => a.autoFreeLlamas,
       );
@@ -44,6 +45,27 @@ class AutoFreeLlamas implements Task {
       if (epicAccounts.length === 0) {
         // eslint-disable-next-line no-continue
         continue;
+      }
+
+      if (!isPremium) {
+        await Promise.all(
+          epicAccounts.map(async (epicAccount) => {
+            if (epicAccount.autoFreeLlamas) {
+              await this.bot.epicAccountModel.findOneAndUpdate(
+                {
+                  accountId: epicAccount.accountId,
+                },
+                {
+                  $set: {
+                    autoFreeLlamas: false,
+                  },
+                },
+              );
+            }
+          }),
+        );
+
+        return;
       }
 
       const embed = new MessageEmbed()
@@ -54,22 +76,34 @@ class AutoFreeLlamas implements Task {
         .setTimestamp()
         .setDescription(
           (
-            await Promise.all(epicAccounts.map((a) => this.claimDailyReward(a)))
+            await Promise.all(
+              epicAccounts.map((a) => this.checkAndClaimFreeLlamas(a)),
+            )
           ).join('\n\n'),
         );
 
-      await logChannel.send({
+      // check if description is empty
+      if (embed.description!.replace(/\n/g, '').length === 0) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
+
+      if (!logChannel) {
+        this.logger.warning('Log channel not found');
+      }
+
+      await logChannel?.send({
         content: userMention(user.id),
         embeds: [embed],
       });
     }
 
     this.logger.info(
-      `Auto daily task finished [${(Date.now() - start).toFixed(2)}ms[]`,
+      `Auto free llamas task finished [${(Date.now() - start).toFixed(2)}ms]`,
     );
   }
 
-  private async claimDailyReward(
+  private async checkAndClaimFreeLlamas(
     epicAccount: IEpicAccount,
     retry = true,
   ): Promise<string> {
@@ -82,76 +116,49 @@ class AutoFreeLlamas implements Task {
         epicAccount.secret,
       );
 
-      const res = await client.http.sendEpicgamesRequest(
-        true,
-        'POST',
-        `${Endpoints.MCP}/${epicAccount.accountId}/client/ClaimLoginReward?profileId=campaign`,
-        'fortnite',
-        {
-          'Content-Type': 'application/json',
-        },
-        {},
-      );
-
-      if (res.error) {
-        throw new Error(res.error.message ?? res.error.code);
+      let nClaimed = 0;
+      let availableLlama: string = '';
+      try {
+        availableLlama = await this.getAvailableFreeLlama(client);
+      } catch (e) {
+        // ignore
       }
 
-      const { daysLoggedIn, items } = res.response.notifications[0];
+      if (availableLlama && availableLlama.length !== 0) {
+        await this.purchaseFreeLlama(
+          client,
+          epicAccount.accountId,
+          availableLlama,
+        );
+        nClaimed += 1;
 
-      const multiplier: number = Math.ceil(daysLoggedIn / 336);
-      let baseDay: number = daysLoggedIn;
-      if (daysLoggedIn > 336) baseDay = daysLoggedIn - 336 * (multiplier - 1);
-
-      const rewardsByDay: {
-        [key: string]: any;
-      } = {};
-      // eslint-disable-next-line no-restricted-syntax
-      for (const day in StwDailyRewards) {
-        if (
-          parseInt(day, 10) + 1 <= baseDay + 6 &&
-          parseInt(day, 10) + 1 >= baseDay
-        ) {
-          rewardsByDay[336 * (multiplier - 1) + parseInt(day, 10) + 1] =
-            StwDailyRewards[day];
-        }
-      }
-
-      const alreadyClaimed = items.length === 0;
-
-      result = `${Emojis.tick} **${
-        epicAccount.displayName
-      } (${daysLoggedIn} Days)**
-${
-  alreadyClaimed
-    ? 'You have already claimed todays reward.'
-    : 'Successfully claimed todays reward.'
-}
-Today - **${rewardsByDay[daysLoggedIn]?.amount ?? 0}x ${
-        rewardsByDay[daysLoggedIn]?.name ?? 'Unknown Item'
-      }**
-Tomorrow - **${rewardsByDay[daysLoggedIn + 1]?.amount ?? 0}x ${
-        rewardsByDay[daysLoggedIn + 1]?.name ?? 'Unknown Item'
-      }**`;
-    } catch (e: any) {
-      // disable auto daily if user don't has game access
-      if (`${e}`.includes('Daily rewards require game access')) {
         try {
-          await this.bot.epicAccountModel.findOneAndUpdate(
-            {
-              accountId: epicAccount.accountId,
-            },
-            {
-              $set: {
-                autoDaily: false,
-              },
-            },
-          );
-        } catch (err) {
+          availableLlama = await this.getAvailableFreeLlama(client);
+        } catch (e) {
           // ignore
         }
-      }
 
+        if (availableLlama && availableLlama.length !== 0) {
+          await this.purchaseFreeLlama(
+            client,
+            epicAccount.accountId,
+            availableLlama,
+          );
+          nClaimed += 1;
+        } else {
+          return '';
+        }
+
+        if (nClaimed === 0) {
+          return '';
+        }
+
+        result = `${Emojis.tick} **${epicAccount.displayName}**
+Successfully claimed ${nClaimed} free llama${nClaimed > 1 ? 's' : ''}`;
+      } else {
+        return '';
+      }
+    } catch (e: any) {
       // handle token errors
       if (
         (`${e}`.includes('Sorry the refresh token') ||
@@ -159,7 +166,7 @@ Tomorrow - **${rewardsByDay[daysLoggedIn + 1]?.amount ?? 0}x ${
         retry
       ) {
         await this.bot.fortniteManager.removeAccount(epicAccount.accountId);
-        return this.claimDailyReward(epicAccount, false);
+        return this.checkAndClaimFreeLlamas(epicAccount, false);
       }
 
       result = `${Emojis.cross} **${epicAccount.displayName}**
@@ -167,6 +174,83 @@ ${e}`;
     }
 
     return result;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private async getAvailableFreeLlama(client: Client) {
+    const res = await client.http.sendEpicgamesRequest(
+      true,
+      'GET',
+      'https://fortnite-public-service-prod11.ol.epicgames.com/fortnite/api/storefront/v2/catalog',
+      'fortnite',
+      {},
+    );
+
+    if (res.error) {
+      throw new Error(res.error.message ?? res.error.code);
+    }
+
+    let { storefronts } = res.response;
+    storefronts = storefronts
+      .filter(
+        (s: any) =>
+          s.name === 'CardPackStorePreroll' ||
+          s.name === 'CardPackStoreGameplay',
+      )
+      .map((s: any) => s.catalogEntries)
+      .flat()
+      .filter(
+        (s: any) =>
+          (s.devName ?? '').includes('RandomFree') ||
+          (s.devName ?? '').includes('FreePack') ||
+          (s.title ?? '').includes('Seasonal Sale Freebie'),
+      );
+
+    if (storefronts.length === 0) {
+      throw new Error('No free llama available');
+    }
+
+    return storefronts[0].offerId;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  private async purchaseFreeLlama(
+    client: Client,
+    accountId: string,
+    offerId: string,
+  ) {
+    const res1 = await client.http.sendEpicgamesRequest(
+      true,
+      'POST',
+      `${Endpoints.MCP}/${accountId}/client/PopulatePrerolledOffers?profileId=campaign`,
+      'fortnite',
+      { 'Content-Type': 'application/json' },
+      {},
+    );
+
+    if (res1.error) {
+      throw new Error(res1.error.message ?? res1.error.code);
+    }
+
+    const res2 = await client.http.sendEpicgamesRequest(
+      true,
+      'POST',
+      `${Endpoints.MCP}/${accountId}/client/PurchaseCatalogEntry?profileId=common_core`,
+      'fortnite',
+      { 'Content-Type': 'application/json' },
+      {
+        offerId,
+        purchaseQuantity: 1,
+        currency: 'GameItem',
+        currencySubType: 'AccountResource:currency_xrayllama',
+        expectedTotalPrice: 0,
+        gameContext: '',
+      },
+    );
+
+    if (res2.error) {
+      throw new Error(res2.error.message ?? res2.error.code);
+    }
   }
 }
 
