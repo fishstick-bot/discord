@@ -163,7 +163,7 @@ const Command: ICommand = {
               'Content-Type': 'application/json',
             },
             {
-              nodeId: i.customId,
+              statId: i.customId,
             },
           );
 
