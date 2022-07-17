@@ -351,7 +351,7 @@ const Command: ICommand = {
         )
         .addField(
           'Battle Royale Accolade XP',
-          `**${brxp.toLocaleString()} / ${(450000).toLocaleString()} ${
+          `**${(brxp ?? 0).toLocaleString()} / ${(450000).toLocaleString()} ${
             Emojis.brxp
           }**`,
         );
