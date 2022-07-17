@@ -159,6 +159,23 @@ Successfully claimed ${nClaimed} free llama${nClaimed > 1 ? 's' : ''}`;
         return '';
       }
     } catch (e: any) {
+      if (`${e}`.includes('account you are using is not active')) {
+        try {
+          await this.bot.epicAccountModel.findOneAndUpdate(
+            {
+              accountId: epicAccount.accountId,
+            },
+            {
+              $set: {
+                autoFreeLlamas: false,
+              },
+            },
+          );
+        } catch (err) {
+          // ignore
+        }
+      }
+
       // handle token errors
       if (
         (`${e}`.includes('Sorry the refresh token') ||
