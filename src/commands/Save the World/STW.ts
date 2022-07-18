@@ -895,7 +895,7 @@ ${a
             break;
         }
 
-        await interaction.editReply({
+        await msg.edit({
           embeds,
           components: [createModeMenu(), createBtns()],
           files,

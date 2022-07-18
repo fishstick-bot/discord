@@ -112,12 +112,14 @@ const Command: ICommand = {
       return rows;
     };
 
-    await interaction.editReply({
+    await interaction.editReply(
+      'Sent hero loadout selection menu. Please select a hero loadout.',
+    );
+
+    const msg = (await (interaction.channel! ?? interaction.user).send({
       content: `**${epicAccount.displayName}'s STW Hero Loadout**`,
       components: createComponents(),
-    });
-
-    const msg = (await interaction.fetchReply()) as Message;
+    })) as Message;
 
     const collector = msg.createMessageComponentCollector({
       filter: (i) => i.user.id === interaction.user.id,
@@ -146,7 +148,7 @@ const Command: ICommand = {
           },
         );
 
-        await interaction.editReply({
+        await msg.edit({
           components: createComponents(),
         });
       } catch (e) {
@@ -163,8 +165,8 @@ const Command: ICommand = {
 
     collector.on('end', async (collected, reason) => {
       if (reason === 'handleError') return;
-      await interaction
-        .editReply({
+      await msg
+        .edit({
           content: ' ',
           components: createComponents(true),
         })
