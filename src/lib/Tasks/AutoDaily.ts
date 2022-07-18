@@ -39,7 +39,7 @@ class AutoDaily implements Task {
     this.logger.info('Running auto daily task');
 
     const logChannel = (await this.bot.channels
-      .fetch(this.bot._config.freeLlamasChannel)
+      .fetch(this.bot._config.dailyRewardsChannel)
       .catch(() => null)) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
@@ -148,7 +148,10 @@ Tomorrow - **${rewardsByDay[daysLoggedIn + 1]?.amount ?? 0}x ${
       // disable auto subscription if user don't has game access / if account credentials invalid
       if (
         `${e}`.includes('Daily rewards require game access') ||
-        `${e}`.includes('account you are using is not active')
+        `${e}`.includes('account you are using is not active') ||
+        `${e}`.includes(
+          'Sorry the account credentials you are using are invalid',
+        )
       ) {
         try {
           await this.bot.epicAccountModel.findOneAndUpdate(

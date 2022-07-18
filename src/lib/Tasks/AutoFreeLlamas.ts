@@ -159,7 +159,12 @@ Successfully claimed ${nClaimed} free llama${nClaimed > 1 ? 's' : ''}`;
         return '';
       }
     } catch (e: any) {
-      if (`${e}`.includes('account you are using is not active')) {
+      if (
+        `${e}`.includes('account you are using is not active') ||
+        `${e}`.includes(
+          'Sorry the account credentials you are using are invalid',
+        )
+      ) {
         try {
           await this.bot.epicAccountModel.findOneAndUpdate(
             {
@@ -174,6 +179,8 @@ Successfully claimed ${nClaimed} free llama${nClaimed > 1 ? 's' : ''}`;
         } catch (err) {
           // ignore
         }
+
+        return '';
       }
 
       // handle token errors
