@@ -273,7 +273,7 @@ ${e}`;
     );
 
     if (res2.error) {
-      if (!res1.error.message.includes('it would exceed the daily limit of')) {
+      if (!res2.error!.message.includes('it would exceed the daily limit of')) {
         throw new Error(res2.error.message ?? res2.error.code);
       }
     }
