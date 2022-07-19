@@ -464,7 +464,9 @@ ${m.rewards
     embeds: MessageEmbed[],
   ) {
     try {
-      const channel = (await this.bot.channels.fetch(channelId)) as TextChannel;
+      const channel = (await this.bot.channels.fetch(channelId, {
+        allowUnknownGuild: true,
+      })) as TextChannel;
 
       if (channel) {
         await channel
