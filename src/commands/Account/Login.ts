@@ -317,6 +317,7 @@ You are a ${
               });
 
               bot.loginCooldowns.delete(interaction.user.id);
+              await bot.fortniteManager.removeAccount(epicAcc.accountId);
               collector.stop();
             } catch (e: any) {
               await modalSubmit
