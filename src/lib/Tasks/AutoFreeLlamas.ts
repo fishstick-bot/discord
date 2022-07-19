@@ -124,13 +124,14 @@ class AutoFreeLlamas implements Task {
         // ignore
       }
 
+      let claimed: boolean;
       if (availableLlama && availableLlama.length !== 0) {
-        await this.purchaseFreeLlama(
+        claimed = await this.purchaseFreeLlama(
           client,
           epicAccount.accountId,
           availableLlama,
         );
-        nClaimed += 1;
+        nClaimed += claimed ? 1 : 0;
 
         try {
           availableLlama = await this.getAvailableFreeLlama(client);
@@ -139,12 +140,12 @@ class AutoFreeLlamas implements Task {
         }
 
         if (availableLlama && availableLlama.length !== 0) {
-          await this.purchaseFreeLlama(
+          claimed = await this.purchaseFreeLlama(
             client,
             epicAccount.accountId,
             availableLlama,
           );
-          nClaimed += 1;
+          nClaimed += claimed ? 1 : 0;
         } else {
           return '';
         }
@@ -275,8 +276,12 @@ ${e}`;
     if (res2.error) {
       if (!res2.error!.message.includes('it would exceed the daily limit of')) {
         throw new Error(res2.error.message ?? res2.error.code);
+      } else {
+        return false;
       }
     }
+
+    return true;
   }
 }
 
