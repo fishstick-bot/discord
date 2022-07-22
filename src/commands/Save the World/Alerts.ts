@@ -66,7 +66,7 @@ const Command: ICommand = {
     if (subCommand === 'vbucks') {
       const mtxAlerts = (
         await axios.get(
-          `http://localhost:${bot._config.apiPort}/api/stwVbucksMissions`,
+          `http://127.0.0.1:${bot._config.apiPort}/api/stwVbucksMissions`,
         )
       ).data as ISTWMission[];
 
@@ -92,7 +92,7 @@ const Command: ICommand = {
     if (subCommand === 'legendary-survivors') {
       const stwLegendarySurvivorAlerts = (
         await axios.get(
-          `http://localhost:${bot._config.apiPort}/api/stwLegendarySurvivorMissions`,
+          `http://127.0.0.1:${bot._config.apiPort}/api/stwLegendarySurvivorMissions`,
         )
       ).data as ISTWMission[];
 

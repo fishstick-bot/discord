@@ -199,7 +199,7 @@ This menu contains special items you want to view in your locker image.
 
     let allItems: any = await client.http.send(
       'GET',
-      `http://localhost:${bot._config.apiPort}/api/cosmetics`,
+      `http://127.0.0.1:${bot._config.apiPort}/api/cosmetics`,
     );
 
     if (allItems.error) {

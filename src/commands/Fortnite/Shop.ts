@@ -30,7 +30,7 @@ const Command: ICommand = {
       case 'br':
         const brShop = (
           await axios.get(
-            `http://localhost:${bot._config.apiPort}/api/catalog/br`,
+            `http://127.0.0.1:${bot._config.apiPort}/api/catalog/br`,
           )
         ).data;
 

@@ -123,7 +123,7 @@ const Command: ICommand = {
     const stwMissions = (
       await client.http.send(
         'GET',
-        `http://localhost:${bot._config.apiPort}/api/stwMissions`,
+        `http://127.0.0.1:${bot._config.apiPort}/api/stwMissions`,
       )
     ).response.data as ISTWMission[];
 
