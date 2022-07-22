@@ -120,6 +120,8 @@ const Command: ICommand = {
           } ${Emojis.star}
 • **Auto Research**: ${capitalizeFirst(epicAccount.autoResearch)} ${Emojis.star}
 
+**Make sure to join our [support server](https://discord.gg/fishstick) to see your auto daily/freebie llamas rewards!**
+
 **Click any button to enable/disable setting.**
 **This message will timeout in 60 seconds.**`,
         );
