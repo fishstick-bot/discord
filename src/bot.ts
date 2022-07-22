@@ -10,7 +10,13 @@ const bot = new Bot();
 })();
 
 process.on('unhandledRejection', async (error: any) => {
-  console.error(error);
+  if (
+    `${error}`.includes(
+      'Sorry the account credentials you are using are invalid',
+    )
+  ) {
+    return;
+  }
 
   const embed = new MessageEmbed()
     .setTitle('Unhandled rejection')
@@ -18,7 +24,7 @@ process.on('unhandledRejection', async (error: any) => {
     .setColor('RED')
     .setTimestamp()
     .setFooter({
-      text: 'Sharding Manager',
+      text: `Cluster ${bot.cluster.id}`,
     });
 
   if (error?.stack) {
