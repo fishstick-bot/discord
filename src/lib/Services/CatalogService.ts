@@ -45,21 +45,25 @@ class CatalogService implements Service {
         await this.fetchBRCatalog();
         await this.postBrShopToTwitter();
 
-        const embed = new MessageEmbed()
-          .setColor(this.bot._config.color)
-          .setTimestamp()
-          .setTitle(
-            `Battle Royale Item Shop | ${moment.utc().format('Do MMMM YYYY')}`,
-          )
-          .setImage(
-            `https://fishstickbot.com/api/catalog/br/img/${this.brCatalog.date}.png`,
-          );
+        // const embed = new MessageEmbed()
+        //   .setColor(this.bot._config.color)
+        //   .setTimestamp()
+        //   .setTitle(
+        //     `Battle Royale Item Shop | ${moment.utc().format('Do MMMM YYYY')}`,
+        //   )
+        //   .setImage(
+        //     `https://fishstickbot.com/api/catalog/br/img/${this.brCatalog.date}.png`,
+        //   );
 
         // eslint-disable-next-line no-restricted-syntax
         for await (const guild of this.bot.guildModel.find({
           itemShopChannelId: { $ne: '' },
         })) {
-          await this.postToChannel(guild.itemShopChannelId, ' ', [embed]);
+          await this.postToChannel(
+            guild.itemShopChannelId,
+            `https://fishstickbot.com/api/catalog/br/img/${this.brCatalog.date}.png`,
+            [],
+          );
         }
       },
       {
