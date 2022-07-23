@@ -13,7 +13,11 @@ process.on('unhandledRejection', async (error: any) => {
   if (
     `${error}`.includes(
       'Sorry the account credentials you are using are invalid',
-    )
+    ) ||
+    `${error}`.includes(
+      'Sorry the authorization code you supplied was not found. It is possible that it was no longer valid',
+    ) ||
+    `${error}`.includes('Sorry the account you are using is not active.')
   ) {
     return;
   }
