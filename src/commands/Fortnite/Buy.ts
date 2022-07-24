@@ -324,11 +324,23 @@ It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
 
         const errors = promises.map((p) => p.error).filter((e) => e);
         if (errors.length > 0) {
-          await interaction.editReply(
-            `There was an error purchasing the items.\n\n${errors
-              .map((e) => e!.message)
-              .join('\n')}`,
-          );
+          const err = `There was an error gifting some tems.\n\n${errors
+            .map((e) => e!.message)
+            .join('\n')}`;
+
+          if (errors.length === promises.length) {
+            await interaction.editReply({
+              content: err,
+              embeds: [],
+              components: [],
+            });
+            return;
+          }
+          await interaction.followUp({
+            content: err,
+            embeds: [],
+            components: [],
+          });
         }
 
         await interaction.editReply(
