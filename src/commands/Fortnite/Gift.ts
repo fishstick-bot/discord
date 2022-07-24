@@ -344,7 +344,7 @@ const Command: ICommand = {
 
     const errors = promises.map((p) => p.error).filter((e) => e);
     if (errors.length > 0) {
-      const err = `There was an error gifting some tems.\n\n${errors
+      const err = `There was an error gifting some items.\n\n${errors
         .map((e) => e!.message)
         .join('\n')}`;
 
