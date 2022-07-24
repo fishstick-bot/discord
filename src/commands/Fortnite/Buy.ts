@@ -296,7 +296,8 @@ It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
         }
 
         await interaction.editReply({
-          content: `Purchasing **${items.length} items**${Emojis.loading}`,
+          content: `Purchasing **${items.length} Items**${Emojis.loading}`,
+
           embeds: [],
           components: [],
         });
@@ -331,9 +332,19 @@ It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
         }
 
         await interaction.editReply(
-          `Successfully purchased **${items.length} items** for **${
+          `Successfully purchased **${items.length} Items** for **${
             Emojis.vbucks
-          } ${approx(totalCartPrice).toUpperCase()}**`,
+          } ${approx(totalCartPrice).toUpperCase()}**
+
+**Purchased Items:**
+${items
+  .map(
+    (i) =>
+      `• **${i.displayName}** for ${Emojis.vbucks} **${approx(
+        i.price.finalPrice,
+      ).toUpperCase()}**`,
+  )
+  .join('\n')}`,
         );
         break;
 
