@@ -25,7 +25,7 @@ class FortniteManager {
       connectToXMPP: false,
       createParty: false,
       fetchFriends: false,
-      restartOnInvalidRefresh: true,
+      restartOnInvalidRefresh: false,
     });
     await client.login();
     this.clients.set(client.user!.id, client);
@@ -101,10 +101,10 @@ class FortniteManager {
 
   public async removeAccount(accountId: string) {
     try {
-      await this.clients
-        .get(accountId)
-        ?.logout()
-        .catch(() => {});
+      // await this.clients
+      //   .get(accountId)
+      //   ?.logout()
+      //   .catch(() => {});
       this.clients.delete(accountId);
     } catch (e) {
       // ignore the error

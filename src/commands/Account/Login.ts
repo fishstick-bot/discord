@@ -276,7 +276,7 @@ Example: **aabbccddeeff11223344556677889900**
                 )
               ) {
                 await modalSubmit.editReply(
-                  `You already have this account logged in.`,
+                  `You already have this account logged in. We have updated your account information.`,
                 );
                 return;
               }

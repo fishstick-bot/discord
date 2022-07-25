@@ -44,6 +44,24 @@ const handleCommandError = async (
           .catch(console.error);
         return;
       }
+
+      if (
+        `${e}`.includes(
+          'Sorry the account credentials you are using are invalid',
+        )
+      ) {
+        await interaction
+          .editReply({
+            content:
+              'Your account credentials are invalid, please logout and login again.',
+            embeds: [],
+            components: [],
+            files: [],
+          })
+          // eslint-disable-next-line no-console
+          .catch(console.error);
+        return;
+      }
     }
 
     let errorEmbed: MessageEmbed;
