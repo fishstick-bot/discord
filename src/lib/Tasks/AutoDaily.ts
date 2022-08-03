@@ -66,7 +66,7 @@ class AutoDaily implements Task {
         );
 
       if (!logChannel) {
-        this.logger.warning('Log channel not found');
+        this.logger.error('Log channel not found');
       }
 
       await logChannel?.send({
