@@ -30,8 +30,13 @@ class AutoFreeLlamas implements Task {
     this.logger.info('Running auto free llamas task');
 
     const logChannel = (await this.bot.channels
-      .fetch(this.bot._config.freeLlamasChannel)
-      .catch(() => null)) as TextChannel;
+      .fetch(this.bot._config.freeLlamasChannel, {
+        allowUnknownGuild: true,
+      })
+      .catch((e) => {
+        this.logger.error(`Could not fetch free llamas channel: ${e}`);
+        return null;
+      })) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const user of this.bot.userModel.find({})) {

@@ -39,8 +39,13 @@ class AutoDaily implements Task {
     this.logger.info('Running auto daily task');
 
     const logChannel = (await this.bot.channels
-      .fetch(this.bot._config.dailyRewardsChannel)
-      .catch(() => null)) as TextChannel;
+      .fetch(this.bot._config.dailyRewardsChannel, {
+        allowUnknownGuild: true,
+      })
+      .catch((e) => {
+        this.logger.error(`Could not fetch daily rewards channel: ${e}`);
+        return null;
+      })) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const user of this.bot.userModel.find({})) {
