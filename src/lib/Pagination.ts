@@ -45,7 +45,9 @@ class Pagination {
       time: this.timeLimit,
     });
 
-    const moves: any = {
+    const moves: {
+      [key: string]: number;
+    } = {
       back2: -2,
       back1: -1,
       next1: 1,
