@@ -168,7 +168,11 @@ const Command: ICommand = {
                     emoji: Emojis.vbucks,
                   })),
                 )
-                .setMaxValues(5),
+                .setMaxValues(
+                  brShopItems.slice(i, i + 25).length < 5
+                    ? brShopItems.slice(i, i + 25).length
+                    : 5,
+                ),
             ),
           );
         }
