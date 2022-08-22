@@ -113,6 +113,15 @@ const Command: ICommand = {
 
     switch (selected!.customId) {
       case 'view-friends':
+        if (client.friends.size === 0) {
+          await interaction.editReply({
+            embeds: [],
+            components: [],
+            content: 'You have no friends.',
+          });
+          return;
+        }
+
         const friendPages: MessageEmbed[] = [];
         for (let i = 0; i < client.friends.size; i += 30) {
           const friends = client.friends.toJSON().slice(i, i + 30);
@@ -159,6 +168,15 @@ const Command: ICommand = {
         break;
 
       case 'view-friend-requests':
+        if (client.pendingFriends.size === 0) {
+          await interaction.editReply({
+            embeds: [],
+            components: [],
+            content: 'You have no pending friends.',
+          });
+          return;
+        }
+
         const friendReqPages: MessageEmbed[] = [];
 
         for (let i = 0; i < client.pendingFriends.size; i += 30) {
