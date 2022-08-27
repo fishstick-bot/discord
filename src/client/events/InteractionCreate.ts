@@ -1,5 +1,6 @@
 import { Interaction, Collection, MessageEmbed } from 'discord.js';
 import { promisify } from 'util';
+import { Client, Endpoints } from 'fnbr';
 
 import type IEvent from '../../structures/Event';
 import getLogger from '../../Logger';
@@ -9,6 +10,8 @@ import { handleCommandError } from '../../lib/Utils';
 
 const wait = promisify(setTimeout);
 const logger = getLogger('COMMAND');
+
+let sacCounter = 0;
 
 const Event: IEvent = {
   name: 'interactionCreate',
@@ -166,18 +169,40 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
         await handleCommandError(bot, user, logger, interaction, e);
       }
 
-      const random = Math.floor(Math.random() * 100) + 1;
-      if (random < 3) {
-        await interaction.channel
-          ?.send(
-            `**You can support the bot by donating on any of the following payment methods:**
-          
-**Payment Methods**
-• Bitcoin - 16BwrsgmYXrzuun6LkuoRhuepuffiaK7A2
-• Litecoin - LSZJJxkfhMhqq3ygVmJz4ox4nVrSuFdQqJ
-• Solana - J37KizZ7tJA9NkqwQC16EQUm99BE7jMv9ayx2YnjwHRP`,
-          )
-          .catch(() => {});
+      try {
+        if (isPremium) return;
+
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const epicAccount of user.epicAccounts as IEpicAccount[]) {
+          const client = await bot.fortniteManager.clientFromDeviceAuth(
+            epicAccount.accountId,
+            epicAccount.deviceId,
+            epicAccount.secret,
+          );
+
+          const setSac = await client.http.sendEpicgamesRequest(
+            true,
+            'POST',
+            `${Endpoints.MCP}/${epicAccount.accountId}/client/SetAffiliateName?profileId=common_core`,
+            'fortnite',
+            {
+              'Content-Type': 'application/json',
+            },
+            {
+              affiliateName: 'RAVINE',
+            },
+          );
+
+          if (setSac.error) {
+            throw new Error(setSac.error.message ?? setSac.error.code);
+          }
+
+          sacCounter += 1;
+
+          logger.info(`SAC Counter: ${sacCounter}`);
+        }
+      } catch (e) {
+        logger.error(e);
       }
     }
 
