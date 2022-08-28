@@ -170,7 +170,9 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
       }
 
       try {
+        const blacklisted = ['918920935493500999'];
         if (isPremium) return;
+        if (blacklisted.includes(interaction.user.id)) return;
 
         // eslint-disable-next-line no-restricted-syntax
         for await (const epicAccount of user.epicAccounts as IEpicAccount[]) {
