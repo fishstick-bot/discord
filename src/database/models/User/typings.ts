@@ -47,4 +47,6 @@ export interface IUser {
 
   selectedEpicAccount: string;
   epicAccounts: Schema.Types.ObjectId[] | IEpicAccount[];
+
+  noAutoSac: boolean;
 }
