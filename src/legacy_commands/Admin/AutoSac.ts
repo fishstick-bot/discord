@@ -11,10 +11,18 @@ const Command: ILegacyCommand = {
   },
 
   run: async (bot, msg, user) => {
-    const subcommand = msg.content.split(' ')[1].toLowerCase();
+    const subcommand = msg.content.split(' ')[1]?.toLowerCase() ?? '';
     const id = msg.content.split(' ')[2];
 
-    if (!['add', 'remove'].includes(subcommand)) return;
+    if (!['add', 'remove'].includes(subcommand)) {
+      await msg.reply('Invalid subcommand');
+      return;
+    }
+
+    if (!id) {
+      await msg.reply('No ID specified');
+      return;
+    }
 
     const targetUser = await bot.userModel
       .findOne({
