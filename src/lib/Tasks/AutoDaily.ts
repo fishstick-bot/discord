@@ -49,35 +49,41 @@ class AutoDaily implements Task {
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const user of this.bot.userModel.find({})) {
-      const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
-        (a) => a.autoDaily,
-      );
-
-      if (epicAccounts.length === 0) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
-
-      const embed = new MessageEmbed()
-        .setColor(this.bot._config.color)
-        .setAuthor({
-          name: `Auto Daily Login Rewards | Save the World`,
-        })
-        .setTimestamp()
-        .setDescription(
-          (
-            await Promise.all(epicAccounts.map((a) => this.claimDailyReward(a)))
-          ).join('\n\n'),
+      try {
+        const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
+          (a) => a.autoDaily,
         );
 
-      if (!logChannel) {
-        this.logger.error('Log channel not found');
-      }
+        if (epicAccounts.length === 0) {
+          // eslint-disable-next-line no-continue
+          continue;
+        }
 
-      await logChannel?.send({
-        content: userMention(user.id),
-        embeds: [embed],
-      });
+        const embed = new MessageEmbed()
+          .setColor(this.bot._config.color)
+          .setAuthor({
+            name: `Auto Daily Login Rewards | Save the World`,
+          })
+          .setTimestamp()
+          .setDescription(
+            (
+              await Promise.all(
+                epicAccounts.map((a) => this.claimDailyReward(a)),
+              )
+            ).join('\n\n'),
+          );
+
+        if (!logChannel) {
+          this.logger.error('Log channel not found');
+        }
+
+        await logChannel?.send({
+          content: userMention(user.id),
+          embeds: [embed],
+        });
+      } catch (e) {
+        this.logger.error(`User ${user.id}: ${e}`);
+      }
     }
 
     this.logger.info(
