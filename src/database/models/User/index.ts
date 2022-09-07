@@ -49,6 +49,12 @@ const UserSchema = new Schema<IUser>(
       required: false,
     },
 
+    notifications: {
+      type: Boolean,
+      required: false,
+      default: false,
+    },
+
     noAutoSac: {
       type: Boolean,
       required: false,

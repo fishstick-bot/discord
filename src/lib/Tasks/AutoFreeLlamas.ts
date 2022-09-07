@@ -97,8 +97,21 @@ class AutoFreeLlamas implements Task {
         this.logger.error('Log channel not found');
       }
 
+      if (user.notifications) {
+        await this.bot.users
+          .send(user.id, {
+            content: userMention(user.id),
+            embeds: [embed],
+          })
+          .catch((e) =>
+            this.logger.error(
+              `Unable to send message to User ${user.id}: ${e}`,
+            ),
+          );
+      }
+
       await logChannel?.send({
-        content: userMention(user.id),
+        content: user.notifications ? ' ' : userMention(user.id),
         embeds: [embed],
       });
     }

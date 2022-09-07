@@ -95,7 +95,25 @@ const Command: ICommand = {
 
       const row2 = new MessageActionRow().addComponents(autoResearchMenu);
 
-      return [row, row2];
+      const notificationsButton = new MessageButton()
+        .setCustomId('notifications')
+        .setLabel(
+          `${user.notifications ? 'Disable' : 'Enable'} DM Notifications`,
+        )
+        .setStyle(user.notifications ? 'DANGER' : 'SUCCESS');
+
+      const closeButton = new MessageButton()
+        .setCustomId('close')
+        .setLabel('Close')
+        .setEmoji(Emojis.cross)
+        .setStyle('DANGER');
+
+      const row3 = new MessageActionRow().addComponents(
+        notificationsButton,
+        closeButton,
+      );
+
+      return [row, row2, row3];
     };
 
     const createEmbed = () => {
@@ -119,6 +137,8 @@ const Command: ICommand = {
             epicAccount.autoFreeLlamas ? 'Enabled' : 'Disabled'
           } ${Emojis.star}
 • **Auto Research**: ${capitalizeFirst(epicAccount.autoResearch)} ${Emojis.star}
+
+• **Notifications**: ${user.notifications ? 'Enabled' : 'Disabled'}
 
 **Make sure to join our [support server](https://discord.gg/fishstick) to see your auto daily/freebie llamas rewards!**
 
@@ -170,6 +190,16 @@ const Command: ICommand = {
             embeds: [createEmbed()],
             components: createComponents(),
           });
+        } else if (i.customId === 'notifications') {
+          user.notifications = !user.notifications;
+          await user.save();
+
+          await interaction.editReply({
+            embeds: [createEmbed()],
+            components: createComponents(),
+          });
+        } else if (i.customId === 'close') {
+          collector.stop();
         }
       } catch (e) {
         await handleCommandError(
