@@ -5,7 +5,9 @@ WORKDIR /app
 COPY package*.json ./
 COPY yarn.lock ./
 
+RUN apk --no-cache --update --virtual build-dependencies add
 RUN yarn install
+RUN apk del build-dependencies
 
 COPY ./ ./
 
