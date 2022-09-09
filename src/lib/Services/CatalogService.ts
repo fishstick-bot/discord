@@ -1,4 +1,4 @@
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
 import axios from 'axios';
 import { promisify } from 'util';
 import cron from 'node-cron';
@@ -61,7 +61,7 @@ class CatalogService implements Service {
         })) {
           await this.postToChannel(
             guild.itemShopChannelId,
-            `https://fishstickbot.com/api/catalog/br/img/${this.brCatalog.date}.png`,
+            `http://127.0.0.1:${this.bot._config.apiPort}/api/catalog/br/img/${this.brCatalog.date}.png`,
             [],
           );
         }
@@ -169,11 +169,20 @@ class CatalogService implements Service {
         allowUnknownGuild: true,
       })) as TextChannel;
 
+      const shopImg = (
+        await axios.get(message, {
+          responseType: 'arraybuffer',
+        })
+      ).data;
+
       if (channel) {
         await channel
           .send({
             content: message,
             embeds,
+            files: [
+              new MessageAttachment(shopImg, `${this.brCatalog.date}.png`),
+            ],
           })
           .catch(() => {});
       }

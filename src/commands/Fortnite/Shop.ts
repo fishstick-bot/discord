@@ -1,6 +1,7 @@
 /* eslint-disable no-case-declarations */
 import { SlashCommandBuilder } from '@discordjs/builders';
 import axios from 'axios';
+import { MessageAttachment } from 'discord.js';
 
 import type { ICommand } from '../../structures/Command';
 
@@ -33,10 +34,18 @@ const Command: ICommand = {
             `http://127.0.0.1:${bot._config.apiPort}/api/catalog/br`,
           )
         ).data;
+        const shopImg = (
+          await axios.get(
+            `http://127.0.0.1:${bot._config.apiPort}/api/catalog/br/img/${brShop.date}.png`,
+            {
+              responseType: 'arraybuffer',
+            },
+          )
+        ).data;
 
-        await interaction.editReply(
-          `https://fishstickbot.com/api/catalog/br/img/${brShop.date}.png`,
-        );
+        await interaction.editReply({
+          files: [new MessageAttachment(shopImg, `${brShop.date}.png`)],
+        });
         break;
 
       case 'stw':
