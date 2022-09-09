@@ -114,3 +114,10 @@ dist
 test.js
 test.json
 test/
+
+# cache
+Cosmetics/
+Shop/
+STWImages/
+STWInventory/
+STWResources/
