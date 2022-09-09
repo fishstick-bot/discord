@@ -5,9 +5,10 @@ WORKDIR /app
 COPY package*.json ./
 COPY yarn.lock ./
 
-RUN apk --no-cache --update --virtual build-dependencies add \ python
-RUN yarn install
-RUN apk del build-dependencies
+RUN apk --no-cache --virtual build-dependencies add \
+    python \
+    && yarn install \
+    && apk del build-dependencies
 
 COPY ./ ./
 
