@@ -1,11 +1,28 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
+import { promises as fs, existsSync } from 'fs';
 import { MessageEmbed } from 'discord.js';
 
 import Bot from './client/Client';
 
 const bot = new Bot();
 (async () => {
+  if (!existsSync('./Shop')) {
+    await fs.mkdir('./Shop');
+  }
+
+  if (!existsSync('./STWInventory')) {
+    await fs.mkdir('./STWInventory');
+  }
+
+  if (!existsSync('./STWResources')) {
+    await fs.mkdir('./STWResources');
+  }
+
+  if (!existsSync('./Cosmetics')) {
+    await fs.mkdir('./Cosmetics');
+  }
+
   await bot.start();
 })();
 
