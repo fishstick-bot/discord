@@ -1,6 +1,6 @@
 FROM node:alpine as app_builder
 
-WORKDIR /src/fishstick-discord
+WORKDIR /app
 
 COPY package*.json ./
 COPY yarn.lock ./
