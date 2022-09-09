@@ -1,14 +1,13 @@
-FROM node:alpine as app_builder
+FROM node:latest as app_builder
 
 WORKDIR /app
 
 COPY package*.json ./
 COPY yarn.lock ./
 
-RUN apk --no-cache --virtual build-dependencies add \
-    python \
-    && yarn install \
-    && apk del build-dependencies
+RUN apk --no-cache --virtual build-dependencies add
+RUN yarn install
+RUN apk del build-dependencies
 
 COPY ./ ./
 
