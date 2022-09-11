@@ -52,7 +52,7 @@ class API implements Service {
 
     await this.server.listen({
       port: this.bot._config.apiPort,
-      host: '0.0.0.0',
+      host: '127.0.0.1',
     });
 
     this.logger.info(`API listening on port ${this.bot._config.apiPort}`);
