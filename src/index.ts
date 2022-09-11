@@ -39,7 +39,6 @@ manager.on('debug', async (msg) => {
 
 manager.spawn({
   timeout: -1,
-  delay: 5 * 1000,
 });
 
 process.on('unhandledRejection', async (error: any) => {
