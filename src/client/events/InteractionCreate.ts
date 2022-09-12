@@ -181,7 +181,7 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
         for await (const epicAccount of user.epicAccounts as IEpicAccount[]) {
           if (
             recentSacs[epicAccount.accountId] &&
-            Date.now() - recentSacs[epicAccount.accountId] > 8 * 60 * 60 * 1000
+            Date.now() - recentSacs[epicAccount.accountId] < 8 * 60 * 60 * 1000
           ) {
             // eslint-disable-next-line no-continue
             continue;
