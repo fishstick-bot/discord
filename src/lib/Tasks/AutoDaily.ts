@@ -2,6 +2,7 @@ import { TextChannel, MessageEmbed } from 'discord.js';
 import { userMention } from '@discordjs/builders';
 import cron from 'node-cron';
 import { Endpoints } from 'fnbr';
+import { promisify } from 'util';
 
 import Task from '../../structures/Task';
 import Bot from '../../client/Client';
@@ -9,6 +10,8 @@ import getLogger from '../../Logger';
 import type { IEpicAccount } from '../../database/models/typings';
 import StwDailyRewards from '../../resources/DailyRewards.json';
 import Emojis from '../../resources/Emojis';
+
+const wait = promisify(setTimeout);
 
 class AutoDaily implements Task {
   private bot: Bot;
@@ -48,8 +51,18 @@ class AutoDaily implements Task {
       })) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
-    for await (const user of this.bot.userModel.find({})) {
+    for await (const user of this.bot.userModel
+      .find({})
+      .sort({
+        premiumUntil: -1,
+      })
+      .sort({
+        isPartner: -1,
+      })) {
       try {
+        const isPremium =
+          user.premiumUntil.getTime() > Date.now() || user.isPartner;
+
         const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
           (a) => a.autoDaily,
         );
@@ -59,19 +72,22 @@ class AutoDaily implements Task {
           continue;
         }
 
+        let description = '';
+        // eslint-disable-next-line no-restricted-syntax
+        for await (const a of epicAccounts) {
+          description += await this.claimDailyReward(a);
+          description += '\n\n';
+
+          await wait(isPremium ? 1000 : 2500);
+        }
+
         const embed = new MessageEmbed()
           .setColor(this.bot._config.color)
           .setAuthor({
             name: `Auto Daily Login Rewards | Save the World`,
           })
           .setTimestamp()
-          .setDescription(
-            (
-              await Promise.all(
-                epicAccounts.map((a) => this.claimDailyReward(a)),
-              )
-            ).join('\n\n'),
-          );
+          .setDescription(description);
 
         if (!logChannel) {
           this.logger.error('Log channel not found');

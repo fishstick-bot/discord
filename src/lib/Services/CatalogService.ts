@@ -103,8 +103,8 @@ class CatalogService implements Service {
       );
 
       return this.brCatalog;
-    } catch (e) {
-      this.logger.error(e);
+    } catch (e: any) {
+      this.logger.error(`${e?.response?.data ?? e}`);
 
       await wait(30 * 1000);
       return this.fetchBRCatalog();

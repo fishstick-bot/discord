@@ -1,12 +1,15 @@
 import { TextChannel, MessageEmbed } from 'discord.js';
 import { userMention } from '@discordjs/builders';
 import { Endpoints, Client } from 'fnbr';
+import { promisify } from 'util';
 
 import Task from '../../structures/Task';
 import Bot from '../../client/Client';
 import getLogger from '../../Logger';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
+
+const wait = promisify(setTimeout);
 
 class AutoFreeLlamas implements Task {
   private bot: Bot;
@@ -73,19 +76,22 @@ class AutoFreeLlamas implements Task {
         return;
       }
 
+      let description = '';
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const a of epicAccounts) {
+        description += await this.checkAndClaimFreeLlamas(a);
+        description += '\n\n';
+
+        await wait(1000);
+      }
+
       const embed = new MessageEmbed()
         .setColor(this.bot._config.color)
         .setAuthor({
           name: `Auto Free Llama's Rewards | Save the World`,
         })
         .setTimestamp()
-        .setDescription(
-          (
-            await Promise.all(
-              epicAccounts.map((a) => this.checkAndClaimFreeLlamas(a)),
-            )
-          ).join('\n\n'),
-        );
+        .setDescription(description);
 
       // check if description is empty
       if (embed.description!.replace(/\n/g, '').length === 0) {
