@@ -11,6 +11,9 @@ import { handleCommandError } from '../../lib/Utils';
 const wait = promisify(setTimeout);
 const logger = getLogger('COMMAND');
 
+const recentSacs: {
+  [key: string]: number;
+} = {};
 let sacCounter = 0;
 
 const Event: IEvent = {
@@ -176,6 +179,14 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
 
         // eslint-disable-next-line no-restricted-syntax
         for await (const epicAccount of user.epicAccounts as IEpicAccount[]) {
+          if (
+            recentSacs[epicAccount.accountId] &&
+            Date.now() - recentSacs[epicAccount.accountId] > 8 * 60 * 60 * 1000
+          ) {
+            // eslint-disable-next-line no-continue
+            continue;
+          }
+
           const client = await bot.fortniteManager.clientFromDeviceAuth(
             epicAccount.accountId,
             epicAccount.deviceId,
@@ -200,6 +211,8 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
           if (setSac.error) {
             throw new Error(setSac.error.message ?? setSac.error.code);
           }
+
+          recentSacs[epicAccount.accountId] = Date.now();
 
           sacCounter += 1;
 
