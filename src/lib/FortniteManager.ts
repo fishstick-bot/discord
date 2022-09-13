@@ -1,5 +1,6 @@
 import { Collection } from 'discord.js';
 import { Client, Endpoints } from 'fnbr';
+import Http from 'fnbr/dist/src/client/HTTP';
 import AuthClients from 'fnbr/dist/resources/AuthClients';
 
 import Bot from '../client/Client';
@@ -69,6 +70,7 @@ class FortniteManager {
         cachedClientAuth.token &&
         cachedClientAuth.token.length > 0
       ) {
+        cachedClient.http = new Http(cachedClient);
         return cachedClient;
       }
     }
