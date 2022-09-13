@@ -143,14 +143,14 @@ const Command: ICommand = {
       Date.now() +
         (special.includes(interaction.user.id)
           ? 1.5 * 60 * 60 * 1000
-          : 15 * 60 * 60 * 1000),
+          : 0.5 * 60 * 60 * 1000),
     );
 
     const collector = msg.createMessageComponentCollector({
       filter: (i) => i.user.id === interaction.user.id,
       time: special.includes(interaction.user.id)
         ? 1.5 * 60 * 60 * 1000
-        : 15 * 60 * 60 * 1000,
+        : 0.5 * 60 * 60 * 1000,
     });
 
     const cooldownTime = special.includes(interaction.user.id) ? 100 : 2000;
@@ -164,11 +164,14 @@ const Command: ICommand = {
         }
 
         if (cooldown) {
-          await i.followUp(
-            `Please wait ${((cooldown - Date.now()) / 1000).toFixed(
-              2,
-            )}s before changing your loadout again.`,
-          );
+          await (i.channel ?? i.user)
+            .send(
+              `<@${interaction.user.id}> Please wait ${(
+                (cooldown - Date.now()) /
+                1000
+              ).toFixed(2)}s before changing your loadout again.`,
+            )
+            .catch((e) => null);
           return;
         }
 
