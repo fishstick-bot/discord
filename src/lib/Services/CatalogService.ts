@@ -105,6 +105,11 @@ class CatalogService implements Service {
       return this.brCatalog;
     } catch (e: any) {
       this.logger.error(`${e?.response?.data ?? e}`);
+      if (`${e}`.includes('./Shop/BR/')) {
+        await fs.promises.mkdir('./Shop/BR', {
+          recursive: true,
+        });
+      }
 
       await wait(30 * 1000);
       return this.fetchBRCatalog();
