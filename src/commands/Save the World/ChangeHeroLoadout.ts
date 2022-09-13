@@ -14,6 +14,8 @@ import Emojis from '../../resources/Emojis';
 import getLogger from '../../Logger';
 import { handleCommandError } from '../../lib/Utils';
 
+const special = ['741898574815821868', '727224012912197652'];
+
 const Command: ICommand = {
   name: 'change-hero-loadout',
 
@@ -29,6 +31,20 @@ const Command: ICommand = {
   },
 
   run: async (bot, interaction, user) => {
+    if (bot.heroLoadoutCooldowns.has(interaction.user.id)) {
+      const wait =
+        (bot.heroLoadoutCooldowns.get(interaction.user.id)! - Date.now()) /
+        1000;
+      if (wait > 0) {
+        await interaction.editReply(
+          `You must wait ${wait.toFixed(
+            2,
+          )}s before using hero loadout command again.`,
+        );
+        return;
+      }
+    }
+
     const epicAccount = (user.epicAccounts as IEpicAccount[]).find(
       (a) => a.accountId === user.selectedEpicAccount,
     );
@@ -122,7 +138,13 @@ const Command: ICommand = {
       components: createComponents(),
     })) as Message;
 
-    const special = ['741898574815821868', '727224012912197652'];
+    bot.heroLoadoutCooldowns.set(
+      interaction.user.id,
+      Date.now() +
+        (special.includes(interaction.user.id)
+          ? 1.5 * 60 * 60 * 1000
+          : 15 * 60 * 60 * 1000),
+    );
 
     const collector = msg.createMessageComponentCollector({
       filter: (i) => i.user.id === interaction.user.id,
@@ -185,6 +207,7 @@ const Command: ICommand = {
     });
 
     collector.on('end', async (collected, reason) => {
+      bot.heroLoadoutCooldowns.delete(interaction.user.id);
       if (reason === 'handleError') return;
       await msg
         .edit({

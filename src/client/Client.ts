@@ -56,6 +56,7 @@ class Bot extends Client {
     new Collection();
 
   public loginCooldowns: Collection<string, number> = new Collection();
+  public heroLoadoutCooldowns: Collection<string, number> = new Collection();
 
   // cosmetic models
   public cosmeticModel = CosmeticModel;
