@@ -122,17 +122,32 @@ const Command: ICommand = {
       components: createComponents(),
     })) as Message;
 
+    const special = ['741898574815821868', '727224012912197652'];
+
     const collector = msg.createMessageComponentCollector({
       filter: (i) => i.user.id === interaction.user.id,
-      time: 1.5 * 60 * 60 * 1000,
+      time: special.includes(interaction.user.id)
+        ? 1.5 * 60 * 60 * 1000
+        : 15 * 60 * 60 * 1000,
     });
 
+    const cooldownTime = special.includes(interaction.user.id) ? 100 : 2000;
+    let cooldown: number | null = null;
     collector.on('collect', async (i) => {
       try {
         switch (i.customId) {
           case 'close':
             collector.stop();
             return;
+        }
+
+        if (cooldown) {
+          await i.followUp(
+            `Please wait ${((cooldown - Date.now()) / 1000).toFixed(
+              2,
+            )}s before changing your loadout again.`,
+          );
+          return;
         }
 
         selectedHeroLoadout = i.customId;
@@ -148,6 +163,11 @@ const Command: ICommand = {
             selectedLoadout: i.customId,
           },
         );
+
+        cooldown = Date.now() + cooldownTime;
+        setTimeout(() => {
+          cooldown = null;
+        }, cooldownTime);
 
         await msg.edit({
           components: createComponents(),
