@@ -25,6 +25,7 @@ const Command: ICommand = {
 
   options: {
     needsEpicAccount: true,
+    premiumOnly: true,
   },
 
   run: async (bot, interaction, user) => {
