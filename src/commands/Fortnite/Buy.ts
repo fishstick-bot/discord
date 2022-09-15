@@ -649,13 +649,6 @@ ${items
           })
           .setColor(bot._config.color)
           .setTimestamp()
-          .setDescription(
-            `Overall V-Bucks: **${Emojis.vbucks} ${approx(
-              total,
-            ).toUpperCase()}**
-          
-It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
-          )
           .addField(
             'You are purchasing:',
             selectedStwItems
@@ -740,9 +733,7 @@ It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
         }
 
         await interaction.editReply(
-          `Successfully purchased **${selectedStwItems.length} Items** for **${
-            Emojis.vbucks
-          } ${approx(totalCartPrice).toUpperCase()}**
+          `Successfully purchased **${selectedStwItems.length} Items**
   
   **Purchased Items:**
   ${selectedStwItems
