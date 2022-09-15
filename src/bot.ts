@@ -10,6 +10,9 @@ const bot = new Bot();
   if (!existsSync('./Shop')) {
     await fs.mkdir('./Shop');
   }
+  if (!existsSync('./Shop/BR')) {
+    await fs.mkdir('./Shop/BR');
+  }
 
   if (!existsSync('./STWInventory')) {
     await fs.mkdir('./STWInventory');

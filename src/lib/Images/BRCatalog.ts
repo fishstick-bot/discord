@@ -214,7 +214,8 @@ const drawShop = async (items: KeyValuePair[]) => {
     imgX * Math.ceil(items.length / renderedLength) +
     gap +
     renderedLength * gap +
-    headerScale * 128;
+    headerScale * 128 +
+    headerScale * 40;
   const canvas = new Canvas(cX, cY);
   const ctx = canvas.getContext('2d');
 
