@@ -183,7 +183,9 @@ class CatalogService implements Service {
       if (channel) {
         await channel
           .send({
-            content: message,
+            content: `Fortnite Battle Royale Shop ${moment
+              .utc()
+              .format('Do MMMM YYYY')}`,
             embeds,
             files: [
               new MessageAttachment(shopImg, `${this.brCatalog.date}.png`),
