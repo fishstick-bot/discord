@@ -15,11 +15,6 @@ const Command: ICommand = {
       c
         .setName('br')
         .setDescription('View current Fortnite Battle Royale Item Shop.'),
-    )
-    .addSubcommand((c) =>
-      c
-        .setName('stw')
-        .setDescription('View current Fortnite Save the World Item Shop.'),
     ),
 
   options: {},
