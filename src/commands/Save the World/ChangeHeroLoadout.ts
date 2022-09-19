@@ -153,7 +153,7 @@ const Command: ICommand = {
         : 0.5 * 60 * 60 * 1000,
     });
 
-    const cooldownTime = special.includes(interaction.user.id) ? 100 : 2000;
+    const cooldownTime = special.includes(interaction.user.id) ? 100 : 1000;
     let cooldown: number | null = null;
     collector.on('collect', async (i) => {
       try {
