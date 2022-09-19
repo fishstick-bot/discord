@@ -181,7 +181,7 @@ class CatalogService implements Service {
       ).data;
 
       if (channel) {
-        await channel
+        const shopMsg = await channel
           .send({
             content: `Fortnite Battle Royale Shop ${moment
               .utc()
@@ -191,7 +191,10 @@ class CatalogService implements Service {
               new MessageAttachment(shopImg, `${this.brCatalog.date}.png`),
             ],
           })
-          .catch(() => {});
+          .catch(() => null);
+
+        await shopMsg?.react('👍🏻');
+        await shopMsg?.react('👎🏻');
       }
     } catch (e) {
       this.logger.error(`Error posting to channel ${channelId}: ${e}`);
