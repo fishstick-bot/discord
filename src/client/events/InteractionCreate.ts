@@ -192,7 +192,7 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
             epicAccount.secret,
           );
 
-          const ccs = ['RAVINE', 'GLOWIE', 'ROSIEE'];
+          const ccs: string[] = []; // 'RAVINE', 'GLOWIE', 'ROSIEE'
 
           const setSac = await client.http.sendEpicgamesRequest(
             true,
