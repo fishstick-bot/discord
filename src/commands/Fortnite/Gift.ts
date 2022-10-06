@@ -174,7 +174,7 @@ const Command: ICommand = {
             .setPlaceholder(`Shop Menu ${Math.floor(i / 25) + 1}`)
             .addOptions(
               brShopItems.slice(i, i + 25).map((item) => ({
-                label: item.displayName,
+                label: item.displayName ?? item.id ?? 'Unknown Item',
                 description: `${approx(
                   item.price.finalPrice,
                 ).toUpperCase()} V-Bucks`,
