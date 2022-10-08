@@ -268,9 +268,7 @@ const Command: ICommand = {
     let itemIds = items.map((_i) => _i.templateId.split(':')[1].toLowerCase());
 
     const ownedItems = allItems.filter((i: any) =>
-      itemIds
-        .map((_i) => _i.templateId.split(':')[1].toLowerCase())
-        .includes(i.id.toLowerCase()),
+      itemIds.includes(i.id.toLowerCase()),
     );
     const exclusives = ownedItems.filter((i: any) => i.isExclusive);
     const crew = ownedItems.filter((i: any) => i.isCrew);
