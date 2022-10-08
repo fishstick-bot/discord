@@ -286,7 +286,21 @@ const Command: ICommand = {
     let worth = 0;
 
     ownedItems.forEach((i: any) => {
-      worth += itemWorths[i.type][i.rarity];
+      if (itemWorths[i.type]) {
+        worth += itemWorths[i.type][i.rarity] ?? 0;
+      }
+
+      if (i.isExclusive) {
+        worth += 50;
+      }
+
+      if (i.isCrew) {
+        worth += 10;
+      }
+
+      if (i.isSTW) {
+        worth += 20;
+      }
     });
 
     const embed = new MessageEmbed()
