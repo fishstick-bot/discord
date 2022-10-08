@@ -1,20 +1,11 @@
-import {
-  MessageEmbed,
-  MessageButton,
-  MessageActionRow,
-  MessageSelectMenu,
-  Message,
-  SelectMenuInteraction,
-  MessageAttachment,
-} from 'discord.js';
+/* eslint-disable prefer-const */
+import { MessageEmbed } from 'discord.js';
 import { SlashCommandBuilder } from '@discordjs/builders';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
-import Sort from '../../lib/Sort';
-import { drawLocker } from '../../lib/Images/LockerImage';
 
 const customIds: {
   [key: string]: string;
@@ -30,6 +21,183 @@ const customIds: {
   "Wrap's": 'AthenaItemWrap:',
   "Music Pack's": 'AthenaMusicPack:',
   "Loading Screen's": 'AthenaLoadingScreen',
+};
+
+const itemWorths: {
+  [key: string]: {
+    [key: string]: number;
+  };
+} = {
+  banner: { uncommon: 0, starwars: 0, marvel: 0, gaminglegends: 0 },
+  backpack: {
+    rare: 0,
+    legendary: 1.5,
+    epic: 0,
+    uncommon: 0,
+    dark: 0,
+    frozen: 0,
+    lava: 0,
+    marvel: 0,
+    shadow: 0,
+    icon: 0,
+    dc: 0,
+    slurp: 0,
+    starwars: 0,
+    gaminglegends: 0,
+    common: 0,
+  },
+  style: {
+    legendary: 0,
+    epic: 0,
+    rare: 0,
+    uncommon: 0,
+    dark: 0,
+    starwars: 0,
+    marvel: 0,
+    icon: 0,
+    dc: 0,
+    gaminglegends: 0,
+    shadow: 0,
+    slurp: 0,
+    frozen: 0,
+  },
+  petcarrier: { epic: 0, gaminglegends: 0, marvel: 0, starwars: 0 },
+  pet: { epic: 0, mythic: 0 },
+  pickaxe: {
+    rare: 0,
+    common: 0,
+    uncommon: 0,
+    epic: 1.5,
+    slurp: 0,
+    dark: 0,
+    frozen: 0,
+    icon: 1.5,
+    marvel: 0,
+    shadow: 0,
+    lava: 0,
+    gaminglegends: 0,
+    dc: 0,
+    starwars: 0,
+    legendary: 0,
+  },
+  outfit: {
+    common: 0.5,
+    uncommon: 1,
+    rare: 1.5,
+    epic: 2,
+    legendary: 3,
+    dark: 3,
+    frozen: 3,
+    icon: 3,
+    lava: 3,
+    marvel: 3,
+    shadow: 3,
+    gaminglegends: 3,
+    dc: 3,
+    slurp: 3,
+    starwars: 3,
+  },
+  contrail: {
+    uncommon: 0,
+    rare: 0,
+    dark: 0,
+    slurp: 0,
+    epic: 0,
+    marvel: 0,
+    gaminglegends: 0,
+    dc: 0,
+    starwars: 0,
+    common: 0,
+  },
+  glider: {
+    common: 0,
+    rare: 0,
+    uncommon: 0,
+    epic: 2,
+    legendary: 3,
+    dark: 0,
+    icon: 0,
+    frozen: 0,
+    lava: 0,
+    marvel: 0,
+    dc: 0,
+    starwars: 0,
+    gaminglegends: 0,
+    shadow: 0,
+  },
+  emote: {
+    rare: 1,
+    uncommon: 0.5,
+    gaminglegends: 0,
+    icon: 1.5,
+    marvel: 0,
+    epic: 1.5,
+    dc: 0,
+    frozen: 0,
+    legendary: 3,
+    starwars: 0,
+    common: 0,
+  },
+  emoji: {
+    uncommon: 0,
+    marvel: 0,
+    slurp: 0,
+    dc: 0,
+    gaminglegends: 0,
+    epic: 0,
+    starwars: 0,
+    icon: 0,
+    rare: 0,
+  },
+  loadingscreen: {
+    uncommon: 0,
+    rare: 0,
+    icon: 0,
+    marvel: 0,
+    lava: 0,
+    dc: 0,
+    starwars: 0,
+    gaminglegends: 0,
+    epic: 0,
+    common: 0,
+  },
+  music: {
+    common: 0,
+    rare: 0,
+    icon: 0,
+    dc: 0,
+    marvel: 0,
+    gaminglegends: 0,
+    uncommon: 0,
+  },
+  spray: {
+    uncommon: 0,
+    icon: 0,
+    common: 0,
+    rare: 0,
+    epic: 0,
+    legendary: 0,
+    marvel: 0,
+    gaminglegends: 0,
+    dc: 0,
+    starwars: 0,
+  },
+  toy: { rare: 0, epic: 0 },
+  wrap: {
+    rare: 0,
+    uncommon: 0,
+    epic: 0,
+    slurp: 0,
+    shadow: 0,
+    dark: 0,
+    lava: 0,
+    gaminglegends: 0,
+    icon: 0,
+    marvel: 0,
+    dc: 0,
+    common: 0,
+    starwars: 0,
+  },
 };
 
 const Command: ICommand = {
@@ -66,7 +234,7 @@ const Command: ICommand = {
       epicAccount.secret,
     );
 
-    const [br, stw] = await Promise.all([
+    let [br, stw, allItems] = await Promise.all([
       await client.http.sendEpicgamesRequest(
         true,
         'POST',
@@ -87,16 +255,15 @@ const Command: ICommand = {
         },
         {},
       ),
+      (await client.http.send(
+        'GET',
+        `http://127.0.0.1:${bot._config.apiPort}/api/cosmetics`,
+      )) as any,
     ]);
 
     if (br.error) {
       throw new Error(br.error.message ?? br.error.code);
     }
-
-    let allItems: any = await client.http.send(
-      'GET',
-      `http://127.0.0.1:${bot._config.apiPort}/api/cosmetics`,
-    );
 
     if (allItems.error) {
       throw new Error(allItems.error.message);
@@ -116,6 +283,12 @@ const Command: ICommand = {
     const exclusives = ownedItems.filter((i: any) => i.isExclusive);
     const crew = ownedItems.filter((i: any) => i.isCrew);
 
+    let worth = 0;
+
+    ownedItems.forEach((i: any) => {
+      worth += itemWorths[i.type][i.rarity];
+    });
+
     const embed = new MessageEmbed()
       .setAuthor({
         name: `${epicAccount.displayName}'s Account Worth`,
@@ -123,7 +296,9 @@ const Command: ICommand = {
       })
       .setColor(bot._config.color)
       .setTimestamp()
-      .setDescription(`TODO`);
+      .setDescription(
+        `Your Account is worth **${worth.toLocaleString()}** USD`,
+      );
 
     embed.addField(
       'Locker Cosmetics',
@@ -143,116 +318,6 @@ const Command: ICommand = {
       content: ' ',
       embeds: [embed],
     });
-
-    // switch (selected.customId) {
-    //   case 'menu1':
-    //     items = items.filter((i) => i.templateId.startsWith(chosen));
-    //     break;
-    // }
-
-    //     const ownedItems = items.map((i) =>
-    //       i.templateId.split(':')[1].toLowerCase(),
-    //     );
-    //     const ownedStyles = items
-    //       .map((i) =>
-    //         (i.attributes.variants ?? []).map((v: any) =>
-    //           (v.owned ?? []).map((o: any) =>
-    //             `${i.templateId.split(':')[1]}-${o}`.toLowerCase(),
-    //           ),
-    //         ),
-    //       )
-    //       .flat(2);
-
-    //     let allItems: any = await client.http.send(
-    //       'GET',
-    //       `http://127.0.0.1:${bot._config.apiPort}/api/cosmetics`,
-    //     );
-
-    //     if (allItems.error) {
-    //       throw new Error(allItems.error.message);
-    //     }
-
-    //     allItems = allItems.response.data;
-
-    //     items = [
-    //       ...allItems.filter((i: any) => ownedItems.includes(i.id.toLowerCase())),
-    //       ...allItems.filter(
-    //         (i: any) => ownedStyles.includes(i.id.toLowerCase()) && i.isExclusive,
-    //       ),
-    //     ];
-
-    //     switch (selected.customId) {
-    //       case 'menu2':
-    //         switch (chosen) {
-    //           case 'crew':
-    //             items = items.filter((i) => i.isCrew);
-    //             break;
-
-    //           case 'stw':
-    //             items = items.filter((i) => i.isSTW);
-    //             break;
-
-    //           case 'exclusives':
-    //             items = items.filter((i) => i.isExclusive);
-    //             break;
-
-    //           case 'full':
-    //             items = allItems.filter((i: any) =>
-    //               ownedItems.includes(i.id.toLowerCase()),
-    //             );
-    //         }
-    //         break;
-    //     }
-
-    //     items = Sort(items);
-
-    //     if (items.length === 0) {
-    //       await interaction.editReply(`You don't have any items in your locker.`);
-    //       return;
-    //     }
-
-    //     await interaction.editReply({
-    //       content: `Rendering locker image for ${items.length} items${Emojis.loading}`,
-    //       embeds: [],
-    //       components: [],
-    //     });
-
-    //     embed.setAuthor({
-    //       name: `${epicAccount.displayName}'s Locker`,
-    //       iconURL: epicAccount.avatarUrl,
-    //     });
-
-    //     // split locker in chunks of 500
-    //     for (let i = 0; i < items.length; i += 500) {
-    //       const start = Date.now();
-    //       const chunkedItems = items.slice(i, i + 500);
-    //       // eslint-disable-next-line no-await-in-loop
-    //       const img = await drawLocker(
-    //         chunkedItems,
-    //         epicAccount.displayName,
-    //         interaction.user.tag,
-    //       );
-    //       const end = Date.now();
-
-    //       embed
-    //         .setDescription(
-    //           `${i} to ${i + chunkedItems.length} of ${items.length} items.
-    //   Rendered in **${((end - start) / 1000).toFixed(2)}s**.`,
-    //         )
-    //         .setImage(`attachment://locker-${i}.png`);
-
-    //       // eslint-disable-next-line no-await-in-loop
-    //       await interaction.followUp({
-    //         content: ' ',
-    //         embeds: [embed],
-    //         files: [new MessageAttachment(img, `locker-${i}.png`)],
-    //         components: [],
-    //       });
-    //     }
-
-    //     await interaction.editReply({
-    //       content: 'Rendered all locker images.',
-    //     });
   },
 };
 
