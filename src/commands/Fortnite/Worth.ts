@@ -299,7 +299,7 @@ const Command: ICommand = {
       }
 
       if (i.isSTW) {
-        worth += 20;
+        worth += 10;
       }
     });
 
