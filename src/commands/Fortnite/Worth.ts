@@ -234,21 +234,11 @@ const Command: ICommand = {
       epicAccount.secret,
     );
 
-    let [br, stw, allItems] = await Promise.all([
+    let [br, allItems] = await Promise.all([
       await client.http.sendEpicgamesRequest(
         true,
         'POST',
         `${Endpoints.MCP}/${epicAccount.accountId}/client/QueryProfile?profileId=athena`,
-        'fortnite',
-        {
-          'Content-Type': 'application/json',
-        },
-        {},
-      ),
-      await client.http.sendEpicgamesRequest(
-        true,
-        'POST',
-        `${Endpoints.MCP}/${epicAccount.accountId}/client/QueryProfile?profileId=campaign`,
         'fortnite',
         {
           'Content-Type': 'application/json',
@@ -275,8 +265,10 @@ const Command: ICommand = {
       [key: string]: any;
     }[] = Object.values(br.response.profileChanges[0]?.profile?.items);
 
+    let itemIds = items.map((_i) => _i.templateId.split(':')[1].toLowerCase());
+
     const ownedItems = allItems.filter((i: any) =>
-      items
+      itemIds
         .map((_i) => _i.templateId.split(':')[1].toLowerCase())
         .includes(i.id.toLowerCase()),
     );
@@ -291,7 +283,7 @@ const Command: ICommand = {
       }
 
       if (i.isExclusive) {
-        worth += 50;
+        worth += 35;
       }
 
       if (i.isCrew) {
