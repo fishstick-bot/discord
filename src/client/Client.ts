@@ -1,6 +1,6 @@
 import { Client, Intents, Collection, WebhookClient } from 'discord.js';
 import Cluster from 'discord-hybrid-sharding';
-import { AutoPoster } from 'topgg-autoposter';
+import { Api } from '@top-gg/sdk';
 import type { BasePoster } from 'topgg-autoposter/dist/structs/BasePoster';
 import T from 'twit';
 import glob from 'glob';
@@ -34,6 +34,7 @@ import type IEvent from '../structures/Event';
 import type Task from '../structures/Task';
 
 const globPromisify = promisify(glob);
+const wait = promisify(setTimeout);
 
 class Bot extends Client {
   // bot config
@@ -48,7 +49,7 @@ class Bot extends Client {
   public loggingWebhook: WebhookClient;
 
   // top gg stats poster
-  public topGGPoster: BasePoster;
+  public topGG: Api;
 
   // twitter api client for the bot
   public twitterApi: T;
@@ -126,7 +127,7 @@ class Bot extends Client {
       url: this._config.loggingWebhook,
     });
 
-    this.topGGPoster = AutoPoster(process.env.TOPGG_TOKEN!, this);
+    this.topGG = new Api(process.env.TOPGG_TOKEN!);
 
     this.twitterApi = new T({
       consumer_key: process.env.TWITTER_CONSUMER_KEY!,
@@ -163,6 +164,8 @@ class Bot extends Client {
     await connectToDatabase();
 
     if (this.isMainProcess) {
+      // start posting stats
+      await this._postStats();
       // start cosmetics service
       this.cosmeticService.start();
 
@@ -213,6 +216,14 @@ class Bot extends Client {
     } catch (e) {
       return 0;
     }
+  }
+
+  private async _postStats(): Promise<void> {
+    setInterval(async () => {
+      await this.topGG.postStats({
+        serverCount: await this.getGuildCount(),
+      });
+    }, 15 * 60 * 1000);
   }
 
   private async _loadCommands(): Promise<void> {
@@ -268,10 +279,6 @@ class Bot extends Client {
         this.logger.debug(`Loaded event ${event.name}`);
       }),
     );
-
-    this.topGGPoster.on('posted', (s) => {
-      this.logger.info(`Posted stats to Top.GG! [${s.serverCount} Servers]`);
-    });
 
     this.logger.info(
       `Loaded ${eventFiles.length} events [${(Date.now() - start).toFixed(
