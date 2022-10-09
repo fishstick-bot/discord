@@ -47,6 +47,19 @@ class API implements Service {
       prefix: '/api/catalog/br/img/',
     });
 
+    this.server.addContentTypeParser(
+      'application/json',
+      { parseAs: 'string' },
+      (req, body, done) => {
+        try {
+          const json = JSON.parse(body as string);
+          done(null, json);
+        } catch (err: any) {
+          err.statusCode = 400;
+          done(err, undefined);
+        }
+      },
+    );
     await this.addSchemas();
     await this.handleRoutes();
 
@@ -188,6 +201,57 @@ class API implements Service {
         };
       },
     );
+
+    this.server.post('/api/topGGVote', async (req, res) => {
+      this.logger.info(`GET /api/topGGVote [${req.ip}]`);
+
+      const { authorization } = req.headers;
+
+      if (!authorization || authorization !== process.env.VOTING_WEBHOOK_KEY) {
+        return res.status(401).send({
+          message: 'Unauthorized',
+        });
+      }
+
+      try {
+        const premiumHours = 6;
+        const user = await this.bot.userModel
+          .findOne({
+            id: (req.body as any).user,
+          })
+          .exec();
+
+        if (user) {
+          this.logger.info(
+            `[/api/topGGVote]: ${user.id} voted for bot on Top.GG! Granting them premium for ${premiumHours} hours.`,
+          );
+
+          const isPremium =
+            user.premiumUntil.getTime() > Date.now() || user.isPartner;
+
+          if (!isPremium) {
+            user.premiumUntil = new Date(
+              Date.now() + premiumHours * 60 * 60 * 1000,
+            );
+          } else {
+            user.premiumUntil = new Date(
+              user.premiumUntil.getTime() + premiumHours * 60 * 60 * 1000,
+            );
+          }
+
+          await user.save();
+        }
+
+        return {
+          message: 'ok',
+        };
+      } catch (e) {
+        this.logger.error(`[/api/topGGVote]: ${e}`);
+        return res.status(500).send({
+          message: 'Something went wrong.',
+        });
+      }
+    });
 
     this.server.get(
       '/api/cosmetics',

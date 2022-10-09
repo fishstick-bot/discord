@@ -1,5 +1,7 @@
 import { Client, Intents, Collection, WebhookClient } from 'discord.js';
 import Cluster from 'discord-hybrid-sharding';
+import { AutoPoster } from 'topgg-autoposter';
+import type { BasePoster } from 'topgg-autoposter/dist/structs/BasePoster';
 import T from 'twit';
 import glob from 'glob';
 import { promisify } from 'util';
@@ -44,6 +46,9 @@ class Bot extends Client {
 
   // bot logging webhook
   public loggingWebhook: WebhookClient;
+
+  // top gg stats poster
+  public topGGPoster: BasePoster;
 
   // twitter api client for the bot
   public twitterApi: T;
@@ -120,6 +125,8 @@ class Bot extends Client {
     this.loggingWebhook = new WebhookClient({
       url: this._config.loggingWebhook,
     });
+
+    this.topGGPoster = AutoPoster(process.env.TOPGG_TOKEN!, this);
 
     this.twitterApi = new T({
       consumer_key: process.env.TWITTER_CONSUMER_KEY!,
@@ -261,6 +268,10 @@ class Bot extends Client {
         this.logger.debug(`Loaded event ${event.name}`);
       }),
     );
+
+    this.topGGPoster.on('posted', (s) => {
+      this.logger.info(`Posted stats to Top.GG! [${s.serverCount} Servers]`);
+    });
 
     this.logger.info(
       `Loaded ${eventFiles.length} events [${(Date.now() - start).toFixed(

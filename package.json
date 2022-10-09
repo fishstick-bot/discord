@@ -71,6 +71,7 @@
     "node-cron": "^3.0.1",
     "os": "^0.1.2",
     "sharp": "^0.30.7",
+    "topgg-autoposter": "^2.0.1",
     "twit": "^2.2.11",
     "utf-8-validate": "^5.0.9",
     "winston": "^3.8.0",
