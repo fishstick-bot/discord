@@ -12,7 +12,7 @@ const webhook = new WebhookClient({
 const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
   totalShards: 'auto',
   totalClusters: 'auto',
-  shardsPerClusters: 2,
+  shardsPerClusters: 3,
   mode: 'process',
   token: process.env.DISCORD_TOKEN!,
   restarts: {
