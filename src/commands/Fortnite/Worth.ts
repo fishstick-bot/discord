@@ -31,7 +31,7 @@ const itemWorths: {
   banner: { uncommon: 0, starwars: 0, marvel: 0, gaminglegends: 0 },
   backpack: {
     rare: 0,
-    legendary: 1.5,
+    legendary: 1,
     epic: 0,
     uncommon: 0,
     dark: 0,
@@ -67,11 +67,11 @@ const itemWorths: {
     rare: 0,
     common: 0,
     uncommon: 0,
-    epic: 1.5,
+    epic: 1,
     slurp: 0,
     dark: 0,
     frozen: 0,
-    icon: 1.5,
+    icon: 1,
     marvel: 0,
     shadow: 0,
     lava: 0,
@@ -85,17 +85,17 @@ const itemWorths: {
     uncommon: 1,
     rare: 1.5,
     epic: 2,
-    legendary: 3,
-    dark: 3,
-    frozen: 3,
-    icon: 3,
-    lava: 3,
-    marvel: 3,
-    shadow: 3,
-    gaminglegends: 3,
-    dc: 3,
-    slurp: 3,
-    starwars: 3,
+    legendary: 2.5,
+    dark: 2,
+    frozen: 2,
+    icon: 2,
+    lava: 2,
+    marvel: 2,
+    shadow: 2,
+    gaminglegends: 2,
+    dc: 2,
+    slurp: 2,
+    starwars: 2,
   },
   contrail: {
     uncommon: 0,
@@ -113,8 +113,8 @@ const itemWorths: {
     common: 0,
     rare: 0,
     uncommon: 0,
-    epic: 2,
-    legendary: 3,
+    epic: 1,
+    legendary: 2,
     dark: 0,
     icon: 0,
     frozen: 0,
@@ -134,7 +134,7 @@ const itemWorths: {
     epic: 1.5,
     dc: 0,
     frozen: 0,
-    legendary: 3,
+    legendary: 2,
     starwars: 0,
     common: 0,
   },
@@ -281,7 +281,7 @@ const Command: ICommand = {
       }
 
       if (i.isExclusive) {
-        worth += 35;
+        worth += 25;
       }
 
       if (i.isCrew) {
