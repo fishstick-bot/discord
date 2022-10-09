@@ -217,7 +217,7 @@ class API implements Service {
     });
 
     this.server.post('/api/topGGVote', async (req, res) => {
-      this.logger.info(`GET /api/topGGVote [${req.ip}]`);
+      this.logger.info(`POST /api/topGGVote [${req.ip}]`);
 
       const { authorization } = req.headers;
 
