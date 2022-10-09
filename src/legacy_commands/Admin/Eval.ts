@@ -7,7 +7,7 @@ import type { ILegacyCommand } from '../../structures/LegacyCommand';
 // result of our eval command input for sending
 // to the channel
 const clean = async (text: any) => {
-  let result: string;
+  let result: any = text;
 
   // If our input is a promise, await it before continuing
   if (text && text.constructor.name === 'Promise') result = await text;
@@ -18,12 +18,13 @@ const clean = async (text: any) => {
   // (like Collections, for example)
   if (typeof text !== 'string') result = inspect(text, { depth: 1 });
 
-  // Replace symbols with character code alternatives
-  result = text
-    .replace(/`/g, `\`${String.fromCharCode(8203)}`)
-    .replace(/@/g, `@${String.fromCharCode(8203)}`);
-
   // Send off the cleaned up result
+  if (typeof result === 'string') {
+    // Replace symbols with character code alternatives
+    return result
+      .replace(/`/g, `\`${String.fromCharCode(8203)}`)
+      .replace(/@/g, `@${String.fromCharCode(8203)}`);
+  }
   return result;
 };
 
