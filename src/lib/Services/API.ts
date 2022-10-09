@@ -202,34 +202,19 @@ class API implements Service {
       },
     );
 
-    this.server.get(
-      '/api/bot-status',
-      {
-        schema: {
-          response: {
-            200: {
-              type: 'object',
-              properties: {
-                message: { type: 'string' },
-              },
-            },
-          },
-        },
-      },
-      async (req, res) => {
-        this.logger.info(`GET /api/bot-status [${req.ip}]`);
+    this.server.get('/api/bot-status', async (req, res) => {
+      this.logger.info(`GET /api/bot-status [${req.ip}]`);
 
-        const result = await this.bot.cluster.broadcastEval((c: any) => ({
-          cluster: c.cluster.id,
-          shards: c.ws.shards.map((s: any) => ({
-            shardId: s.id,
-            status: s.status,
-          })),
-        }));
+      const result = await this.bot.cluster.broadcastEval((c: any) => ({
+        cluster: c.cluster.id,
+        shards: c.ws.shards.map((s: any) => ({
+          shardId: s.id,
+          status: s.status,
+        })),
+      }));
 
-        return result ?? [];
-      },
-    );
+      return result ?? [];
+    });
 
     this.server.post('/api/topGGVote', async (req, res) => {
       this.logger.info(`GET /api/topGGVote [${req.ip}]`);
