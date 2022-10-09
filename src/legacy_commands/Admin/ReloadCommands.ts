@@ -6,7 +6,7 @@ import type { ILegacyCommand } from '../../structures/LegacyCommand';
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 const Command: ILegacyCommand = {
-  name: 'reloadcommands',
+  name: 'reload-commands',
 
   options: {
     ownerOnly: true,
