@@ -7,7 +7,7 @@ import * as fs from 'fs';
 import { promisify } from 'util';
 import cron from 'node-cron';
 import { Endpoints, STWWorldInfoData } from 'fnbr';
-import { MessageEmbed, TextChannel } from 'discord.js';
+import { EmbedBuilder, TextChannel } from 'discord.js';
 
 import Service from '../../structures/Service';
 import Bot from '../../client/Client';
@@ -67,7 +67,7 @@ class STWMissionsService implements Service {
         const { mtxAlerts, legendarySurvivorAlerts } = this;
 
         if (mtxAlerts.length > 0) {
-          const embed = new MessageEmbed()
+          const embed = new EmbedBuilder()
             .setColor(this.bot._config.color)
             .setTimestamp()
             .setTitle('Save the World Mission Alerts')
@@ -94,7 +94,7 @@ class STWMissionsService implements Service {
         }
 
         if (legendarySurvivorAlerts.length > 0) {
-          const embed = new MessageEmbed()
+          const embed = new EmbedBuilder()
             .setColor(this.bot._config.color)
             .setTimestamp()
             .setTitle('Save the World Mission Alerts')
@@ -461,7 +461,7 @@ ${m.rewards
   private async postToChannel(
     channelId: string,
     message: string,
-    embeds: MessageEmbed[],
+    embeds: EmbedBuilder[],
   ) {
     try {
       const channel = (await this.bot.channels.fetch(channelId, {

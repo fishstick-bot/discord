@@ -1,4 +1,4 @@
-import { MessageAttachment, MessageEmbed, TextChannel } from 'discord.js';
+import { AttachmentBuilder, EmbedBuilder, TextChannel } from 'discord.js';
 import axios from 'axios';
 import { promisify } from 'util';
 import cron from 'node-cron';
@@ -45,7 +45,7 @@ class CatalogService implements Service {
         await this.fetchBRCatalog();
         await this.postBrShopToTwitter();
 
-        // const embed = new MessageEmbed()
+        // const embed = new EmbedBuilder()
         //   .setColor(this.bot._config.color)
         //   .setTimestamp()
         //   .setTitle(
@@ -167,7 +167,7 @@ class CatalogService implements Service {
   private async postToChannel(
     channelId: string,
     message: string,
-    embeds: MessageEmbed[],
+    embeds: EmbedBuilder[],
   ) {
     try {
       const channel = (await this.bot.channels.fetch(channelId, {
@@ -188,7 +188,9 @@ class CatalogService implements Service {
               .format('Do MMMM YYYY')}`,
             embeds,
             files: [
-              new MessageAttachment(shopImg, `${this.brCatalog.date}.png`),
+              new AttachmentBuilder(shopImg, {
+                name: `${this.brCatalog.date}.png`,
+              }),
             ],
           })
           .catch(() => null);

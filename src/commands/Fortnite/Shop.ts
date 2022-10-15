@@ -1,7 +1,6 @@
 /* eslint-disable no-case-declarations */
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { SlashCommandBuilder, AttachmentBuilder } from 'discord.js';
 import axios from 'axios';
-import { MessageAttachment } from 'discord.js';
 
 import type { ICommand } from '../../structures/Command';
 
@@ -39,7 +38,9 @@ const Command: ICommand = {
         ).data;
 
         await interaction.editReply({
-          files: [new MessageAttachment(shopImg, `${brShop.date}.png`)],
+          files: [
+            new AttachmentBuilder(shopImg, { name: `${brShop.date}.png` }),
+          ],
         });
         break;
 

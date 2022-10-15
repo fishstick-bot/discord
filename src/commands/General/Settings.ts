@@ -1,13 +1,14 @@
 /* eslint-disable no-param-reassign */
 import {
-  MessageEmbed,
-  MessageButton,
-  MessageSelectMenu,
-  MessageActionRow,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  SelectMenuBuilder,
+  ActionRowBuilder,
   Message,
   SelectMenuInteraction,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
 import Emojis from '../../resources/Emojis';
@@ -58,25 +59,31 @@ const Command: ICommand = {
       return epicAccount.autoFreeLlamas;
     };
 
-    const createComponents = () => {
-      const row = new MessageActionRow();
+    const createComponents = (): ActionRowBuilder<
+      ButtonBuilder | SelectMenuBuilder
+    >[] => {
+      const row = new ActionRowBuilder<ButtonBuilder>();
 
-      const autoDailyButton = new MessageButton()
+      const autoDailyButton = new ButtonBuilder()
         .setCustomId('autoDaily')
         .setLabel(
           `${epicAccount.autoDaily ? 'Disable' : 'Enable'} Daily Login Rewards`,
         )
-        .setStyle(epicAccount.autoDaily ? 'DANGER' : 'SUCCESS');
+        .setStyle(
+          epicAccount.autoDaily ? ButtonStyle.Danger : ButtonStyle.Success,
+        );
 
-      const autoFreeLlamasButton = new MessageButton()
+      const autoFreeLlamasButton = new ButtonBuilder()
         .setCustomId('autoFreeLlamas')
         .setLabel(
           `${epicAccount.autoFreeLlamas ? 'Disable' : 'Enable'} Freebie Llamas`,
         )
-        .setStyle(epicAccount.autoFreeLlamas ? 'DANGER' : 'SUCCESS')
+        .setStyle(
+          epicAccount.autoFreeLlamas ? ButtonStyle.Danger : ButtonStyle.Success,
+        )
         .setDisabled(!isPremium);
 
-      const autoResearchMenu = new MessageSelectMenu()
+      const autoResearchMenu = new SelectMenuBuilder()
         .setCustomId('autoResearch')
         .setPlaceholder('Select Auto Research Mode')
         .setDisabled(!isPremium)
@@ -93,22 +100,26 @@ const Command: ICommand = {
 
       row.addComponents(autoDailyButton, autoFreeLlamasButton);
 
-      const row2 = new MessageActionRow().addComponents(autoResearchMenu);
+      const row2 = new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+        autoResearchMenu,
+      );
 
-      const notificationsButton = new MessageButton()
+      const notificationsButton = new ButtonBuilder()
         .setCustomId('notifications')
         .setLabel(
           `${user.notifications ? 'Disable' : 'Enable'} DM Notifications`,
         )
-        .setStyle(user.notifications ? 'DANGER' : 'SUCCESS');
+        .setStyle(
+          user.notifications ? ButtonStyle.Danger : ButtonStyle.Success,
+        );
 
-      const closeButton = new MessageButton()
+      const closeButton = new ButtonBuilder()
         .setCustomId('close')
         .setLabel('Close')
         .setEmoji(Emojis.cross)
-        .setStyle('DANGER');
+        .setStyle(ButtonStyle.Danger);
 
-      const row3 = new MessageActionRow().addComponents(
+      const row3 = new ActionRowBuilder<ButtonBuilder>().addComponents(
         notificationsButton,
         closeButton,
       );
@@ -117,7 +128,7 @@ const Command: ICommand = {
     };
 
     const createEmbed = () => {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setAuthor({
           name: `${epicAccount.displayName}'s Settings`,
           iconURL: epicAccount.avatarUrl,

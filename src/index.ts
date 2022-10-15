@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
-import { WebhookClient, MessageEmbed } from 'discord.js';
-import Cluster from 'discord-hybrid-sharding';
+import { WebhookClient, EmbedBuilder, Colors } from 'discord.js';
+import { ClusterManager, HeartbeatManager } from 'discord-hybrid-sharding';
 
 import Config from './Config';
 
@@ -9,7 +9,7 @@ const webhook = new WebhookClient({
   url: new Config().loggingWebhook,
 });
 
-const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
+const manager = new ClusterManager(`${__dirname}/bot.js`, {
   totalShards: 'auto',
   totalClusters: 'auto',
   shardsPerClusters: 4,
@@ -21,7 +21,7 @@ const manager = new Cluster.Manager(`${__dirname}/bot.js`, {
   },
 });
 manager.extend(
-  new Cluster.HeartbeatManager({
+  new HeartbeatManager({
     interval: 5 * 1000,
     maxMissedHeartbeats: 12,
   }),
@@ -39,40 +39,26 @@ manager.on('debug', async (msg) => {
 
 manager.spawn({
   timeout: -1,
+  delay: 7000,
 });
 
 process.on('unhandledRejection', async (error: any) => {
   console.error(error);
 
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setTitle('Unhandled rejection')
     .setDescription(`${error}`)
-    .setColor('RED')
+    .setColor(Colors.Red)
     .setTimestamp()
     .setFooter({
       text: 'Sharding Manager',
     });
 
   if (error?.stack) {
-    embed.addField('Stack', `\`\`\`${error.stack}\`\`\``);
+    embed.addFields([{ name: 'Stack', value: `\`\`\`${error.stack}\`\`\`` }]);
   }
 
   await webhook.send({
     embeds: [embed],
   });
 });
-
-// process.on('SIGINT', async () => {
-//   if (!isDevelopment) {
-//     await webhook.send('Shutting down...');
-//   }
-//   manager.clusters.forEach(async (cluster) => {
-//     try {
-//       cluster.process?.kill();
-//       cluster?.kill();
-//       console.log(`Killed cluster ${cluster.id}`);
-//     } catch (e) {
-//       console.error(e);
-//     }
-//   });
-// });

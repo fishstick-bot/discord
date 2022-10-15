@@ -1,4 +1,4 @@
-import { Message, MessageEmbed } from 'discord.js';
+import { Message, EmbedBuilder, Colors } from 'discord.js';
 
 import type IEvent from '../../structures/Event';
 import type { IEpicAccount } from '../../database/models/typings';
@@ -89,9 +89,9 @@ const Event: IEvent = {
     const isPremium =
       user.premiumUntil.getTime() > Date.now() || user.isPartner;
     if (cmd.options.premiumOnly && !isPremium) {
-      const noPremiumEmbed = new MessageEmbed()
+      const noPremiumEmbed = new EmbedBuilder()
         .setTitle(`${Emojies.cross} You are not a premium user`)
-        .setColor('RED')
+        .setColor(Colors.Red)
         .setDescription(
           `You must be a Fishstick Premium User to use this command.
 To become a Fishstick Premium User, you can purchase a subscription by messaging Vanxh#6969 or by [joining our support server](https://discord.gg/fishstick).

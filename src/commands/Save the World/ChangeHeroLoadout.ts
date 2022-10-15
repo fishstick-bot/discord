@@ -1,10 +1,10 @@
 import {
-  MessageActionRow,
-  MessageButton,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   Message,
-  MessageButtonStyleResolvable,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Endpoints, STWProfile } from 'fnbr';
 import { promises as fs } from 'fs';
 
@@ -90,7 +90,7 @@ const Command: ICommand = {
       const rows = [];
 
       for (let i = 0; i < heroloadouts.length; i += 3) {
-        const row = new MessageActionRow();
+        const row = new ActionRowBuilder<ButtonBuilder>();
 
         for (let j = 0; j < heroloadouts.slice(i, i + 3).length; j += 1) {
           const loadout = heroloadouts.slice(i, i + 3)[j];
@@ -99,11 +99,13 @@ const Command: ICommand = {
           )!;
 
           row.addComponents(
-            new MessageButton()
+            new ButtonBuilder()
               .setCustomId(loadout.id)
               .setDisabled(disabled)
               .setStyle(
-                selectedHeroLoadout === loadout.id ? 'SUCCESS' : 'SECONDARY',
+                selectedHeroLoadout === loadout.id
+                  ? ButtonStyle.Success
+                  : ButtonStyle.Secondary,
               )
               .setLabel(
                 `${commander.powerLevel}⚡️ ${
@@ -117,14 +119,16 @@ const Command: ICommand = {
         rows.push(row);
       }
 
-      const closeButton = new MessageButton()
+      const closeButton = new ButtonBuilder()
         .setCustomId('close')
         .setEmoji(Emojis.cross)
         .setDisabled(disabled)
-        .setStyle('DANGER')
+        .setStyle(ButtonStyle.Danger)
         .setLabel('Close');
 
-      rows.push(new MessageActionRow().addComponents(closeButton));
+      rows.push(
+        new ActionRowBuilder<ButtonBuilder>().addComponents(closeButton),
+      );
 
       return rows;
     };
@@ -153,7 +157,7 @@ const Command: ICommand = {
         : 0.5 * 60 * 60 * 1000,
     });
 
-    const cooldownTime = special.includes(interaction.user.id) ? 100 : 1000;
+    const cooldownTime = special.includes(interaction.user.id) ? 300 : 1000;
     let cooldown: number | null = null;
     collector.on('collect', async (i) => {
       try {
@@ -190,12 +194,15 @@ const Command: ICommand = {
         );
 
         cooldown = Date.now() + cooldownTime;
-        setTimeout(() => {
+        setTimeout(async () => {
           cooldown = null;
+          await msg.edit({
+            components: createComponents(),
+          });
         }, cooldownTime);
 
         await msg.edit({
-          components: createComponents(),
+          components: createComponents(true),
         });
       } catch (e) {
         await handleCommandError(

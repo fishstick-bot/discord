@@ -1,10 +1,10 @@
 import {
-  MessageActionRow,
-  MessageButton,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
   Message,
-  MessageButtonStyleResolvable,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Endpoints, STWProfile } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -63,9 +63,9 @@ const Command: ICommand = {
       emoji: string,
       label?: string,
       disabled = false,
-      style: MessageButtonStyleResolvable = 'SECONDARY',
+      style: ButtonStyle = ButtonStyle.Secondary,
     ) => {
-      const btn = new MessageButton()
+      const btn = new ButtonBuilder()
         .setCustomId(id)
         .setEmoji(emoji)
         .setDisabled(disabled)
@@ -123,13 +123,16 @@ const Command: ICommand = {
         Emojis.cross,
         undefined,
         disabled,
-        'DANGER',
+        ButtonStyle.Danger,
       );
 
       return [
-        new MessageActionRow().setComponents(fortitude, offense),
-        new MessageActionRow().setComponents(resistance, tech),
-        new MessageActionRow().setComponents(researchBtn, closeButton),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(fortitude, offense),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(resistance, tech),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
+          researchBtn,
+          closeButton,
+        ),
       ];
     };
 

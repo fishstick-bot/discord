@@ -1,5 +1,9 @@
-import { MessageButton, MessageActionRow } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import {
+  ButtonBuilder,
+  ButtonStyle,
+  ActionRowBuilder,
+  SlashCommandBuilder,
+} from 'discord.js';
 
 import type { ICommand } from '../../structures/Command';
 
@@ -13,14 +17,14 @@ const Command: ICommand = {
   options: {},
 
   run: async (bot, interaction) => {
-    const btn = new MessageButton()
+    const btn = new ButtonBuilder()
       .setURL('https://fishstickbot.com/invite')
       .setLabel('Invite Me')
-      .setStyle('LINK');
+      .setStyle(ButtonStyle.Link);
 
     await interaction.editReply({
       content: '**Invite me to your server!**',
-      components: [new MessageActionRow().setComponents(btn)],
+      components: [new ActionRowBuilder<ButtonBuilder>().setComponents(btn)],
     });
   },
 };

@@ -1,13 +1,14 @@
 /* eslint-disable no-param-reassign */
 import {
-  MessageEmbed,
-  MessageAttachment,
-  MessageSelectMenu,
-  MessageActionRow,
+  EmbedBuilder,
+  AttachmentBuilder,
+  SelectMenuBuilder,
+  ActionRowBuilder,
   Message,
   SelectMenuInteraction,
+  SlashCommandBuilder,
+  time,
 } from 'discord.js';
-import { SlashCommandBuilder, time } from '@discordjs/builders';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -127,7 +128,7 @@ const Command: ICommand = {
 
     let res: any;
     if (subcmd === 'info') {
-      const accountInfoEmbed = new MessageEmbed()
+      const accountInfoEmbed = new EmbedBuilder()
         .setAuthor({
           name: `${epicAccount.displayName}'s Account Information`,
           iconURL: epicAccount.avatarUrl,
@@ -305,14 +306,14 @@ start /d "C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64
         throw new Error(commoncore.error.message ?? commoncore.error.code);
       }
 
-      const receipts = new MessageAttachment(
+      const receipts = new AttachmentBuilder(
         Buffer.from(
           (
             commoncore.response?.profileChanges[0]?.profile?.stats?.attributes
               ?.in_app_purchases?.receipts ?? []
           ).join('\n'),
         ),
-        `receipts_${epicAccount.accountId}.txt`,
+        { name: `receipts_${epicAccount.accountId}.txt` },
       );
 
       await interaction.editReply({
@@ -341,7 +342,7 @@ start /d "C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64
         );
       }
 
-      const externalsEmbed = new MessageEmbed()
+      const externalsEmbed = new EmbedBuilder()
         .setAuthor({
           name: `${epicAccount.displayName}'s External Auths`,
           iconURL: epicAccount.avatarUrl,
@@ -359,7 +360,7 @@ start /d "C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64
             .join('\n'),
         );
 
-      const externalUnlinkOptions = new MessageSelectMenu()
+      const externalUnlinkOptions = new SelectMenuBuilder()
         .setCustomId('externalUnlink')
         .setPlaceholder('Select an External Account to Unlink.')
         .setOptions(
@@ -374,7 +375,9 @@ start /d "C:\\Program Files\\Epic Games\\Fortnite\\FortniteGame\\Binaries\\Win64
         content: ' ',
         embeds: [externalsEmbed],
         components: [
-          new MessageActionRow().setComponents(externalUnlinkOptions),
+          new ActionRowBuilder<SelectMenuBuilder>().setComponents(
+            externalUnlinkOptions,
+          ),
         ],
       });
 

@@ -1,5 +1,4 @@
-import { MessageEmbed } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -57,7 +56,7 @@ const Command: ICommand = {
       {},
     );
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s STW Tutorial`,
         iconURL: epicAccount.avatarUrl,

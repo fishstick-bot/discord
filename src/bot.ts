@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import 'dotenv/config';
 import { promises as fs, existsSync } from 'fs';
-import { MessageEmbed } from 'discord.js';
+import { Colors, EmbedBuilder } from 'discord.js';
 
 import Bot from './client/Client';
 
@@ -42,17 +42,17 @@ process.on('unhandledRejection', async (error: any) => {
     return;
   }
 
-  const embed = new MessageEmbed()
+  const embed = new EmbedBuilder()
     .setTitle('Unhandled rejection')
     .setDescription(`${error}`)
-    .setColor('RED')
+    .setColor(Colors.Red)
     .setTimestamp()
     .setFooter({
       text: `Cluster ${bot.cluster.id}`,
     });
 
   if (error?.stack) {
-    embed.addField('Stack', `\`\`\`${error.stack}\`\`\``);
+    embed.addFields([{ name: 'Stack', value: `\`\`\`${error.stack}\`\`\`` }]);
   }
 
   await bot.loggingWebhook.send({

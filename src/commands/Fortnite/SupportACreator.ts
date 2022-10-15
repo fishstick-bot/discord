@@ -1,13 +1,15 @@
 import {
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
   Message,
-  Modal,
+  ModalBuilder,
   ModalActionRowComponent,
-  TextInputComponent,
+  TextInputBuilder,
+  SlashCommandBuilder,
+  TextInputStyle,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Client, Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -63,7 +65,7 @@ const Command: ICommand = {
       commoncore.response?.profileChanges[0]?.profile?.stats.attributes
         .mtx_affiliate;
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s Supported Creator`,
         iconURL: epicAccount.avatarUrl,
@@ -76,21 +78,24 @@ const Command: ICommand = {
           : `You are currently supporting **${currentSac}**`,
       );
 
-    const updateSACBtn = new MessageButton()
+    const updateSACBtn = new ButtonBuilder()
       .setCustomId('updateSAC')
       .setLabel('Change Supported Creator')
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const clearSacBtn = new MessageButton()
+    const clearSacBtn = new ButtonBuilder()
       .setCustomId('clearSac')
       .setLabel('Clear Supported Creator')
-      .setStyle('DANGER');
+      .setStyle(ButtonStyle.Danger);
 
     await interaction.editReply({
       content: ' ',
       embeds: [embed],
       components: [
-        new MessageActionRow().setComponents(updateSACBtn, clearSacBtn),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
+          updateSACBtn,
+          clearSacBtn,
+        ),
       ],
     });
 
@@ -113,18 +118,18 @@ const Command: ICommand = {
     switch (selected.customId) {
       case 'updateSAC':
         // eslint-disable-next-line no-case-declarations
-        const changeSacModal = new Modal()
+        const changeSacModal = new ModalBuilder()
           .setCustomId('changeSacModal')
           .setTitle('Change Your Supported Creator')
           .addComponents(
-            new MessageActionRow<ModalActionRowComponent>().addComponents(
-              new TextInputComponent()
+            new ActionRowBuilder<TextInputBuilder>().addComponents(
+              new TextInputBuilder()
                 .setCustomId('sacInput')
                 .setLabel('Creator Code')
                 .setPlaceholder('Enter creator name you want to support')
                 .setValue(currentSac ?? '')
                 .setRequired(true)
-                .setStyle('SHORT'),
+                .setStyle(TextInputStyle.Short),
             ),
           );
 

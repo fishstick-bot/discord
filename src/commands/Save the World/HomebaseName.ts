@@ -1,13 +1,14 @@
 import {
-  MessageButton,
-  MessageEmbed,
-  MessageActionRow,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+  ActionRowBuilder,
   Message,
-  Modal,
-  ModalActionRowComponent,
-  TextInputComponent,
+  ModalBuilder,
+  SlashCommandBuilder,
+  TextInputBuilder,
+  TextInputStyle,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -77,7 +78,7 @@ const Command: ICommand = {
       res.response.profileChanges[0].profile.stats.attributes.homebase_name ??
       '';
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s STW Homebase`,
         iconURL: epicAccount.avatarUrl,
@@ -88,15 +89,17 @@ const Command: ICommand = {
         `Your current homebase name is: **${currentHomebaseName}**`,
       );
 
-    const changeBtn = new MessageButton()
+    const changeBtn = new ButtonBuilder()
       .setCustomId('changeHomebaseName')
       .setLabel('Change Your Homebase Name')
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
     await interaction.editReply({
       content: ' ',
       embeds: [embed],
-      components: [new MessageActionRow().setComponents(changeBtn)],
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().setComponents(changeBtn),
+      ],
     });
 
     const msg = (await interaction.fetchReply()) as Message;
@@ -115,18 +118,18 @@ const Command: ICommand = {
       return;
     }
 
-    const changeHomebaseNameModal = new Modal()
+    const changeHomebaseNameModal = new ModalBuilder()
       .setCustomId('changeHomebaseNameModal')
       .setTitle('Change Your Homebase Name')
       .addComponents(
-        new MessageActionRow<ModalActionRowComponent>().addComponents(
-          new TextInputComponent()
+        new ActionRowBuilder<TextInputBuilder>().addComponents(
+          new TextInputBuilder()
             .setCustomId('homebaseNameInput')
             .setLabel('Homebase Name')
             .setPlaceholder('Enter your new homebase name')
             .setValue(currentHomebaseName)
             .setRequired(true)
-            .setStyle('SHORT'),
+            .setStyle(TextInputStyle.Short),
         ),
       );
 

@@ -1,6 +1,10 @@
 /* eslint-disable no-param-reassign */
-import { MessageEmbed } from 'discord.js';
-import { SlashCommandBuilder, channelMention } from '@discordjs/builders';
+import {
+  EmbedBuilder,
+  SlashCommandBuilder,
+  channelMention,
+  PermissionFlagsBits,
+} from 'discord.js';
 import { ChannelType } from 'discord-api-types/v10';
 
 import type { ICommand } from '../../structures/Command';
@@ -57,7 +61,7 @@ const Command: ICommand = {
     const subcmd = interaction.options.getSubcommand();
     const channel = interaction.options.getChannel('channel');
 
-    if (!interaction.memberPermissions!.has('MANAGE_GUILD')) {
+    if (!interaction.memberPermissions!.has(PermissionFlagsBits.ManageGuild)) {
       await interaction.editReply(
         'You do not have permission to manage this server.',
       );
@@ -79,7 +83,7 @@ const Command: ICommand = {
     }
     await guild!.save();
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${interaction.guild!.name}'s Config`,
         iconURL: interaction.guild!.iconURL() ?? undefined,

@@ -1,5 +1,4 @@
-import { MessageEmbed } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -65,7 +64,7 @@ const Command: ICommand = {
     const lastMatch = stats.last_match_end_datetime;
     const seasonNum = stats.season_num;
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s Battle Royale Overview`,
         iconURL: epicAccount.avatarUrl,
@@ -83,29 +82,35 @@ const Command: ICommand = {
     }
 
     if (seasonNum) {
-      embed.addField(
-        `Season ${seasonNum} Info`,
-        `• ${stats.book_purchased ? 'Battle' : 'Free'} Pass Level - **${(
-          stats.level ?? 0
-        ).toLocaleString()}**`,
-      );
+      embed.addFields([
+        {
+          name: `Season ${seasonNum} Info`,
+          value: `• ${
+            stats.book_purchased ? 'Battle' : 'Free'
+          } Pass Level - **${(stats.level ?? 0).toLocaleString()}**`,
+        },
+      ]);
     }
 
-    embed.addField(
-      'Supercharged XP',
-      `• XP - **${(stats.rested_xp ?? 0).toLocaleString()} / 162,000**
+    embed.addFields([
+      {
+        name: 'Supercharged XP',
+        value: `• XP - **${(stats.rested_xp ?? 0).toLocaleString()} / 162,000**
 • Multiplier - **${stats.rested_xp_mult ?? 0}**
 • Exchange - **${stats.rested_xp_exchange ?? 0}**
 • Overflow - **${(stats.rested_xp_overflow ?? 0).toLocaleString()}**`,
-    );
+      },
+    ]);
 
-    embed.addField(
-      'Seasonal Resources',
-      `• ${Emojis.star} Battle Stars - **${stats.battlestars ?? 0} (Total - ${
-        stats.battlestars_season_total ?? 0
-      })**
+    embed.addFields([
+      {
+        name: 'Seasonal Resources',
+        value: `• ${Emojis.star} Battle Stars - **${
+          stats.battlestars ?? 0
+        } (Total - ${stats.battlestars_season_total ?? 0})**
 • ${Emojis.brgold} Gold - **${gold.toLocaleString()}**`,
-    );
+      },
+    ]);
 
     await interaction.editReply({
       content: ' ',

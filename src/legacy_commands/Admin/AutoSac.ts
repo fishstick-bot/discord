@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 
 import type { ILegacyCommand } from '../../structures/LegacyCommand';
 import Emojis from '../../resources/Emojis';
@@ -48,7 +48,7 @@ const Command: ILegacyCommand = {
     targetUser.noAutoSac = subcommand === 'remove';
     await targetUser.save();
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${id} Auto SAC Status`,
       })

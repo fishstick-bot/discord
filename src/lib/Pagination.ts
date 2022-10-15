@@ -1,7 +1,8 @@
 import {
-  MessageEmbed,
-  MessageButton,
-  MessageActionRow,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ActionRowBuilder,
   Message,
   CommandInteraction,
 } from 'discord.js';
@@ -15,9 +16,9 @@ class Pagination {
   public buttonsDisabled: boolean = false;
 
   public page: number;
-  public pages: MessageEmbed[];
+  public pages: EmbedBuilder[];
 
-  public constructor(pages: MessageEmbed[], timeLimit?: number) {
+  public constructor(pages: EmbedBuilder[], timeLimit?: number) {
     this.buttonsDisabled = false;
 
     this.page = 0;
@@ -103,38 +104,38 @@ class Pagination {
     });
   }
 
-  private get buttons(): MessageActionRow {
-    const row = new MessageActionRow();
+  private get buttons(): ActionRowBuilder<ButtonBuilder> {
+    const row = new ActionRowBuilder<ButtonBuilder>();
 
-    const back2 = new MessageButton()
+    const back2 = new ButtonBuilder()
       .setCustomId('back2')
       .setLabel('«')
       .setDisabled(this.page === 0 || this.buttonsDisabled)
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const back1 = new MessageButton()
+    const back1 = new ButtonBuilder()
       .setCustomId('back1')
       .setLabel('‹')
       .setDisabled(this.page === 0 || this.buttonsDisabled)
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const next1 = new MessageButton()
+    const next1 = new ButtonBuilder()
       .setCustomId('next1')
       .setLabel('›')
       .setDisabled(this.page === this.pages.length - 1 || this.buttonsDisabled)
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const next2 = new MessageButton()
+    const next2 = new ButtonBuilder()
       .setCustomId('next2')
       .setLabel('»')
       .setDisabled(this.page === this.pages.length - 1 || this.buttonsDisabled)
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const close = new MessageButton()
+    const close = new ButtonBuilder()
       .setCustomId('close')
       .setLabel('Close')
       .setEmoji(Emojis.cross)
-      .setStyle('DANGER')
+      .setStyle(ButtonStyle.Danger)
       .setDisabled(this.buttonsDisabled);
 
     row.addComponents(back2, back1, next1, next2, close);

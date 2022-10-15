@@ -1,6 +1,12 @@
-import { Interaction, Collection, MessageEmbed } from 'discord.js';
+import {
+  Interaction,
+  Collection,
+  EmbedBuilder,
+  Colors,
+  ChannelType,
+} from 'discord.js';
 import { promisify } from 'util';
-import { Client, Endpoints } from 'fnbr';
+import { Endpoints } from 'fnbr';
 
 import type IEvent from '../../structures/Event';
 import getLogger from '../../Logger';
@@ -11,15 +17,10 @@ import { handleCommandError } from '../../lib/Utils';
 const wait = promisify(setTimeout);
 const logger = getLogger('COMMAND');
 
-const recentSacs: {
-  [key: string]: number;
-} = {};
-let sacCounter = 0;
-
 const Event: IEvent = {
   name: 'interactionCreate',
   run: async (bot, interaction: Interaction) => {
-    if (interaction.isCommand()) {
+    if (interaction.isChatInputCommand()) {
       const cmd = bot.commands.get(interaction.commandName);
       if (!cmd) return;
 
@@ -33,7 +34,7 @@ const Event: IEvent = {
         return;
       }
 
-      const isInDM = interaction.channel?.type === 'DM' ?? false;
+      const isInDM = interaction.channel?.type === ChannelType.DM ?? false;
       await interaction
         .deferReply({
           ephemeral: cmd.options.privateResponse && !isInDM,
@@ -94,9 +95,9 @@ const Event: IEvent = {
       const isPremium =
         user.premiumUntil.getTime() > Date.now() || user.isPartner;
       if (cmd.options.premiumOnly && !isPremium) {
-        const noPremiumEmbed = new MessageEmbed()
+        const noPremiumEmbed = new EmbedBuilder()
           .setTitle(`${Emojies.cross} You are not a premium user`)
-          .setColor('RED')
+          .setColor(Colors.Red)
           .setDescription(
             `You must be a Fishstick Premium User to use this command.
 To become a Fishstick Premium User, you can purchase a subscription by messaging Vanxh#6969 or by [joining our support server](https://discord.gg/fishstick).
@@ -171,57 +172,6 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
         await cmd.run(bot, interaction, user, guild);
       } catch (e: any) {
         await handleCommandError(bot, user, logger, interaction, e);
-      }
-
-      try {
-        if (!cmd.options.needsEpicAccount) return;
-        if (isPremium || user.noAutoSac) return;
-
-        // eslint-disable-next-line no-restricted-syntax
-        for await (const epicAccount of user.epicAccounts as IEpicAccount[]) {
-          if (
-            recentSacs[epicAccount.accountId] &&
-            Date.now() - recentSacs[epicAccount.accountId] < 8 * 60 * 60 * 1000
-          ) {
-            // eslint-disable-next-line no-continue
-            continue;
-          }
-
-          const client = await bot.fortniteManager.clientFromDeviceAuth(
-            epicAccount.accountId,
-            epicAccount.deviceId,
-            epicAccount.secret,
-          );
-
-          const ccs: string[] = []; // 'RAVINE', 'GLOWIE', 'ROSIEE'
-
-          if (ccs.length === 0) return;
-
-          const setSac = await client.http.sendEpicgamesRequest(
-            true,
-            'POST',
-            `${Endpoints.MCP}/${epicAccount.accountId}/client/SetAffiliateName?profileId=common_core`,
-            'fortnite',
-            {
-              'Content-Type': 'application/json',
-            },
-            {
-              affiliateName: ccs[Math.floor(Math.random() * ccs.length)],
-            },
-          );
-
-          if (setSac.error) {
-            throw new Error(setSac.error.message ?? setSac.error.code);
-          }
-
-          recentSacs[epicAccount.accountId] = Date.now();
-
-          sacCounter += 1;
-
-          logger.info(`SAC Counter: ${sacCounter}`);
-        }
-      } catch (e) {
-        logger.error(e);
       }
     }
 

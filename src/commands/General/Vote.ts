@@ -1,5 +1,9 @@
-import { MessageButton, MessageActionRow } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import {
+  ButtonBuilder,
+  ButtonStyle,
+  ActionRowBuilder,
+  SlashCommandBuilder,
+} from 'discord.js';
 
 import type { ICommand } from '../../structures/Command';
 
@@ -13,14 +17,14 @@ const Command: ICommand = {
   options: {},
 
   run: async (bot, interaction) => {
-    const btn = new MessageButton()
+    const btn = new ButtonBuilder()
       .setURL('https://fishstickbot.com/vote')
       .setLabel('Vote for Me')
-      .setStyle('LINK');
+      .setStyle(ButtonStyle.Link);
 
     await interaction.editReply({
       content: '**Vote for me on Top.GG!**',
-      components: [new MessageActionRow().setComponents(btn)],
+      components: [new ActionRowBuilder<ButtonBuilder>().setComponents(btn)],
     });
   },
 };

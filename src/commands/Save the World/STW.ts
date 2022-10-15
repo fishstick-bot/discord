@@ -1,14 +1,17 @@
 /* eslint-disable no-param-reassign */
 import {
-  MessageEmbed,
-  MessageButton,
-  MessageSelectMenu,
-  MessageActionRow,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  SelectMenuBuilder,
+  ActionRowBuilder,
   Message,
-  MessageAttachment,
+  AttachmentBuilder,
   SelectMenuInteraction,
+  SlashCommandBuilder,
+  time,
+  strikethrough,
 } from 'discord.js';
-import { SlashCommandBuilder, time, strikethrough } from '@discordjs/builders';
 import type { STWProfile } from 'fnbr';
 import { promises as fs } from 'fs';
 // @ts-ignore
@@ -128,10 +131,10 @@ const Command: ICommand = {
     ).response.data as ISTWMission[];
 
     const rawEmbed = () => {
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setAuthor({
           name: `${interaction.user.username}`,
-          iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+          iconURL: interaction.user.displayAvatarURL(),
         })
         .setTitle(
           `[${stw?.powerLevel.toFixed(2)}] ${
@@ -328,33 +331,41 @@ const Command: ICommand = {
             )
             .join(' ')}`,
         )
-        .addField(
-          'SSD Completions',
-          Object.keys(ssds)
-            .map((s) => `• ${s}: **${ssds[s]}**`)
-            .join('\n'),
-          true,
-        )
-        .addField(
-          'Endurance Completions',
-          Object.keys(endurances)
-            .map(
-              (s) =>
-                `• ${s}: ${
-                  endurances[s]
-                    ? `${time((endurances[s] as Date)!, 'd')}`
-                    : '**Not Completed**'
-                }`,
-            )
-            .join('\n'),
-          true,
-        )
-        .addField(
-          'Battle Royale Accolade XP',
-          `**${(brxp ?? 0).toLocaleString()} / ${(450000).toLocaleString()} ${
-            Emojis.brxp
-          }**`,
-        );
+        .addFields([
+          {
+            name: 'SSD Completions',
+            value: Object.keys(ssds)
+              .map((s) => `• ${s}: **${ssds[s]}**`)
+              .join('\n'),
+            inline: true,
+          },
+        ])
+        .addFields([
+          {
+            name: 'Endurance Completions',
+            value: Object.keys(endurances)
+              .map(
+                (s) =>
+                  `• ${s}: ${
+                    endurances[s]
+                      ? `${time((endurances[s] as Date)!, 'd')}`
+                      : '**Not Completed**'
+                  }`,
+              )
+              .join('\n'),
+            inline: true,
+          },
+        ])
+        .addFields([
+          {
+            name: 'Battle Royale Accolade XP',
+            value: `**${(
+              brxp ?? 0
+            ).toLocaleString()} / ${(450000).toLocaleString()} ${
+              Emojis.brxp
+            }**`,
+          },
+        ]);
       return embed;
     };
 
@@ -368,13 +379,13 @@ const Command: ICommand = {
         quantity: approx(r.quantity).toUpperCase(),
       }));
 
-      const attachment = new MessageAttachment(
+      const attachment = new AttachmentBuilder(
         await drawSTWResources(
           Sort(resources),
           player ?? epicAccount.displayName,
           interaction.user.tag,
         ),
-        'stw-resources.png',
+        { name: 'stw-resources.png' },
       );
 
       return attachment;
@@ -450,68 +461,74 @@ const Command: ICommand = {
         );
 
       if (nextLvl) {
-        embed.addField(
-          `Rewards for Level ${lvl + 1}`,
-          `${nextLvl.VisibleReward.map(
-            (r: any) =>
-              `${
-                (Emojis as any)[r.TemplateId] ??
-                stwData[r.TemplateId.split(':')[1]].name
-              } **${r.Quantity.toLocaleString()}**`,
-          ).join(' ')}`,
-          true,
-        );
+        embed.addFields([
+          {
+            name: `Rewards for Level ${lvl + 1}`,
+            value: `${nextLvl.VisibleReward.map(
+              (r: any) =>
+                `${
+                  (Emojis as any)[r.TemplateId] ??
+                  stwData[r.TemplateId.split(':')[1]].name
+                } **${r.Quantity.toLocaleString()}**`,
+            ).join(' ')}`,
+            inline: true,
+          },
+        ]);
       }
 
       if (nextMajorLvl) {
-        embed.addField(
-          `Rewards for Level ${nextMajorLvl}`,
-          `${(Object.values(venturesData) as any)[
-            nextMajorLvl - 1
-          ]?.VisibleReward.map(
-            (r: any) =>
-              `${
-                (Emojis as any)[r.TemplateId] ??
-                stwData[r.TemplateId.split(':')[1]].name
-              } **${r.Quantity.toLocaleString()}**`,
-          ).join(' ')}`,
-          true,
-        );
+        embed.addFields([
+          {
+            name: `Rewards for Level ${nextMajorLvl}`,
+            value: `${(Object.values(venturesData) as any)[
+              nextMajorLvl - 1
+            ]?.VisibleReward.map(
+              (r: any) =>
+                `${
+                  (Emojis as any)[r.TemplateId] ??
+                  stwData[r.TemplateId.split(':')[1]].name
+                } **${r.Quantity.toLocaleString()}**`,
+            ).join(' ')}`,
+            inline: true,
+          },
+        ]);
       }
 
       // eslint-disable-next-line no-restricted-syntax
       for (const q of activePhoenixQuests) {
         const questData = stwQuests[q.templateId.split(':')[1].toLowerCase()];
 
-        embed.addField(
-          `${questData.name ?? 'Unknown Quest'} (${
-            parseInt(
-              q.templateId.split('_')[q.templateId.split('_').length - 1],
-              10,
-            ) ?? 0
-          } / 12)`,
-          `${questData.objectives
-            .map((o: any) => {
-              const completed =
-                (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
-              let task = o.description.split(' in a [UIRating]+')[0];
-              if (completed) {
-                task = strikethrough(task);
-              }
-              return `• ${task} **[${(
-                q.attributes[`completion_${o.id}`] ?? 0
-              ).toLocaleString()}/${o.count.toLocaleString()}]**`;
-            })
-            .join('\n')}\n${questData.reward
-            .filter((r: any) => !r.hidden)
-            .map(
-              (r: any) =>
-                `${
-                  (Emojis as any)[r.id] ?? r.id
-                } **${r.quantity.toLocaleString()}x**`,
-            )
-            .join('\n')}`,
-        );
+        embed.addFields([
+          {
+            name: `${questData.name ?? 'Unknown Quest'} (${
+              parseInt(
+                q.templateId.split('_')[q.templateId.split('_').length - 1],
+                10,
+              ) ?? 0
+            } / 12)`,
+            value: `${questData.objectives
+              .map((o: any) => {
+                const completed =
+                  (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
+                let task = o.description.split(' in a [UIRating]+')[0];
+                if (completed) {
+                  task = strikethrough(task);
+                }
+                return `• ${task} **[${(
+                  q.attributes[`completion_${o.id}`] ?? 0
+                ).toLocaleString()}/${o.count.toLocaleString()}]**`;
+              })
+              .join('\n')}\n${questData.reward
+              .filter((r: any) => !r.hidden)
+              .map(
+                (r: any) =>
+                  `${
+                    (Emojis as any)[r.id] ?? r.id
+                  } **${r.quantity.toLocaleString()}x**`,
+              )
+              .join('\n')}`,
+          },
+        ]);
       }
 
       return embed;
@@ -550,7 +567,6 @@ const Command: ICommand = {
       if (!quest) {
         embed.setDescription(
           `No active Storm King quest found.
-
 ${Object.keys(mskSchematics)
   .map(
     (s) =>
@@ -565,7 +581,6 @@ ${Object.keys(mskSchematics)
         embed.setDescription(
           `**${questData.name}**
 ${questData.description}
-
 ${questData.objectives
   .map(
     (o: any) =>
@@ -614,21 +629,22 @@ ${Object.keys(mskSchematics)
         for (const q of quests) {
           const questData = stwQuests[q.templateId.split(':')[1].toLowerCase()];
 
-          embed.addField(
-            `${questData.name ?? 'Unknown Quest'}`,
-            `${questData.objectives
-              .map((o: any) => {
-                const completed =
-                  (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
-                let task = o.description;
-                if (completed) {
-                  task = strikethrough(task);
-                }
-                return `• ${task} **[${(
-                  q.attributes[`completion_${o.id}`] ?? 0
-                ).toLocaleString()}/${o.count.toLocaleString()}]**`;
-              })
-              .join('\n')}
+          embed.addFields([
+            {
+              name: `${questData.name ?? 'Unknown Quest'}`,
+              value: `${questData.objectives
+                .map((o: any) => {
+                  const completed =
+                    (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
+                  let task = o.description;
+                  if (completed) {
+                    task = strikethrough(task);
+                  }
+                  return `• ${task} **[${(
+                    q.attributes[`completion_${o.id}`] ?? 0
+                  ).toLocaleString()}/${o.count.toLocaleString()}]**`;
+                })
+                .join('\n')}
 ${questData.reward
   .filter((r: any) => !r.hidden)
   .map(
@@ -636,7 +652,8 @@ ${questData.reward
       `${(Emojis as any)[r.id] ?? r.id} **${r.quantity.toLocaleString()}x**`,
   )
   .join(' ')}`,
-          );
+            },
+          ]);
         }
       }
 
@@ -663,24 +680,25 @@ ${questData.reward
         for (const q of quests) {
           const questData = stwQuests[q.templateId.split(':')[1].toLowerCase()];
 
-          embed.addField(
-            `${questData.name ?? 'Unknown Quest'}`,
-            `${questData.objectives
-              .map((o: any) => {
-                const completed =
-                  (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
-                let task = o.description;
-                if (q.templateId.toLowerCase().includes('supercharge')) {
-                  task = task.replace('[UIRating]', '160');
-                }
-                if (completed) {
-                  task = strikethrough(task);
-                }
-                return `• ${task} **[${(
-                  q.attributes[`completion_${o.id}`] ?? 0
-                ).toLocaleString()}/${o.count.toLocaleString()}]**`;
-              })
-              .join('\n')}
+          embed.addFields([
+            {
+              name: `${questData.name ?? 'Unknown Quest'}`,
+              value: `${questData.objectives
+                .map((o: any) => {
+                  const completed =
+                    (q.attributes[`completion_${o.id}`] ?? 0) === o.count;
+                  let task = o.description;
+                  if (q.templateId.toLowerCase().includes('supercharge')) {
+                    task = task.replace('[UIRating]', '160');
+                  }
+                  if (completed) {
+                    task = strikethrough(task);
+                  }
+                  return `• ${task} **[${(
+                    q.attributes[`completion_${o.id}`] ?? 0
+                  ).toLocaleString()}/${o.count.toLocaleString()}]**`;
+                })
+                .join('\n')}
 ${questData.reward
   .filter((r: any) => !r.hidden)
   .map(
@@ -688,7 +706,8 @@ ${questData.reward
       `${(Emojis as any)[r.id] ?? r.id} **${r.quantity.toLocaleString()}x**`,
   )
   .join(' ')}`,
-          );
+            },
+          ]);
         }
       }
 
@@ -752,20 +771,20 @@ ${a
     };
 
     const createBtns = (disabled = false) => {
-      const refreshButton = new MessageButton()
+      const refreshButton = new ButtonBuilder()
         .setCustomId('refresh')
         .setLabel('Refresh')
-        .setStyle('SUCCESS')
+        .setStyle(ButtonStyle.Success)
         .setDisabled(disabled);
 
-      const closeButton = new MessageButton()
+      const closeButton = new ButtonBuilder()
         .setCustomId('close')
         .setLabel('Close')
         .setEmoji(Emojis.cross)
-        .setStyle('DANGER')
+        .setStyle(ButtonStyle.Danger)
         .setDisabled(disabled);
 
-      const btns = new MessageActionRow().setComponents(
+      const btns = new ActionRowBuilder<ButtonBuilder>().setComponents(
         refreshButton,
         closeButton,
       );
@@ -775,8 +794,8 @@ ${a
 
     let mode = 'stwoverview';
     const createModeMenu = (disabled = false) => {
-      const row = new MessageActionRow().addComponents(
-        new MessageSelectMenu()
+      const row = new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+        new SelectMenuBuilder()
           .setCustomId('mode')
           .setPlaceholder('Select a mode')
           .setOptions([
@@ -861,8 +880,8 @@ ${a
             return;
         }
 
-        const embeds: MessageEmbed[] = [];
-        const files: MessageAttachment[] = [];
+        const embeds: EmbedBuilder[] = [];
+        const files: AttachmentBuilder[] = [];
 
         switch (mode) {
           case 'stwoverview':

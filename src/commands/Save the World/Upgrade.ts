@@ -1,10 +1,11 @@
 import {
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
   Message,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Endpoints, STWProfile } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -69,12 +70,12 @@ const Command: ICommand = {
       label: string,
       disabled = false,
     ) => {
-      const btn = new MessageButton()
+      const btn = new ButtonBuilder()
         .setCustomId(id)
         .setEmoji(emoji)
         .setLabel(label)
         .setDisabled(disabled)
-        .setStyle('SECONDARY');
+        .setStyle(ButtonStyle.Secondary);
 
       return btn;
     };
@@ -162,23 +163,38 @@ const Command: ICommand = {
         `${getCurrentLvl('HomebaseNode:skilltree_backpacksize')} / 8`,
         getCurrentLvl('HomebaseNode:skilltree_backpacksize') === 8 || disabled,
       );
-      const closeButton = new MessageButton()
+      const closeButton = new ButtonBuilder()
         .setCustomId('close')
         .setLabel('Close')
         .setEmoji(Emojis.cross)
-        .setStyle('DANGER')
+        .setStyle(ButtonStyle.Danger)
         .setDisabled(disabled);
 
       return [
-        new MessageActionRow().setComponents(teleporter, supplydrop, slowfield),
-        new MessageActionRow().setComponents(proximity, turret, banner),
-        new MessageActionRow().setComponents(airstrike, adrenaline, storage),
-        new MessageActionRow().setComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
+          teleporter,
+          supplydrop,
+          slowfield,
+        ),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
+          proximity,
+          turret,
+          banner,
+        ),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
+          airstrike,
+          adrenaline,
+          storage,
+        ),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           pickaxe,
           buildinghealth,
           buildandrepairspeed,
         ),
-        new MessageActionRow().setComponents(backpack, closeButton),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
+          backpack,
+          closeButton,
+        ),
       ];
     };
 

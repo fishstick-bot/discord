@@ -1,5 +1,4 @@
-import { MessageEmbed, version } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
 import type { ICommand } from '../../structures/Command';
 import Emojis from '../../resources/Emojis';
@@ -15,7 +14,7 @@ const Command: ICommand = {
   options: {},
 
   run: async (bot, interaction) => {
-    const pages: MessageEmbed[] = [];
+    const pages: EmbedBuilder[] = [];
 
     const sortedCommands = bot.commands.sort((a, b) => {
       if (a.name < b.name) return -1;
@@ -26,10 +25,10 @@ const Command: ICommand = {
     for (let i = 0; i < bot.commands.size; i += 9) {
       const cmds = sortedCommands.toJSON().slice(i, i + 9);
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setAuthor({
           name: 'Help Information',
-          iconURL: bot.user?.displayAvatarURL({ dynamic: true }),
+          iconURL: bot.user?.displayAvatarURL(),
         })
         .setTimestamp()
         .setColor(bot._config.color)
@@ -61,11 +60,13 @@ Checkout my **[Documentation](https://docs.fishstickbot.com/commands)** for more
           cmdInfo += `\n${subCommands.map((c: any) => c.name).join(' • ')}`;
         }
 
-        embed.addField(
-          `/${slash.name}${cmd.options.premiumOnly ? ` ${Emojis.star}` : ''}`,
-          cmdInfo,
-          true,
-        );
+        embed.addFields({
+          name: `/${slash.name}${
+            cmd.options.premiumOnly ? ` ${Emojis.star}` : ''
+          }`,
+          value: cmdInfo,
+          inline: true,
+        });
       }
 
       pages.push(embed);

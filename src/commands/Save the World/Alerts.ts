@@ -1,10 +1,4 @@
-import {
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
-  Message,
-} from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import axios from 'axios';
 
 import type { ICommand } from '../../structures/Command';
@@ -54,13 +48,13 @@ const Command: ICommand = {
   run: async (bot, interaction, user) => {
     const subCommand = interaction.options.getSubcommand();
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setColor(bot._config.color)
       .setTimestamp()
       .setTitle('Save the World Mission Alerts')
       .setAuthor({
         name: interaction.user.username,
-        iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+        iconURL: interaction.user.displayAvatarURL(),
       });
 
     if (subCommand === 'vbucks') {

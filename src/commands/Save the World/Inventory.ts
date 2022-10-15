@@ -1,11 +1,12 @@
 import {
-  MessageEmbed,
-  MessageButton,
-  MessageActionRow,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ActionRowBuilder,
   Message,
-  MessageAttachment,
+  AttachmentBuilder,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Endpoints, Client } from 'fnbr';
 import { calcSTWNonSurvivorPowerLevel } from 'fnbr/dist/src/util/Util';
 import { promises as fs } from 'fs';
@@ -113,44 +114,44 @@ const Command: ICommand = {
       );
     }
 
-    const backpackBtn = new MessageButton()
+    const backpackBtn = new ButtonBuilder()
       .setCustomId('backpack')
       .setLabel('Backpack')
-      .setStyle('SECONDARY')
+      .setStyle(ButtonStyle.Secondary)
       .setEmoji(Emojis.backpacksize);
 
-    const storageBtn = new MessageButton()
+    const storageBtn = new ButtonBuilder()
       .setCustomId('storage')
       .setLabel('Storage')
-      .setStyle('SECONDARY')
+      .setStyle(ButtonStyle.Secondary)
       .setEmoji(Emojis.storagesize);
 
-    const venturesBtn = new MessageButton()
+    const venturesBtn = new ButtonBuilder()
       .setCustomId('ventures')
       .setLabel('Ventures Backpack')
-      .setStyle('SECONDARY')
+      .setStyle(ButtonStyle.Secondary)
       .setEmoji(Emojis.ventures);
 
-    const allBtn = new MessageButton()
+    const allBtn = new ButtonBuilder()
       .setCustomId('all')
       .setLabel('Backpack + Storage')
-      .setStyle('SUCCESS');
+      .setStyle(ButtonStyle.Success);
 
-    const closeBtn = new MessageButton()
+    const closeBtn = new ButtonBuilder()
       .setCustomId('close')
       .setLabel('Close')
-      .setStyle('DANGER')
+      .setStyle(ButtonStyle.Danger)
       .setEmoji(Emojis.cross);
 
     await interaction.editReply({
       content: 'Choose inventory type to view.',
       components: [
-        new MessageActionRow().setComponents(
+        new ActionRowBuilder<ButtonBuilder>().setComponents(
           backpackBtn,
           storageBtn,
           venturesBtn,
         ),
-        new MessageActionRow().setComponents(allBtn, closeBtn),
+        new ActionRowBuilder<ButtonBuilder>().setComponents(allBtn, closeBtn),
       ],
     });
 
@@ -242,7 +243,7 @@ const Command: ICommand = {
       itemsMap[i.id].quantity += i.quantity;
     });
 
-    const attachment = new MessageAttachment(
+    const attachment = new AttachmentBuilder(
       await drawSTWInventory(
         Object.values(itemsMap).map((i) => ({
           ...i,
@@ -252,7 +253,7 @@ const Command: ICommand = {
         interaction.user.tag,
         selected.customId,
       ),
-      'stw-inventory.png',
+      { name: 'stw-inventory.png' },
     );
 
     const inventoryLabels: {
@@ -264,7 +265,7 @@ const Command: ICommand = {
       all: 'Backpack + Storage',
     };
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s STW ${
           inventoryLabels[selected.customId]

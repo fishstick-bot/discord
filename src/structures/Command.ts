@@ -1,4 +1,4 @@
-import type { CommandInteraction } from 'discord.js';
+import type { ChatInputCommandInteraction } from 'discord.js';
 import type {
   SlashCommandBuilder,
   SlashCommandSubcommandsOnlyBuilder,
@@ -10,7 +10,7 @@ import { IUser, IGuild } from '../database/models/typings';
 
 type RunCommand = (
   bot: Bot,
-  interaction: CommandInteraction,
+  interaction: ChatInputCommandInteraction,
   user: Document<unknown, any, IUser> &
     IUser & {
       _id: Types.ObjectId;

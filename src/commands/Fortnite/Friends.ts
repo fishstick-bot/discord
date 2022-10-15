@@ -1,13 +1,15 @@
 /* eslint-disable no-case-declarations */
 import {
-  MessageActionRow,
-  MessageSelectMenu,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  SelectMenuBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
   Message,
   SelectMenuInteraction,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import type { Friend, BasePendingFriend } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
@@ -45,7 +47,7 @@ const Command: ICommand = {
     );
     await client.updateCaches();
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s Friends`,
         iconURL: epicAccount.avatarUrl,
@@ -54,41 +56,44 @@ const Command: ICommand = {
       .setTimestamp()
       .setDescription('Choose any button to manage your friend list.');
 
-    const viewFriendsButton = new MessageButton()
+    const viewFriendsButton = new ButtonBuilder()
       .setLabel('View Friends')
       .setCustomId('view-friends')
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const viewFriendRequestsButton = new MessageButton()
+    const viewFriendRequestsButton = new ButtonBuilder()
       .setLabel('View Friend Requests')
       .setCustomId('view-friend-requests')
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const clearFriendsButton = new MessageButton()
+    const clearFriendsButton = new ButtonBuilder()
       .setLabel('Clear Friends')
       .setCustomId('clear-friends')
-      .setStyle('DANGER');
+      .setStyle(ButtonStyle.Danger);
 
-    const confirmBtn = new MessageButton()
+    const confirmBtn = new ButtonBuilder()
       .setLabel('Confirm')
       .setCustomId('confirm')
       .setEmoji(Emojis.tick)
-      .setStyle('SUCCESS');
+      .setStyle(ButtonStyle.Success);
 
-    const cancelBtn = new MessageButton()
+    const cancelBtn = new ButtonBuilder()
       .setLabel('Cancel')
       .setCustomId('cancel')
       .setEmoji(Emojis.cross)
-      .setStyle('DANGER');
+      .setStyle(ButtonStyle.Danger);
 
     await interaction.editReply({
       embeds: [embed],
       components: [
-        new MessageActionRow().addComponents(
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
           viewFriendsButton,
           viewFriendRequestsButton,
         ),
-        new MessageActionRow().addComponents(clearFriendsButton, cancelBtn),
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          clearFriendsButton,
+          cancelBtn,
+        ),
       ],
     });
 
@@ -106,7 +111,7 @@ const Command: ICommand = {
       return;
     }
 
-    const confirmRow = new MessageActionRow().addComponents(
+    const confirmRow = new ActionRowBuilder<ButtonBuilder>().addComponents(
       confirmBtn,
       cancelBtn,
     );
@@ -122,11 +127,11 @@ const Command: ICommand = {
           return;
         }
 
-        const friendPages: MessageEmbed[] = [];
+        const friendPages: EmbedBuilder[] = [];
         for (let i = 0; i < client.friends.size; i += 30) {
-          const friends = client.friends.toJSON().slice(i, i + 30);
+          const friends: Friend[] = client.friends.toJSON().slice(i, i + 30);
 
-          const page = new MessageEmbed()
+          const page = new EmbedBuilder()
             .setAuthor({
               name: `${epicAccount.displayName}'s Friends`,
               iconURL: epicAccount.avatarUrl,
@@ -144,20 +149,22 @@ const Command: ICommand = {
             const row = friends.slice(j, j + 15);
 
             // a friend is eligible for gifting if they created for over 48 hours
-            page.addField(
-              `${i + j + 1} - ${i + j + row.length}`,
-              row
-                .map(
-                  (f, idx) =>
-                    `${i + j + 1 + idx}. ${f.displayName ?? `\`${f.id}\``}${
-                      f.createdAt.getTime() > Date.now() - 48 * 60 * 60 * 1000
-                        ? ' *'
-                        : ''
-                    }`,
-                )
-                .join('\n'),
-              true,
-            );
+            page.addFields([
+              {
+                name: `${i + j + 1} - ${i + j + row.length}`,
+                value: row
+                  .map(
+                    (f, idx) =>
+                      `${i + j + 1 + idx}. ${f.displayName ?? `\`${f.id}\``}${
+                        f.createdAt.getTime() > Date.now() - 48 * 60 * 60 * 1000
+                          ? ' *'
+                          : ''
+                      }`,
+                  )
+                  .join('\n'),
+                inline: true,
+              },
+            ]);
           }
 
           friendPages.push(page);
@@ -177,12 +184,14 @@ const Command: ICommand = {
           return;
         }
 
-        const friendReqPages: MessageEmbed[] = [];
+        const friendReqPages: EmbedBuilder[] = [];
 
         for (let i = 0; i < client.pendingFriends.size; i += 30) {
-          const friendReqs = client.pendingFriends.toJSON().slice(i, i + 30);
+          const friendReqs: BasePendingFriend[] = client.pendingFriends
+            .toJSON()
+            .slice(i, i + 30);
 
-          const page = new MessageEmbed()
+          const page = new EmbedBuilder()
             .setAuthor({
               name: `${epicAccount.displayName}'s Friend Requests`,
               iconURL: epicAccount.avatarUrl,
@@ -199,18 +208,20 @@ const Command: ICommand = {
           for (let j = 0; j < friendReqs.length; j += 15) {
             const row = friendReqs.slice(j, j + 15);
 
-            page.addField(
-              `${i + j + 1} - ${i + j + row.length}`,
-              row
-                .map(
-                  (f, idx) =>
-                    `${i + j + 1 + idx}. ${f.displayName ?? `\`${f.id}\``}${
-                      f.direction === 'OUTGOING' ? ' *' : ''
-                    }`,
-                )
-                .join('\n'),
-              true,
-            );
+            page.addFields([
+              {
+                name: `${i + j + 1} - ${i + j + row.length}`,
+                value: row
+                  .map(
+                    (f, idx) =>
+                      `${i + j + 1 + idx}. ${f.displayName ?? `\`${f.id}\``}${
+                        f.direction === 'OUTGOING' ? ' *' : ''
+                      }`,
+                  )
+                  .join('\n'),
+                inline: true,
+              },
+            ]);
           }
 
           friendReqPages.push(page);
@@ -227,7 +238,7 @@ const Command: ICommand = {
         await interaction.editReply({
           components: [confirmRow],
           embeds: [
-            new MessageEmbed()
+            new EmbedBuilder()
               .setAuthor({
                 name: `${epicAccount.displayName}'s Friends`,
                 iconURL: epicAccount.avatarUrl,
@@ -262,7 +273,7 @@ const Command: ICommand = {
         await interaction.editReply({
           components: [],
           embeds: [
-            new MessageEmbed()
+            new EmbedBuilder()
               .setAuthor({
                 name: `${epicAccount.displayName}'s Friends`,
                 iconURL: epicAccount.avatarUrl,

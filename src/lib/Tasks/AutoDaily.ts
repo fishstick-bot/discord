@@ -1,5 +1,4 @@
-import { TextChannel, MessageEmbed } from 'discord.js';
-import { userMention } from '@discordjs/builders';
+import { TextChannel, EmbedBuilder, userMention } from 'discord.js';
 import cron from 'node-cron';
 import { Endpoints } from 'fnbr';
 import { promisify } from 'util';
@@ -81,7 +80,7 @@ class AutoDaily implements Task {
           await wait(isPremium ? 1000 : 2500);
         }
 
-        const embed = new MessageEmbed()
+        const embed = new EmbedBuilder()
           .setColor(this.bot._config.color)
           .setAuthor({
             name: `Auto Daily Login Rewards | Save the World`,

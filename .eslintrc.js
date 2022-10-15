@@ -27,7 +27,9 @@ module.exports = {
     'no-unused-vars': 'off',
     'prettier/prettier': [
       'error',
-      {},
+      {
+        singleQuote: true,
+      },
       {
         usePrettierrc: true,
       },

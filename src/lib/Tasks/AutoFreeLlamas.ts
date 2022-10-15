@@ -1,5 +1,4 @@
-import { TextChannel, MessageEmbed } from 'discord.js';
-import { userMention } from '@discordjs/builders';
+import { TextChannel, EmbedBuilder, userMention } from 'discord.js';
 import { Endpoints, Client } from 'fnbr';
 import { promisify } from 'util';
 
@@ -85,7 +84,7 @@ class AutoFreeLlamas implements Task {
         await wait(1000);
       }
 
-      const embed = new MessageEmbed()
+      const embed = new EmbedBuilder()
         .setColor(this.bot._config.color)
         .setAuthor({
           name: `Auto Free Llama's Rewards | Save the World`,
@@ -94,7 +93,7 @@ class AutoFreeLlamas implements Task {
         .setDescription(description);
 
       // check if description is empty
-      if (embed.description!.replace(/\n/g, '').length === 0) {
+      if (embed.data.description!.replace(/\n/g, '').length === 0) {
         // eslint-disable-next-line no-continue
         continue;
       }

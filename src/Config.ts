@@ -1,4 +1,4 @@
-import { ColorResolvable } from 'discord.js';
+import { ColorResolvable, Colors } from 'discord.js';
 
 import IConfig from './structures/Config';
 
@@ -24,7 +24,7 @@ class Config implements IConfig {
     this.suggestionsChannel = '994807130316087348';
     this.mongoUri = process.env.MONGO_URI!;
     this.apiPort = Number(process.env.API_PORT!);
-    this.color = 'AQUA';
+    this.color = Colors.Aqua;
     this.loggingWebhook = process.env.LOGGING_WEBHOOK!;
     this.fortniteApiIoApiKey = process.env.FORTNITE_API_IO_API_KEY!;
   }

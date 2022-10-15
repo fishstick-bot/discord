@@ -1,6 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { MessageEmbed } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 
 import type { ICommand } from '../../structures/Command';
 import Emojis from '../../resources/Emojis';
@@ -72,10 +71,10 @@ const Command: ICommand = {
     targetUser.isPartner = subcommand === 'grant';
     await targetUser.save();
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${target.username}'s Partner Status`,
-        iconURL: target.displayAvatarURL({ dynamic: true }),
+        iconURL: target.displayAvatarURL(),
       })
       .setDescription(
         `${subcommand === 'grant' ? 'Granted' : 'Revoked'} partner status ${

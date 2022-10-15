@@ -1,4 +1,4 @@
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { inspect } from 'util';
 
 import type { ILegacyCommand } from '../../structures/LegacyCommand';
@@ -45,16 +45,18 @@ const Command: ILegacyCommand = {
     // Clean evaled result
     const cleaned = await clean(evaled);
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: msg.author.tag,
-        iconURL: msg.author.displayAvatarURL({ dynamic: true }),
+        iconURL: msg.author.displayAvatarURL(),
       })
       .setTitle('Eval')
       .setColor(bot._config.color)
       .setTimestamp()
-      .addField('Input', `\`\`\`ts\n${args.join(' ')}\n\`\`\``)
-      .addField('Output', `\`\`\`ts\n${cleaned}\n\`\`\``);
+      .addFields([
+        { name: 'Input', value: `\`\`\`ts\n${args.join(' ')}\n\`\`\`` },
+      ])
+      .addFields([{ name: 'Output', value: `\`\`\`ts\n${cleaned}\n\`\`\`` }]);
 
     await msg.reply({
       embeds: [embed],

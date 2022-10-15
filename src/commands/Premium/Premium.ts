@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { MessageEmbed } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import { SlashCommandBuilder, time } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
@@ -132,7 +132,7 @@ const Command: ICommand = {
 
         await interaction.editReply({
           embeds: [
-            new MessageEmbed()
+            new EmbedBuilder()
               .setAuthor({
                 name: `Premium Key Generated`,
               })
@@ -197,10 +197,10 @@ const Command: ICommand = {
 
         await interaction.editReply({
           embeds: [
-            new MessageEmbed()
+            new EmbedBuilder()
               .setAuthor({
                 name: `${interaction.user.username}'s Premium Status`,
-                iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+                iconURL: interaction.user.displayAvatarURL(),
               })
               .setColor(bot._config.color)
               .setTimestamp()
@@ -260,10 +260,10 @@ const Command: ICommand = {
 
         await interaction.editReply({
           embeds: [
-            new MessageEmbed()
+            new EmbedBuilder()
               .setAuthor({
                 name: `${target!.username}'s Premium Status`,
-                iconURL: target!.displayAvatarURL({ dynamic: true }),
+                iconURL: target!.displayAvatarURL(),
               })
               .setColor(bot._config.color)
               .setTimestamp()
@@ -305,10 +305,10 @@ const Command: ICommand = {
 
         await interaction.editReply({
           embeds: [
-            new MessageEmbed()
+            new EmbedBuilder()
               .setAuthor({
                 name: `${target!.username}'s Premium Status`,
-                iconURL: target!.displayAvatarURL({ dynamic: true }),
+                iconURL: target!.displayAvatarURL(),
               })
               .setColor(bot._config.color)
               .setTimestamp()

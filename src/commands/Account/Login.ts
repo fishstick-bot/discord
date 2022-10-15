@@ -1,17 +1,20 @@
 /* eslint-disable no-param-reassign */
 import {
-  MessageEmbed,
-  MessageButton,
-  MessageSelectMenu,
-  Modal,
-  TextInputComponent,
-  MessageActionRow,
-  ModalActionRowComponent,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ButtonComponent,
+  SelectMenuBuilder,
+  ModalBuilder,
+  TextInputBuilder,
+  TextInputStyle,
+  ActionRowBuilder,
   Message,
-  MessageAttachment,
+  AttachmentBuilder,
   SelectMenuInteraction,
+  SlashCommandBuilder,
+  Colors,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
@@ -29,10 +32,10 @@ const Command: ICommand = {
   options: {},
 
   run: async (bot, interaction, user) => {
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${interaction.user.username}'s Saved Accounts`,
-        iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+        iconURL: interaction.user.displayAvatarURL(),
       })
       .setDescription(
         `To switch to a different account use the drop down menu below.
@@ -45,20 +48,20 @@ This message will timeout in 60 seconds.`,
       user.premiumUntil.getTime() > Date.now() || user.isPartner;
     const accountsLimit = isPremium ? 20 : 3;
 
-    const saveNewAccountButton = new MessageButton()
+    const saveNewAccountButton = new ButtonBuilder()
       .setCustomId('saveNewAccount')
       .setLabel('Save New Account')
       .setDisabled(user.epicAccounts.length >= accountsLimit)
       .setEmoji('✨')
-      .setStyle('SECONDARY');
+      .setStyle(ButtonStyle.Secondary);
 
-    const closeButton = new MessageButton()
+    const closeButton = new ButtonBuilder()
       .setCustomId('close')
       .setLabel('Close')
       .setEmoji(Emojis.cross)
-      .setStyle('DANGER');
+      .setStyle(ButtonStyle.Danger);
 
-    const accountsMenu = new MessageSelectMenu()
+    const accountsMenu = new SelectMenuBuilder()
       .setCustomId('accountsMenu')
       .setPlaceholder('Select an account')
       .setDisabled(user.epicAccounts.length === 0)
@@ -74,10 +77,14 @@ This message will timeout in 60 seconds.`,
     const components = [];
 
     if (user.epicAccounts.length > 0) {
-      components.push(new MessageActionRow().addComponents(accountsMenu));
+      components.push(
+        new ActionRowBuilder<ButtonBuilder | SelectMenuBuilder>().addComponents(
+          accountsMenu,
+        ),
+      );
     }
 
-    const btns = new MessageActionRow();
+    const btns = new ActionRowBuilder<ButtonBuilder>();
     btns.addComponents(saveNewAccountButton, closeButton);
     components.push(btns);
 
@@ -117,10 +124,10 @@ This message will timeout in 60 seconds.`,
         }
       }
 
-      const newAccountEmbed = new MessageEmbed()
+      const newAccountEmbed = new EmbedBuilder()
         .setAuthor({
           name: `${interaction.user.username}'s Saved Accounts`,
-          iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+          iconURL: interaction.user.displayAvatarURL(),
         })
         .setColor(bot._config.color)
         .setTimestamp()
@@ -140,51 +147,52 @@ Example: **aabbccddeeff11223344556677889900**
 
 **This message will timeout in 5 minutes.**`,
         )
-        .addField(
-          'New to switch accounts?',
-          'Use [this link](https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode&prompt=login) instead.',
-        );
+        .addFields([
+          {
+            name: 'New to switch accounts?',
+            value:
+              'Use [this link](https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode&prompt=login) instead.',
+          },
+        ]);
 
-      const authcodeImg = new MessageAttachment(
-        './assets/AuthCode.png',
-        'AuthCode.png',
-      );
+      const authcodeImg = new AttachmentBuilder('./assets/AuthCode.png', {
+        name: 'AuthCode.png',
+      });
 
-      const authcodeButton = new MessageButton()
+      const authcodeButton = new ButtonBuilder()
         .setLabel('Epic Games')
         .setURL(
           'https://www.epicgames.com/id/login?redirectUrl=https%3A%2F%2Fwww.epicgames.com%2Fid%2Fapi%2Fredirect%3FclientId%3D3446cd72694c4a4485d81b77adbb2141%26responseType%3Dcode',
         )
-        .setStyle('LINK');
+        .setStyle(ButtonStyle.Link);
 
-      const submitcodeButton = new MessageButton()
+      const submitcodeButton = new ButtonBuilder()
         .setCustomId('submitcode')
         .setLabel('Submit Code (30s Cooldown)')
-        .setStyle('SECONDARY');
+        .setStyle(ButtonStyle.Secondary);
 
-      const authCodeModal = new Modal()
+      const authCodeModal = new ModalBuilder()
         .setCustomId('authCodeModal')
         .setTitle('Fishstick - Login');
 
-      const authCodeInput = new TextInputComponent()
+      const authCodeInput = new TextInputBuilder()
         .setCustomId('authCodeInput')
         .setLabel('Authorization Code')
         .setPlaceholder('Enter your 32 digit authorization code here.')
         .setMinLength(32)
         .setMaxLength(32)
-        .setStyle('SHORT')
+        .setStyle(TextInputStyle.Short)
         .setRequired(true);
 
       authCodeModal.addComponents(
-        new MessageActionRow<ModalActionRowComponent>().addComponents(
-          authCodeInput,
-        ),
+        new ActionRowBuilder<TextInputBuilder>().addComponents(authCodeInput),
       );
 
-      const authcodeComponents = new MessageActionRow().addComponents(
-        authcodeButton,
-        submitcodeButton,
-      );
+      const authcodeComponents =
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          authcodeButton,
+          submitcodeButton,
+        );
 
       await interaction.editReply({
         embeds: [newAccountEmbed],
@@ -207,21 +215,35 @@ Example: **aabbccddeeff11223344556677889900**
             await i.showModal(authCodeModal);
 
             setTimeout(async () => {
-              (i.component as MessageButton)
+              const submitCooldownBtn = ButtonBuilder.from(
+                i.component as ButtonComponent,
+              )
                 .setLabel('Submit Code (30s Cooldown)')
                 .setDisabled(false);
               return i
                 .editReply({
-                  components: i.message.components as any,
+                  components: [
+                    new ActionRowBuilder<ButtonBuilder>().addComponents(
+                      authcodeButton,
+                      submitCooldownBtn,
+                    ),
+                  ],
                 })
                 .catch(() => {});
             }, 30 * 1000);
 
-            (i.component as MessageButton)
+            const cooldownBtn = ButtonBuilder.from(
+              i.component as ButtonComponent,
+            )
               .setLabel('On Cooldown...')
               .setDisabled(true);
             await i.editReply({
-              components: i.message.components as any,
+              components: [
+                new ActionRowBuilder<ButtonBuilder>().addComponents(
+                  authcodeButton,
+                  cooldownBtn,
+                ),
+              ],
             });
 
             const modalSubmit = await i
@@ -256,6 +278,8 @@ Example: **aabbccddeeff11223344556677889900**
                 epicAcc.displayName =
                   loginacc.displayName || loginacc.accountId;
                 epicAcc.avatarUrl = loginacc.avatar;
+                epicAcc.autoDaily = true;
+                epicAcc.autoFreeLlamas = isPremium;
                 await epicAcc.save();
               } else {
                 epicAcc = await bot.epicAccountModel.create({
@@ -287,14 +311,12 @@ Example: **aabbccddeeff11223344556677889900**
 
               await modalSubmit.editReply({
                 embeds: [
-                  new MessageEmbed()
+                  new EmbedBuilder()
                     .setAuthor({
                       name: `${interaction.user.username}'s Saved Accounts`,
-                      iconURL: interaction.user.displayAvatarURL({
-                        dynamic: true,
-                      }),
+                      iconURL: interaction.user.displayAvatarURL(),
                     })
-                    .setColor('GREEN')
+                    .setColor(Colors.Green)
                     .setTimestamp()
                     .setThumbnail(epicAcc.avatarUrl)
                     .setDescription(
@@ -360,12 +382,10 @@ You are a ${
     user.selectedEpicAccount = selectedEpicAccount.accountId;
     await user.save();
 
-    const selectedEmbed = new MessageEmbed()
+    const selectedEmbed = new EmbedBuilder()
       .setAuthor({
         name: `${interaction.user.username}'s Saved Accounts`,
-        iconURL: interaction.user.displayAvatarURL({
-          dynamic: true,
-        }),
+        iconURL: interaction.user.displayAvatarURL(),
       })
       .setColor(bot._config.color)
       .setTimestamp()

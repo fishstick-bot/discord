@@ -1,17 +1,14 @@
 /* eslint-disable no-param-reassign */
 import {
-  MessageEmbed,
-  MessageButton,
-  MessageSelectMenu,
-  Modal,
-  TextInputComponent,
-  MessageActionRow,
-  ModalActionRowComponent,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  SelectMenuBuilder,
+  ActionRowBuilder,
   Message,
-  MessageAttachment,
   SelectMenuInteraction,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
 import type { IEpicAccount } from '../../database/models/typings';
@@ -32,10 +29,10 @@ const Command: ICommand = {
       return;
     }
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${interaction.user.username}'s Saved Accounts`,
-        iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+        iconURL: interaction.user.displayAvatarURL(),
       })
       .setDescription(
         `To logout from an account use the drop down menu below.
@@ -43,13 +40,13 @@ const Command: ICommand = {
       )
       .setColor(bot._config.color);
 
-    const closeButton = new MessageButton()
+    const closeButton = new ButtonBuilder()
       .setCustomId('close')
       .setLabel('Close')
       .setEmoji(Emojis.cross)
-      .setStyle('DANGER');
+      .setStyle(ButtonStyle.Danger);
 
-    const accountsMenu = new MessageSelectMenu()
+    const accountsMenu = new SelectMenuBuilder()
       .setCustomId('accountsMenu')
       .setPlaceholder('Select an account')
       .setDisabled(user.epicAccounts.length === 0)
@@ -62,8 +59,12 @@ const Command: ICommand = {
       );
 
     const components = [];
-    components.push(new MessageActionRow().addComponents(accountsMenu));
-    components.push(new MessageActionRow().addComponents(closeButton));
+    components.push(
+      new ActionRowBuilder<SelectMenuBuilder>().addComponents(accountsMenu),
+    );
+    components.push(
+      new ActionRowBuilder<ButtonBuilder>().addComponents(closeButton),
+    );
 
     await interaction.editReply({
       embeds: [embed],
@@ -98,12 +99,10 @@ const Command: ICommand = {
       .map((a: any) => a._id);
     await user.save();
 
-    const selectedEmbed = new MessageEmbed()
+    const selectedEmbed = new EmbedBuilder()
       .setAuthor({
         name: `${interaction.user.username}'s Saved Accounts`,
-        iconURL: interaction.user.displayAvatarURL({
-          dynamic: true,
-        }),
+        iconURL: interaction.user.displayAvatarURL(),
       })
       .setColor(bot._config.color)
       .setTimestamp()

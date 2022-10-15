@@ -1,13 +1,14 @@
 import {
-  MessageEmbed,
-  MessageButton,
-  MessageActionRow,
-  MessageSelectMenu,
+  EmbedBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  ActionRowBuilder,
+  SelectMenuBuilder,
   Message,
   SelectMenuInteraction,
-  MessageAttachment,
+  AttachmentBuilder,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -87,7 +88,7 @@ const Command: ICommand = {
       [key: string]: any;
     }[] = Object.values(br.response.profileChanges[0]?.profile?.items);
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s Locker Information`,
         iconURL: epicAccount.avatarUrl,
@@ -107,15 +108,15 @@ This menu contains special items you want to view in your locker image.
       );
 
     const createBtn = (label: string) => {
-      const btn = new MessageButton()
+      const btn = new ButtonBuilder()
         .setCustomId(customIds[label])
         .setLabel(label)
-        .setStyle('PRIMARY');
+        .setStyle(ButtonStyle.Primary);
 
       return btn;
     };
 
-    const menu1 = new MessageSelectMenu()
+    const menu1 = new SelectMenuBuilder()
       .setCustomId('menu1')
       .setPlaceholder('Category Menu')
       .setOptions(
@@ -126,7 +127,7 @@ This menu contains special items you want to view in your locker image.
         })),
       );
 
-    const menu2 = new MessageSelectMenu()
+    const menu2 = new SelectMenuBuilder()
       .setCustomId('menu2')
       .setPlaceholder('⭐️ Special Menu')
       .setDisabled(!isPremium)
@@ -157,8 +158,8 @@ This menu contains special items you want to view in your locker image.
       content: ' ',
       embeds: [embed],
       components: [
-        new MessageActionRow().setComponents(menu1),
-        new MessageActionRow().setComponents(menu2),
+        new ActionRowBuilder<SelectMenuBuilder>().setComponents(menu1),
+        new ActionRowBuilder<SelectMenuBuilder>().setComponents(menu2),
       ],
     });
 
@@ -279,7 +280,7 @@ Rendered in **${((end - start) / 1000).toFixed(2)}s**.`,
       await interaction.followUp({
         content: ' ',
         embeds: [embed],
-        files: [new MessageAttachment(img, `locker-${i}.png`)],
+        files: [new AttachmentBuilder(img, { name: `locker-${i}.png` })],
         components: [],
       });
     }

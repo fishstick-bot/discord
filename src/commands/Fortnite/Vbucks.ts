@@ -1,10 +1,11 @@
 import {
-  MessageActionRow,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
   Message,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import { Client, Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -122,13 +123,13 @@ const Command: ICommand = {
       epicAccount.secret,
     );
 
-    let embed: MessageEmbed;
+    let embed: EmbedBuilder;
     const components: any[] = [];
     if (bulk) {
-      embed = new MessageEmbed()
+      embed = new EmbedBuilder()
         .setAuthor({
           name: `${interaction.user.tag}'s Saved Accounts V-Bucks Balances`,
-          iconURL: interaction.user.displayAvatarURL({ dynamic: true }),
+          iconURL: interaction.user.displayAvatarURL(),
         })
         .setColor(bot._config.color)
         .setTimestamp();
@@ -162,7 +163,7 @@ ${Object.keys(r.vbucksData.breakdown)
     } else {
       const epicAccMtxData = await getVBucksData(client, epicAccount.accountId);
 
-      embed = new MessageEmbed()
+      embed = new EmbedBuilder()
         .setAuthor({
           name: `${epicAccount.displayName}'s V-Bucks Balance`,
           iconURL: epicAccount.avatarUrl,
@@ -181,12 +182,12 @@ ${Object.keys(epicAccMtxData.breakdown)
           text: `Total Purchased V-Bucks: ${epicAccMtxData.totalPurchased}`,
         });
 
-      const updatePlatformBtn = new MessageButton()
+      const updatePlatformBtn = new ButtonBuilder()
         .setCustomId('updatePlatform')
         .setLabel('Update V-Bucks Platform')
-        .setStyle('SECONDARY');
+        .setStyle(ButtonStyle.Secondary);
 
-      components.push(new MessageActionRow().setComponents(updatePlatformBtn));
+      components.push(new ActionRowBuilder().setComponents(updatePlatformBtn));
     }
 
     await interaction.editReply({
@@ -229,18 +230,18 @@ ${Object.keys(epicAccMtxData.breakdown)
       WeGame: 'wegame',
     };
 
-    const rows: MessageActionRow[] = [];
+    const rows: ActionRowBuilder<ButtonBuilder>[] = [];
 
     for (let i = 0; i < Object.keys(mtxPlatforms).length; i += 4) {
       const sliced = Object.keys(mtxPlatforms).slice(i, i + 4);
 
-      const row = new MessageActionRow();
+      const row = new ActionRowBuilder<ButtonBuilder>();
 
       // eslint-disable-next-line no-restricted-syntax
       for (const platform of sliced) {
         row.addComponents(
-          new MessageButton()
-            .setStyle('SECONDARY')
+          new ButtonBuilder()
+            .setStyle(ButtonStyle.Secondary)
             .setLabel(platform)
             .setCustomId(mtxPlatforms[platform]),
         );
@@ -249,8 +250,8 @@ ${Object.keys(epicAccMtxData.breakdown)
       rows.push(row);
     }
 
-    const closeButton = new MessageButton()
-      .setStyle('DANGER')
+    const closeButton = new ButtonBuilder()
+      .setStyle(ButtonStyle.Danger)
       .setEmoji(Emojis.cross)
       .setCustomId('close')
       .setLabel('Close');

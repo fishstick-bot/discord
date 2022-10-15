@@ -1,5 +1,5 @@
 /* eslint-disable import/prefer-default-export */
-import { CommandInteraction, MessageEmbed } from 'discord.js';
+import { Colors, CommandInteraction, EmbedBuilder } from 'discord.js';
 import type { Logger } from 'winston';
 import type { Document, Types } from 'mongoose';
 
@@ -64,21 +64,26 @@ const handleCommandError = async (
       }
     }
 
-    let errorEmbed: MessageEmbed;
+    let errorEmbed: EmbedBuilder;
     if (e instanceof UserNotFoundError) {
-      errorEmbed = new MessageEmbed()
+      errorEmbed = new EmbedBuilder()
         .setTitle(`${Emojies.cross} USER NOT FOUND`)
-        .setColor('RED')
+        .setColor(Colors.Red)
         .setDescription(e.message)
         .setTimestamp();
     } else {
-      errorEmbed = new MessageEmbed()
+      errorEmbed = new EmbedBuilder()
         .setTitle(`${Emojies.cross} NOT THE LLAMA YOU'RE LOOKING FOR`)
-        .setColor('RED')
+        .setColor(Colors.Red)
         .setDescription(
           `An error occured while running the command ${interaction.commandName}.\n${e}\n\nIf this error persists, please report it in our [support server](https://discord.gg/fishstick).`,
         )
-        .addField('Stack', `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``)
+        .addFields([
+          {
+            name: 'Stack',
+            value: `\`\`\`${e.stack ?? e ?? 'UNKNOWN ERROR'}\`\`\``,
+          },
+        ])
         .setTimestamp();
     }
 

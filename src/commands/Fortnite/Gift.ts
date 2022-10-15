@@ -1,13 +1,14 @@
 /* eslint-disable no-case-declarations */
 import {
-  MessageActionRow,
-  MessageSelectMenu,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  SelectMenuBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
   Message,
   SelectMenuInteraction,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import axios from 'axios';
 // @ts-ignore
 import approx from 'approximate-number';
@@ -165,11 +166,11 @@ const Command: ICommand = {
       return;
     }
 
-    const components: MessageActionRow[] = [];
+    const components: ActionRowBuilder<SelectMenuBuilder>[] = [];
     for (let i = 0; i < brShopItems.length; i += 25) {
       components.push(
-        new MessageActionRow().addComponents(
-          new MessageSelectMenu()
+        new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+          new SelectMenuBuilder()
             .setCustomId(`br-shop-${i}`)
             .setPlaceholder(`Shop Menu ${Math.floor(i / 25) + 1}`)
             .addOptions(
@@ -191,7 +192,7 @@ const Command: ICommand = {
       );
     }
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s Battle Royale Item Shop`,
         iconURL: epicAccount.avatarUrl,
@@ -247,7 +248,7 @@ const Command: ICommand = {
     //   return;
     // }
 
-    const confirmEmbed = new MessageEmbed()
+    const confirmEmbed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s Battle Royale Item Shop`,
         iconURL: epicAccount.avatarUrl,
@@ -261,22 +262,26 @@ const Command: ICommand = {
           totalCartPrice,
         ).toUpperCase()}**`,
       )
-      .addField(
-        'You are gifting to:',
-        `• Username: **${friend}**
+      .addFields([
+        {
+          name: 'You are gifting to:',
+          value: `• Username: **${friend}**
 • Account ID: **${playerAccountID}**`,
-      )
-      .addField(
-        'You are gifting these items:',
-        items
-          .map(
-            (i) =>
-              `• **${i.displayName}** for ${Emojis.vbucks} **${approx(
-                i.price.finalPrice,
-              ).toUpperCase()}**`,
-          )
-          .join('\n'),
-      )
+        },
+      ])
+      .addFields([
+        {
+          name: 'You are gifting these items:',
+          value: items
+            .map(
+              (i) =>
+                `• **${i.displayName}** for ${Emojis.vbucks} **${approx(
+                  i.price.finalPrice,
+                ).toUpperCase()}**`,
+            )
+            .join('\n'),
+        },
+      ])
       .setFooter({
         text: 'You are not supporting any creator.',
       });
@@ -287,21 +292,26 @@ const Command: ICommand = {
       });
     }
 
-    const confirmBtn = new MessageButton()
+    const confirmBtn = new ButtonBuilder()
       .setLabel('Confirm')
       .setCustomId('confirm')
       .setEmoji(Emojis.tick)
-      .setStyle('SUCCESS');
+      .setStyle(ButtonStyle.Success);
 
-    const cancelBtn = new MessageButton()
+    const cancelBtn = new ButtonBuilder()
       .setLabel('Cancel')
       .setCustomId('cancel')
       .setEmoji(Emojis.cross)
-      .setStyle('DANGER');
+      .setStyle(ButtonStyle.Danger);
 
     await interaction.editReply({
       embeds: [confirmEmbed],
-      components: [new MessageActionRow().addComponents(confirmBtn, cancelBtn)],
+      components: [
+        new ActionRowBuilder<ButtonBuilder>().addComponents(
+          confirmBtn,
+          cancelBtn,
+        ),
+      ],
     });
 
     const confirm = await msg

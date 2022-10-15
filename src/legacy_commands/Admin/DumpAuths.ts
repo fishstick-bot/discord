@@ -1,4 +1,4 @@
-import { MessageAttachment } from 'discord.js';
+import { AttachmentBuilder } from 'discord.js';
 
 import type { ILegacyCommand } from '../../structures/LegacyCommand';
 import type { IEpicAccount } from '../../database/models/typings';
@@ -16,9 +16,9 @@ const Command: ILegacyCommand = {
       displayName: a.displayName,
     }));
 
-    const att = new MessageAttachment(
+    const att = new AttachmentBuilder(
       Buffer.from(JSON.stringify(epicAccounts, null, 2)),
-      `${user.id}-auths.json`,
+      { name: `${user.id}-auths.json` },
     );
 
     await msg.reply({

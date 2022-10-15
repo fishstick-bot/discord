@@ -1,6 +1,5 @@
 /* eslint-disable prefer-const */
-import { MessageEmbed } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
+import { EmbedBuilder, SlashCommandBuilder } from 'discord.js';
 import { Endpoints } from 'fnbr';
 
 import type { ICommand } from '../../structures/Command';
@@ -293,7 +292,7 @@ const Command: ICommand = {
       }
     });
 
-    const embed = new MessageEmbed()
+    const embed = new EmbedBuilder()
       .setAuthor({
         name: `${epicAccount.displayName}'s Account Worth`,
         iconURL: epicAccount.avatarUrl,
@@ -304,19 +303,21 @@ const Command: ICommand = {
         `Your Account is worth **${worth.toLocaleString()}** USD`,
       );
 
-    embed.addField(
-      'Locker Cosmetics',
-      `${Object.keys(customIds)
-        .map(
-          (id) =>
-            `• ${id}: **${items
-              .filter((i) => i.templateId.startsWith(customIds[id]))
-              .length.toLocaleString()}**`,
-        )
-        .join('\n')}
+    embed.addFields([
+      {
+        name: 'Locker Cosmetics',
+        value: `${Object.keys(customIds)
+          .map(
+            (id) =>
+              `• ${id}: **${items
+                .filter((i) => i.templateId.startsWith(customIds[id]))
+                .length.toLocaleString()}**`,
+          )
+          .join('\n')}
 • Exclusive's: **${exclusives.length.toLocaleString()}**
 • Crew Pack's: **${crew.length.toLocaleString()}**`,
-    );
+      },
+    ]);
 
     await interaction.editReply({
       content: ' ',

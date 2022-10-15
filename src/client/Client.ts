@@ -1,7 +1,15 @@
-import { Client, Intents, Collection, WebhookClient } from 'discord.js';
-import Cluster from 'discord-hybrid-sharding';
+import {
+  Client,
+  GatewayIntentBits,
+  Partials,
+  Collection,
+  WebhookClient,
+  ActivityType,
+  Options,
+  Sweepers,
+} from 'discord.js';
+import { ClusterClient, getInfo } from 'discord-hybrid-sharding';
 import { Api } from '@top-gg/sdk';
-import type { BasePoster } from 'topgg-autoposter/dist/structs/BasePoster';
 import T from 'twit';
 import glob from 'glob';
 import { promisify } from 'util';
@@ -42,8 +50,9 @@ class Bot extends Client {
   // logger for this bot
   public logger = getLogger('BOT');
 
+  // @ts-ignore
   // cluster client
-  public cluster = new Cluster.Client(this);
+  public cluster: ClusterClient = new ClusterClient(this);
 
   // bot logging webhook
   public loggingWebhook: WebhookClient;
@@ -100,8 +109,8 @@ class Bot extends Client {
 
   constructor() {
     super({
-      intents: [Intents.FLAGS.DIRECT_MESSAGES, Intents.FLAGS.GUILDS],
-      partials: ['CHANNEL'],
+      intents: [GatewayIntentBits.DirectMessages, GatewayIntentBits.Guilds],
+      partials: [Partials.Channel],
       allowedMentions: {
         repliedUser: false,
         parse: ['users', 'roles'],
@@ -110,14 +119,29 @@ class Bot extends Client {
         status: 'online',
         activities: [
           {
-            type: 'PLAYING',
+            type: ActivityType.Playing,
             name: '/help',
           },
         ],
       },
-      restRequestTimeout: 30 * 1000,
-      shards: Cluster.data.SHARD_LIST,
-      shardCount: Cluster.data.TOTAL_SHARDS,
+      shards: getInfo().SHARD_LIST,
+      shardCount: getInfo().TOTAL_SHARDS,
+      rest: { timeout: 30 * 1000 },
+      makeCache: Options.cacheWithLimits({
+        ...Options.DefaultMakeCacheSettings,
+        MessageManager: {
+          maxSize: 500,
+          keepOverLimit: (m) =>
+            m.author.id === this.user?.id ?? '750967237191532575',
+        },
+      }),
+      sweepers: {
+        ...Options.DefaultSweeperSettings,
+        messages: {
+          interval: 3600,
+          lifetime: 1800,
+        },
+      },
     });
 
     this._config = new Config();
@@ -148,15 +172,15 @@ class Bot extends Client {
 
     // set bot status
     this.user?.setActivity({
-      type: 'PLAYING',
-      name: `/help in ${await this.getGuildCount()} servers`,
+      type: ActivityType.Playing,
+      name: `/help | ${await this.getGuildCount()} servers`,
     });
 
     // set bot status every 5mins
     setInterval(async () => {
       this.user?.setActivity({
-        type: 'PLAYING',
-        name: `/help in ${await this.getGuildCount()} servers`,
+        type: ActivityType.Playing,
+        name: `/help | ${await this.getGuildCount()} servers`,
       });
     }, 5 * 60 * 1000);
 

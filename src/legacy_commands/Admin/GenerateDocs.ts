@@ -1,4 +1,4 @@
-import { MessageAttachment } from 'discord.js';
+import { AttachmentBuilder } from 'discord.js';
 
 import type { ILegacyCommand } from '../../structures/LegacyCommand';
 
@@ -90,7 +90,9 @@ const Command: ILegacyCommand = {
       )
       .join('\n');
 
-    const att = new MessageAttachment(Buffer.from(table), 'commands.md');
+    const att = new AttachmentBuilder(Buffer.from(table), {
+      name: 'commands.md',
+    });
 
     await msg.reply({
       files: [att],

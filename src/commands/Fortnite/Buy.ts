@@ -1,13 +1,14 @@
 /* eslint-disable no-case-declarations */
 import {
-  MessageActionRow,
-  MessageSelectMenu,
-  MessageButton,
-  MessageEmbed,
+  ActionRowBuilder,
+  SelectMenuBuilder,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
   Message,
   SelectMenuInteraction,
+  SlashCommandBuilder,
 } from 'discord.js';
-import { SlashCommandBuilder } from '@discordjs/builders';
 import axios from 'axios';
 import { promises as fs } from 'fs';
 // @ts-ignore
@@ -135,21 +136,21 @@ const Command: ICommand = {
       epicAccount.secret,
     );
 
-    const confirmBtn = new MessageButton()
+    const confirmBtn = new ButtonBuilder()
       .setLabel('Confirm')
       .setCustomId('confirm')
       .setEmoji(Emojis.tick)
-      .setStyle('SUCCESS');
+      .setStyle(ButtonStyle.Success);
 
-    const cancelBtn = new MessageButton()
+    const cancelBtn = new ButtonBuilder()
       .setLabel('Cancel')
       .setCustomId('cancel')
       .setEmoji(Emojis.cross)
-      .setStyle('DANGER');
+      .setStyle(ButtonStyle.Danger);
 
-    let embed: MessageEmbed;
-    let confirmEmbed: MessageEmbed;
-    let components: MessageActionRow[];
+    let embed: EmbedBuilder;
+    let confirmEmbed: EmbedBuilder;
+    let components: ActionRowBuilder<SelectMenuBuilder>[];
     let msg: Message;
     let selected: SelectMenuInteraction;
     switch (subcommand) {
@@ -171,8 +172,8 @@ const Command: ICommand = {
         components = [];
         for (let i = 0; i < brShopItems.length; i += 25) {
           components.push(
-            new MessageActionRow().addComponents(
-              new MessageSelectMenu()
+            new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+              new SelectMenuBuilder()
                 .setCustomId(`br-shop-${i}`)
                 .setPlaceholder(`Shop Menu ${Math.floor(i / 25) + 1}`)
                 .addOptions(
@@ -194,7 +195,7 @@ const Command: ICommand = {
           );
         }
 
-        embed = new MessageEmbed()
+        embed = new EmbedBuilder()
           .setAuthor({
             name: `${epicAccount.displayName}'s Battle Royale Item Shop`,
             iconURL: epicAccount.avatarUrl,
@@ -250,7 +251,7 @@ const Command: ICommand = {
           return;
         }
 
-        confirmEmbed = new MessageEmbed()
+        confirmEmbed = new EmbedBuilder()
           .setAuthor({
             name: `${epicAccount.displayName}'s Battle Royale Item Shop`,
             iconURL: epicAccount.avatarUrl,
@@ -264,17 +265,19 @@ const Command: ICommand = {
             
 It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
           )
-          .addField(
-            'You are purchasing:',
-            items
-              .map(
-                (i) =>
-                  `• **${i.displayName}** for ${Emojis.vbucks} **${approx(
-                    i.price.finalPrice,
-                  ).toUpperCase()}**`,
-              )
-              .join('\n'),
-          )
+          .addFields([
+            {
+              name: 'You are purchasing:',
+              value: items
+                .map(
+                  (i) =>
+                    `• **${i.displayName}** for ${Emojis.vbucks} **${approx(
+                      i.price.finalPrice,
+                    ).toUpperCase()}**`,
+                )
+                .join('\n'),
+            },
+          ])
           .setFooter({
             text: 'You are not supporting any creator.',
           });
@@ -288,7 +291,10 @@ It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
         await interaction.editReply({
           embeds: [confirmEmbed],
           components: [
-            new MessageActionRow().addComponents(confirmBtn, cancelBtn),
+            new ActionRowBuilder<ButtonBuilder>().addComponents(
+              confirmBtn,
+              cancelBtn,
+            ),
           ],
         });
 
@@ -533,8 +539,8 @@ ${items
 
         for (let i = 0; i < weeklyStore.catalogEntries.length; i += 25) {
           components.push(
-            new MessageActionRow().addComponents(
-              new MessageSelectMenu()
+            new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+              new SelectMenuBuilder()
                 .setCustomId(`stw-weely-shop-${i}`)
                 .setPlaceholder(`Weekly Store Menu ${Math.floor(i / 25) + 1}`)
                 .addOptions(
@@ -570,8 +576,8 @@ ${items
 
         for (let i = 0; i < eventStore.catalogEntries.length; i += 25) {
           components.push(
-            new MessageActionRow().addComponents(
-              new MessageSelectMenu()
+            new ActionRowBuilder<SelectMenuBuilder>().addComponents(
+              new SelectMenuBuilder()
                 .setCustomId(`stw-event-shop-${i}`)
                 .setPlaceholder(`Event Store Menu ${Math.floor(i / 25) + 1}`)
                 .addOptions(
@@ -605,7 +611,7 @@ ${items
           );
         }
 
-        embed = new MessageEmbed()
+        embed = new EmbedBuilder()
           .setAuthor({
             name: `${epicAccount.displayName}'s Save the World Item Shop`,
             iconURL: epicAccount.avatarUrl,
@@ -642,33 +648,38 @@ ${items
           ...eventStore.catalogEntries,
         ].filter((i) => selected.values.includes(i.offerId));
 
-        confirmEmbed = new MessageEmbed()
+        confirmEmbed = new EmbedBuilder()
           .setAuthor({
             name: `${epicAccount.displayName}'s Save the World Item Shop`,
             iconURL: epicAccount.avatarUrl,
           })
           .setColor(bot._config.color)
           .setTimestamp()
-          .addField(
-            'You are purchasing:',
-            selectedStwItems
-              .map(
-                (i) =>
-                  `• **${parseQuantity(i.devName)}x ${
-                    stwData[
-                      parseDevName(i.devName).split(' x ')[1].toLowerCase()
-                    ]?.name ?? parseDevName(i.devName).split(' x ')[1]
-                  }** for ${
-                    Emojis['AccountResource:eventcurrency_scaling']
-                  } **${approx(i.prices[0].finalPrice).toUpperCase()}**`,
-              )
-              .join('\n'),
-          );
+          .addFields([
+            {
+              name: 'You are purchasing:',
+              value: selectedStwItems
+                .map(
+                  (i) =>
+                    `• **${parseQuantity(i.devName)}x ${
+                      stwData[
+                        parseDevName(i.devName).split(' x ')[1].toLowerCase()
+                      ]?.name ?? parseDevName(i.devName).split(' x ')[1]
+                    }** for ${
+                      Emojis['AccountResource:eventcurrency_scaling']
+                    } **${approx(i.prices[0].finalPrice).toUpperCase()}**`,
+                )
+                .join('\n'),
+            },
+          ]);
 
         await interaction.editReply({
           embeds: [confirmEmbed],
           components: [
-            new MessageActionRow().addComponents(confirmBtn, cancelBtn),
+            new ActionRowBuilder<ButtonBuilder>().addComponents(
+              confirmBtn,
+              cancelBtn,
+            ),
           ],
         });
 
