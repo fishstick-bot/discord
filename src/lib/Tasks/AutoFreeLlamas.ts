@@ -113,6 +113,10 @@ class AutoFreeLlamas implements Task {
               `Unable to send message to User ${user.id}: ${e}`,
             ),
           );
+
+        embed.setDescription(
+          `Successfully claimed free llama rewards for ${epicAccounts.length} epic accounts.`,
+        );
       }
 
       await logChannel?.send({

@@ -103,6 +103,10 @@ class AutoDaily implements Task {
                 `Unable to send message to User ${user.id}: ${e}`,
               ),
             );
+
+          embed.setDescription(
+            `Successfully claimed daily rewards for ${epicAccounts.length} epic accounts.`,
+          );
         }
 
         await logChannel?.send({
