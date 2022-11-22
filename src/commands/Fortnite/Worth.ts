@@ -300,7 +300,7 @@ const Command: ICommand = {
       .setColor(bot._config.color)
       .setTimestamp()
       .setDescription(
-        `Your Account is worth **${worth.toLocaleString()}** USD`,
+        `Worth: **${worth.toLocaleString()}** FishBucks`,
       );
 
     embed.addFields([
