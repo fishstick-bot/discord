@@ -17,7 +17,7 @@ class Config implements IConfig {
 
   constructor() {
     this.discordToken = process.env.DISCORD_TOKEN!;
-    this.ownerDiscordID = '727224012912197652';
+    this.ownerDiscordID = '1044582455287488582';
     this.developmentGuild = '846470870385426452';
     this.dailyRewardsChannel = '807888692294582272';
     this.freeLlamasChannel = '809684162101248030';
