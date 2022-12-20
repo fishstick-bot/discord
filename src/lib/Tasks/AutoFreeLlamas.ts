@@ -52,12 +52,13 @@ class AutoFreeLlamas implements Task {
           isPartner: true,
         },
       ],
-      // epicAccounts: {
-      //   $elemMatch: {
-      //     autoFreeLlamas: true,
-      //   },
-      // },
-      where: 'this.epicAccounts.length > 0',
+      epicAccounts: {
+        $exists: true,
+        $ne: [],
+        $elemMatch: {
+          autoFreeLlamas: true,
+        },
+      },
     })) {
       const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
         (a) => a.autoFreeLlamas,

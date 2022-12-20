@@ -52,7 +52,13 @@ class AutoDaily implements Task {
     // eslint-disable-next-line no-restricted-syntax
     for await (const user of this.bot.userModel
       .find({
-        where: 'this.epicAccounts.length > 0',
+        epicAccounts: {
+          $exists: true,
+          $ne: [],
+          $elemMatch: {
+            autoDaily: true,
+          },
+        },
       })
       .sort({
         premiumUntil: -1,
