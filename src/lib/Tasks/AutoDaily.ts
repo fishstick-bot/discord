@@ -55,9 +55,9 @@ class AutoDaily implements Task {
         epicAccounts: {
           $exists: true,
           $ne: [],
-          $elemMatch: {
-            autoDaily: true,
-          },
+          // $elemMatch: {
+          //   autoDaily: true,
+          // },
         },
       })
       .sort({

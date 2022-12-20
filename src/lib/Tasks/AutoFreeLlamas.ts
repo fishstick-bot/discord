@@ -55,14 +55,19 @@ class AutoFreeLlamas implements Task {
       epicAccounts: {
         $exists: true,
         $ne: [],
-        $elemMatch: {
-          autoFreeLlamas: true,
-        },
+        // $elemMatch: {
+        //   autoFreeLlamas: true,
+        // },
       },
     })) {
       const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
         (a) => a.autoFreeLlamas,
       );
+
+      if (epicAccounts.length === 0) {
+        // eslint-disable-next-line no-continue
+        continue;
+      }
 
       let description = '';
       // eslint-disable-next-line no-restricted-syntax
