@@ -41,39 +41,27 @@ class AutoFreeLlamas implements Task {
       })) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
-    for await (const user of this.bot.userModel.find({})) {
-      const isPremium =
-        user.premiumUntil.getTime() > Date.now() || user.isPartner;
-
+    for await (const user of this.bot.userModel.find({
+      $or: [
+        {
+          premiumUntil: {
+            $gt: Date.now(),
+          },
+        },
+        {
+          isPartner: true,
+        },
+      ],
+      // epicAccounts: {
+      //   $elemMatch: {
+      //     autoFreeLlamas: true,
+      //   },
+      // },
+      where: 'this.epicAccounts.length > 0',
+    })) {
       const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
         (a) => a.autoFreeLlamas,
       );
-
-      if (epicAccounts.length === 0) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
-
-      if (!isPremium) {
-        await Promise.all(
-          epicAccounts.map(async (epicAccount) => {
-            if (epicAccount.autoFreeLlamas) {
-              await this.bot.epicAccountModel.findOneAndUpdate(
-                {
-                  accountId: epicAccount.accountId,
-                },
-                {
-                  $set: {
-                    autoFreeLlamas: false,
-                  },
-                },
-              );
-            }
-          }),
-        );
-
-        return;
-      }
 
       let description = '';
       // eslint-disable-next-line no-restricted-syntax
