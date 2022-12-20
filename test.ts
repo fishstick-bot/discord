@@ -6,12 +6,22 @@ import { UserModel } from './src/database/models';
   await connectToDatabase();
 
   const search = await UserModel.find({
+    // $or: [
+    //   {
+    //     premiumUntil: {
+    //       $gt: Date.now(),
+    //     },
+    //   },
+    //   {
+    //     isPartner: true,
+    //   },
+    // ],
     epicAccounts: {
       $exists: true,
       $ne: [],
-      $elemMatch: {
-        autoFreeLlamas: true,
-      },
+      // $elemMatch: {
+      //   autoFreeLlamas: true,
+      // },
     },
   })
     .count()

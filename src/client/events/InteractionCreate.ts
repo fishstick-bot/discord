@@ -95,15 +95,16 @@ const Event: IEvent = {
         return;
       }
 
-      let guild = interaction.guildId
-        ? await bot.guildModel
-            .findOne({
-              id: interaction.guildId,
-            })
-            .exec()
-        : null;
+      let guild =
+        interaction.guildId && cmd.options.guildOnly
+          ? await bot.guildModel
+              .findOne({
+                id: interaction.guildId,
+              })
+              .exec()
+          : null;
 
-      if (!guild && interaction.guildId) {
+      if (!guild && interaction.guildId && cmd.options.guildOnly) {
         guild = await bot.guildModel.create({
           id: interaction.guildId,
         });
