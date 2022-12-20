@@ -4,18 +4,30 @@ import {
   EmbedBuilder,
   Colors,
   ChannelType,
+  LimitedCollection,
 } from 'discord.js';
 import { promisify } from 'util';
 import { Endpoints } from 'fnbr';
 
+import { Document, Types } from 'mongoose';
 import type IEvent from '../../structures/Event';
 import getLogger from '../../Logger';
 import Emojies from '../../resources/Emojis';
-import { IEpicAccount } from '../../database/models/typings';
+import { IEpicAccount, IUser } from '../../database/models/typings';
 import { handleCommandError } from '../../lib/Utils';
 
 const wait = promisify(setTimeout);
 const logger = getLogger('COMMAND');
+
+const userCache = new LimitedCollection<
+  string,
+  Document<unknown, any, IUser> &
+    IUser & {
+      _id: Types.ObjectId;
+    }
+>({
+  maxSize: 100,
+});
 
 const Event: IEvent = {
   name: 'interactionCreate',
@@ -41,16 +53,35 @@ const Event: IEvent = {
         })
         .catch(() => {});
 
-      let user = await bot.userModel
-        .findOne({
-          id: interaction.user.id,
-        })
-        .exec();
+      let user:
+        | (Document<unknown, any, IUser> &
+            IUser & {
+              _id: Types.ObjectId;
+            })
+        | null = null;
+
+      if (userCache.has(interaction.user.id)) {
+        user = userCache.get(interaction.user.id)!;
+      }
 
       if (!user) {
-        user = await bot.userModel.create({
-          id: interaction.user.id,
-        });
+        user = await bot.userModel
+          .findOne({
+            id: interaction.user.id,
+          })
+          .exec();
+        if (user) userCache.set(interaction.user.id, user);
+
+        if (!user) {
+          user = await bot.userModel.create({
+            id: interaction.user.id,
+          });
+          userCache.set(interaction.user.id, user);
+        }
+
+        setTimeout(() => {
+          userCache.delete(interaction.user.id);
+        }, 30 * 1000);
       }
 
       if (user.blacklisted) {

@@ -1,12 +1,14 @@
-import { TextChannel, EmbedBuilder, userMention } from 'discord.js';
+import { TextChannel, EmbedBuilder, userMention, Collection } from 'discord.js';
 import { Endpoints, Client } from 'fnbr';
 import { promisify } from 'util';
 
+import { Document, Types } from 'mongoose';
 import Task from '../../structures/Task';
 import Bot from '../../client/Client';
 import getLogger from '../../Logger';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
+import { IUser } from '../../database/models/typings';
 
 const wait = promisify(setTimeout);
 
@@ -15,6 +17,14 @@ class AutoFreeLlamas implements Task {
 
   private logger = getLogger('AUTO LLAMAS');
 
+  private users = new Collection<
+    string,
+    Document<unknown, any, IUser> &
+      IUser & {
+        _id: Types.ObjectId;
+      }
+  >();
+
   constructor(bot: Bot) {
     this.bot = bot;
   }
@@ -22,24 +32,18 @@ class AutoFreeLlamas implements Task {
   public async start() {
     this.logger.info('Registering auto free llamas task');
 
+    await this.fetchUsers();
+    setInterval(async () => {
+      await this.fetchUsers();
+    }, 60 * 60 * 1000);
+
     setInterval(async () => {
       await this.runTask();
     }, 15 * 60 * 1000);
   }
 
-  private async runTask() {
+  public async fetchUsers() {
     const start = Date.now();
-    this.logger.info('Running auto free llamas task');
-
-    const logChannel = (await this.bot.channels
-      .fetch(this.bot._config.freeLlamasChannel, {
-        allowUnknownGuild: true,
-      })
-      .catch((e) => {
-        this.logger.error(`Could not fetch free llamas channel: ${e}`);
-        return null;
-      })) as TextChannel;
-
     // eslint-disable-next-line no-restricted-syntax
     for await (const user of this.bot.userModel.find({
       $or: [
@@ -60,6 +64,30 @@ class AutoFreeLlamas implements Task {
         // },
       },
     })) {
+      this.users.set(user.id, user);
+    }
+    const end = Date.now();
+    this.logger.info(
+      `Fetched ${this.users.size} users [${(end - start).toFixed(2)}ms]`,
+    );
+  }
+
+  private async runTask() {
+    const start = Date.now();
+    this.logger.info('Running auto free llamas task');
+
+    const logChannel = (await this.bot.channels
+      .fetch(this.bot._config.freeLlamasChannel, {
+        allowUnknownGuild: true,
+      })
+      .catch((e) => {
+        this.logger.error(`Could not fetch free llamas channel: ${e}`);
+        return null;
+      })) as TextChannel;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const user of Array.from(this.users.values())) {
+      this.logger.info(`Checking ${user.id} for free llamas`);
       const epicAccounts = (user.epicAccounts as IEpicAccount[]).filter(
         (a) => a.autoFreeLlamas,
       );
