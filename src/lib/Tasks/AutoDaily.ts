@@ -50,22 +50,15 @@ class AutoDaily implements Task {
       })) as TextChannel;
 
     // eslint-disable-next-line no-restricted-syntax
-    for await (const user of this.bot.userModel
-      .find({
-        epicAccounts: {
-          $exists: true,
-          $ne: [],
-          // $elemMatch: {
-          //   autoDaily: true,
-          // },
-        },
-      })
-      .sort({
-        premiumUntil: -1,
-      })
-      .sort({
-        isPartner: -1,
-      })) {
+    for await (const user of this.bot.userModel.find({
+      epicAccounts: {
+        $exists: true,
+        $ne: [],
+        // $elemMatch: {
+        //   autoDaily: true,
+        // },
+      },
+    })) {
       try {
         const isPremium =
           user.premiumUntil.getTime() > Date.now() || user.isPartner;
