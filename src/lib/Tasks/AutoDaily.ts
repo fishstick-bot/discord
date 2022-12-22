@@ -108,7 +108,8 @@ class AutoDaily implements Task {
         }
 
         await logChannel?.send({
-          content: user.notifications ? ' ' : userMention(user.id),
+          // content: user.notifications ? ' ' : userMention(user.id),
+          content: userMention(user.id),
           embeds: [embed],
         });
       } catch (e) {
