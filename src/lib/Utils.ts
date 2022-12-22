@@ -101,4 +101,11 @@ const handleCommandError = async (
   }
 };
 
-export { handleCommandError };
+const truncateString = (str: string) =>
+  // return string in format "a...z"
+  `${str.substring(0, 1)}${'*'.repeat(str.length - 2)}${str.substring(
+    str.length - 1,
+    str.length,
+  )}`;
+
+export { handleCommandError, truncateString };

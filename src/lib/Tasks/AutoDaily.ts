@@ -9,6 +9,7 @@ import getLogger from '../../Logger';
 import type { IEpicAccount } from '../../database/models/typings';
 import StwDailyRewards from '../../resources/DailyRewards.json';
 import Emojis from '../../resources/Emojis';
+import { truncateString } from '../Utils';
 
 const wait = promisify(setTimeout);
 
@@ -94,20 +95,16 @@ class AutoDaily implements Task {
         }
 
         if (user.notifications) {
-          await this.bot.users
-            .send(user.id, {
-              content: userMention(user.id),
-              embeds: [embed],
-            })
-            .catch((e) =>
-              this.logger.error(
-                `Unable to send message to User ${user.id}: ${e}`,
-              ),
-            );
-
-          embed.setDescription(
-            `Successfully claimed daily rewards for ${epicAccounts.length} epic accounts.`,
-          );
+          // await this.bot.users
+          //   .send(user.id, {
+          //     content: userMention(user.id),
+          //     embeds: [embed],
+          //   })
+          //   .catch((e) =>
+          //     this.logger.error(
+          //       `Unable to send message to User ${user.id}: ${e}`,
+          //     ),
+          //   );
         }
 
         await logChannel?.send({
@@ -174,9 +171,9 @@ class AutoDaily implements Task {
 
       const alreadyClaimed = items.length === 0;
 
-      result = `${Emojis.tick} **${
-        epicAccount.displayName
-      } (${daysLoggedIn} Days)**
+      result = `${Emojis.tick} **${truncateString(
+        epicAccount.displayName,
+      )} (${daysLoggedIn} Days)**
 ${
   alreadyClaimed
     ? 'You have already claimed todays reward.'
@@ -223,7 +220,7 @@ Tomorrow - **${rewardsByDay[daysLoggedIn + 1]?.amount ?? 0}x ${
         return this.claimDailyReward(epicAccount, false);
       }
 
-      result = `${Emojis.cross} **${epicAccount.displayName}**
+      result = `${Emojis.cross} **${truncateString(epicAccount.displayName)}**
 ${e}`;
     }
 

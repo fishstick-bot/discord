@@ -9,6 +9,7 @@ import getLogger from '../../Logger';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
 import { IUser } from '../../database/models/typings';
+import { truncateString } from '../Utils';
 
 const wait = promisify(setTimeout);
 
@@ -125,20 +126,20 @@ class AutoFreeLlamas implements Task {
       }
 
       if (user.notifications) {
-        await this.bot.users
-          .send(user.id, {
-            content: userMention(user.id),
-            embeds: [embed],
-          })
-          .catch((e) =>
-            this.logger.error(
-              `Unable to send message to User ${user.id}: ${e}`,
-            ),
-          );
-
-        embed.setDescription(
-          `Successfully claimed free llama rewards for ${epicAccounts.length} epic accounts.`,
-        );
+        // await this.bot.users
+        //   .send(user.id, {
+        //     content: userMention(user.id),
+        //     embeds: [embed],
+        //   })
+        //   .catch((e) =>
+        //     this.logger.error(
+        //       `Unable to send message to User ${user.id}: ${e}`,
+        //     ),
+        //   );
+        //
+        // embed.setDescription(
+        //   `Successfully claimed free llama rewards for ${epicAccounts.length} epic accounts.`,
+        // );
       }
 
       await logChannel?.send({
@@ -203,7 +204,7 @@ class AutoFreeLlamas implements Task {
           return '';
         }
 
-        result = `${Emojis.tick} **${epicAccount.displayName}**
+        result = `${Emojis.tick} **${truncateString(epicAccount.displayName)}**
 Successfully claimed ${nClaimed} free llama${nClaimed > 1 ? 's' : ''}`;
       } else {
         return '';
@@ -243,7 +244,7 @@ Successfully claimed ${nClaimed} free llama${nClaimed > 1 ? 's' : ''}`;
         return this.checkAndClaimFreeLlamas(epicAccount, false);
       }
 
-      result = `${Emojis.cross} **${epicAccount.displayName}**
+      result = `${Emojis.cross} **${truncateString(epicAccount.displayName)}**
 ${e}`;
     }
 
