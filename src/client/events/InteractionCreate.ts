@@ -140,9 +140,6 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
 
 **Payment Methods**
 • Paypal - https://paypal.me/vanxh
-• Bitcoin - 16BwrsgmYXrzuun6LkuoRhuepuffiaK7A2
-• Litecoin - LSZJJxkfhMhqq3ygVmJz4ox4nVrSuFdQqJ
-• Solana - J37KizZ7tJA9NkqwQC16EQUm99BE7jMv9ayx2YnjwHRP
 
 **Want to try premium? [Vote for the bot](https://fishstickbot.com/vote) and get premium access for 6 hours.**
 **Premium helps us to keep the bot running and improve the bot's features.**`,
