@@ -46,7 +46,7 @@ This message will timeout in 60 seconds.`,
 
     const isPremium =
       user.premiumUntil.getTime() > Date.now() || user.isPartner;
-    const accountsLimit = isPremium ? 20 : 3;
+    const accountsLimit = isPremium ? 25 : 3;
 
     const saveNewAccountButton = new ButtonBuilder()
       .setCustomId('saveNewAccount')
