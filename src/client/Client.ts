@@ -221,7 +221,7 @@ class Bot extends Client {
   public async getGuildCount(): Promise<number> {
     try {
       return (
-        await this.cluster.broadcastEval((c) => c.guilds.cache.size)
+        await this.cluster.broadcastEval((c: any) => c.guilds.cache.size)
       ).reduce((prev: number, value: number) => Number(prev + value), 0);
     } catch (e) {
       return 0;
@@ -231,8 +231,8 @@ class Bot extends Client {
   public async getApproxUserCount(): Promise<number> {
     try {
       return (
-        await this.cluster.broadcastEval((c) =>
-          c.guilds.cache.map((g) => g.memberCount),
+        await this.cluster.broadcastEval((c: any) =>
+          c.guilds.cache.map((g: any) => g.memberCount),
         )
       )
         .flat()

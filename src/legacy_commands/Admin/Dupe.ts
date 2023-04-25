@@ -110,7 +110,7 @@ const Command: ILegacyCommand = {
 
     if (timeLeft > 0) {
       await msg.edit(
-        `Profile lock expiration: ${time(profileLock)}${Emojis.loading}`,
+        `Profile lock expiration: ${time(profileLock, 'R')}${Emojis.loading}`,
       );
 
       await sleep(timeLeft);
