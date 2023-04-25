@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable no-param-reassign */
 import { EmbedBuilder, codeBlock } from 'discord.js';
 import { SlashCommandBuilder, time } from '@discordjs/builders';
