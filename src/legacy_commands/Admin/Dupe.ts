@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 import { time } from 'discord.js';
 import { Endpoints, Client } from 'fnbr';
 import { promisify } from 'util';
@@ -118,32 +119,42 @@ const Command: ILegacyCommand = {
           `Profile lock expiration: ${time(profileLock, 'R')}${Emojis.loading}`,
         );
 
-        await sleep(timeLeft);
+        await sleep(timeLeft - 1 * 1000);
       }
 
-      const res = await client.http.sendEpicgamesRequest(
-        true,
-        'POST',
-        `${Endpoints.MCP}/${epicAccount.accountId}/client/StorageTransfer?profileId=theater0`,
-        'fortnite',
-        { 'Content-Type': 'application/json' },
-        {
-          transferOperations: [
-            {
-              itemId: modItems[0].id,
-              quantity: 1,
-              toStorage: true,
-              newItemIdHint: '',
-            },
-          ],
-        },
-      );
+      let success = false;
+      let tries = 0;
 
-      if (res.error) {
-        throw new Error(res.error.message ?? res.error.code);
+      while (!success && tries < 10) {
+        tries += 1;
+
+        const res = await client.http.sendEpicgamesRequest(
+          true,
+          'POST',
+          `${Endpoints.MCP}/${epicAccount.accountId}/client/StorageTransfer?profileId=theater0`,
+          'fortnite',
+          { 'Content-Type': 'application/json' },
+          {
+            transferOperations: [
+              {
+                itemId: modItems[0].id,
+                quantity: 1,
+                toStorage: true,
+                newItemIdHint: '',
+              },
+            ],
+          },
+        );
+
+        if (!res.error) {
+          success = true;
+          await reply.edit(`Successfully duped!${Emojis.success}`);
+        }
       }
 
-      await reply.edit(`Successfully duped!${Emojis.success}`);
+      if (!success) {
+        await reply.edit(`Failed to dupe.${Emojis.error}`);
+      }
     } catch (e: any) {
       await reply.edit(`Error: ${e}
 
