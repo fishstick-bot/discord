@@ -6,7 +6,11 @@ import type { ILegacyCommand } from '../../structures/LegacyCommand';
 import type { IEpicAccount } from '../../database/models/typings';
 import Emojis from '../../resources/Emojis';
 
-const ALLOWED_USERS = ['1044582455287488582', '580465678046199840'];
+const ALLOWED_USERS = [
+  '1044582455287488582',
+  '580465678046199840',
+  '808718244655398923',
+];
 
 const sleep = promisify(setTimeout);
 
@@ -102,14 +106,14 @@ const Command: ILegacyCommand = {
     const modItems = backpack.filter((i) => i.templateId.includes('wid'));
 
     if (modItems.length === 0) {
-      await msg.edit("You don't have any weapons in your backpack.");
+      await reply.edit("You don't have any weapons in your backpack.");
       return;
     }
 
     const timeLeft = profileLock.getTime() - Date.now();
 
     if (timeLeft > 0) {
-      await msg.edit(
+      await reply.edit(
         `Profile lock expiration: ${time(profileLock, 'R')}${Emojis.loading}`,
       );
 
@@ -138,7 +142,7 @@ const Command: ILegacyCommand = {
       throw new Error(res.error.message ?? res.error.code);
     }
 
-    await msg.edit(`Successfully duped!${Emojis.success}`);
+    await reply.edit(`Successfully duped!${Emojis.success}`);
   },
 };
 
