@@ -153,7 +153,7 @@ const Command: ILegacyCommand = {
       }
 
       if (!success) {
-        await reply.edit(`Failed to dupe.${Emojis.error}`);
+        await reply.edit(`Failed to dupe.${Emojis.cross}`);
       }
     } catch (e: any) {
       await reply.edit(`Error: ${e}
