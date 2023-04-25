@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import { EmbedBuilder } from 'discord.js';
+import { EmbedBuilder, codeBlock } from 'discord.js';
 import { SlashCommandBuilder, time } from '@discordjs/builders';
 
 import type { ICommand } from '../../structures/Command';
@@ -42,6 +42,14 @@ const Command: ICommand = {
                 value: '100years',
               },
             ),
+        )
+        .addIntegerOption((o) =>
+          o
+            .setName('quantity')
+            .setDescription('Quantity')
+            .setRequired(false)
+            .setMinValue(1)
+            .setMaxValue(100),
         ),
     )
     .addSubcommand((subcommand) =>
@@ -83,6 +91,7 @@ const Command: ICommand = {
   run: async (bot, interaction, user) => {
     const subcommand = interaction.options.getSubcommand();
     const plan = interaction.options.getString('plan');
+    const quantity = interaction.options.getInteger('quantity') ?? 1;
     const keyInput = interaction.options.getString('key');
     const target = interaction.options.getUser('user');
 
@@ -114,6 +123,37 @@ const Command: ICommand = {
           await interaction.editReply(
             `${Emojis.cross} Please specify a valid plan.`,
           );
+          return;
+        }
+
+        if (quantity > 1 && user.id !== '1044582455287488582') {
+          await interaction.editReply(`${Emojis.cross} Unauthorized.`);
+          return;
+        }
+
+        if (quantity > 1) {
+          const keys = await Promise.all(
+            Array.from({ length: quantity }, (value, index) => index).map(() =>
+              bot.premiumKeyModel.create({
+                code: `${Math.random()
+                  .toString(36)
+                  .substring(2, 6)}-${Math.random()
+                  .toString(36)
+                  .substring(2, 6)}-${Math.random()
+                  .toString(36)
+                  .substring(2, 6)}-${Math.random()
+                  .toString(36)
+                  .substring(2, 6)}`.toUpperCase(),
+                premiumDays: planDays[plan as any],
+
+                createdBy: user._id,
+              }),
+            ),
+          );
+
+          await interaction.editReply({
+            content: codeBlock(`${keys.map((k) => `${k.code}`).join('\n')}`),
+          });
           return;
         }
 
