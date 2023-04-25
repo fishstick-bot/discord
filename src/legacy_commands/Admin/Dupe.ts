@@ -37,11 +37,6 @@ const getItems = async (
     Object.keys(res.response?.profileChanges[0]?.profile?.items ?? {}) ?? []
   ).map((id: string) => {
     const i = (res.response?.profileChanges[0]?.profile?.items ?? {})[id];
-    const isSchematic =
-      (i.templateId.includes('Trap') || i.templateId.includes('Weapon')) &&
-      !i.templateId.includes('edittool') &&
-      !i.templateId.includes('jump_pad') &&
-      !i.templateId.includes('buildingitemdata');
 
     return {
       id,
