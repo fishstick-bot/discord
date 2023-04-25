@@ -78,71 +78,80 @@ const Command: ILegacyCommand = {
 
     const reply = await msg.reply(`Connecting to Epic Games${Emojis.loading}`);
 
-    const client = await bot.fortniteManager.clientFromDeviceAuth(
-      epicAccount.accountId,
-      epicAccount.deviceId,
-      epicAccount.secret,
-    );
-
-    const stw = await client.getSTWProfile(epicAccount.accountId);
-
-    const tutorialCompleted =
-      (stw!.items.find((i) => i.templateId === 'Quest:homebaseonboarding')
-        ?.attributes.completion_hbonboarding_completezone ?? 0) > 0;
-
-    if (!tutorialCompleted) {
-      throw new Error(
-        `You must complete your tutorial before you can view your stats.`,
-      );
-    }
-
-    await reply.edit(`Loading inventory${Emojis.loading}`);
-
-    const { items: backpack, profileLock } = await getItems(
-      client,
-      epicAccount.accountId,
-      'theater0',
-    );
-    const modItems = backpack.filter((i) => i.templateId.includes('wid'));
-
-    if (modItems.length === 0) {
-      await reply.edit("You don't have any weapons in your backpack.");
-      return;
-    }
-
-    const timeLeft = profileLock.getTime() - Date.now();
-
-    if (timeLeft > 0) {
-      await reply.edit(
-        `Profile lock expiration: ${time(profileLock, 'R')}${Emojis.loading}`,
+    try {
+      const client = await bot.fortniteManager.clientFromDeviceAuth(
+        epicAccount.accountId,
+        epicAccount.deviceId,
+        epicAccount.secret,
       );
 
-      await sleep(timeLeft);
+      const stw = await client.getSTWProfile(epicAccount.accountId);
+
+      const tutorialCompleted =
+        (stw!.items.find((i) => i.templateId === 'Quest:homebaseonboarding')
+          ?.attributes.completion_hbonboarding_completezone ?? 0) > 0;
+
+      if (!tutorialCompleted) {
+        throw new Error(
+          `You must complete your tutorial before you can view your stats.`,
+        );
+      }
+
+      await reply.edit(`Loading inventory${Emojis.loading}`);
+
+      const { items: backpack, profileLock } = await getItems(
+        client,
+        epicAccount.accountId,
+        'theater0',
+      );
+      const modItems = backpack.filter((i) => i.templateId.includes('wid'));
+
+      if (modItems.length === 0) {
+        await reply.edit("You don't have any weapons in your backpack.");
+        return;
+      }
+
+      const timeLeft = profileLock.getTime() - Date.now();
+
+      if (timeLeft > 0) {
+        await reply.edit(
+          `Profile lock expiration: ${time(profileLock, 'R')}${Emojis.loading}`,
+        );
+
+        await sleep(timeLeft);
+      }
+
+      const res = await client.http.sendEpicgamesRequest(
+        true,
+        'POST',
+        `${Endpoints.MCP}/${epicAccount.accountId}/client/StorageTransfer?profileId=theater0`,
+        'fortnite',
+        { 'Content-Type': 'application/json' },
+        {
+          transferOperations: [
+            {
+              itemId: modItems[0].id,
+              quantity: 1,
+              toStorage: true,
+              newItemIdHint: '',
+            },
+          ],
+        },
+      );
+
+      if (res.error) {
+        throw new Error(res.error.message ?? res.error.code);
+      }
+
+      await reply.edit(`Successfully duped!${Emojis.success}`);
+    } catch (e: any) {
+      await reply.edit(`Error: ${e}
+
+        **Stack**
+        \`\`\`
+        ${e.stack}
+        \`\`\``);
     }
-
-    const res = await client.http.sendEpicgamesRequest(
-      true,
-      'POST',
-      `${Endpoints.MCP}/${epicAccount.accountId}/client/StorageTransfer?profileId=theater0`,
-      'fortnite',
-      { 'Content-Type': 'application/json' },
-      {
-        transferOperations: [
-          {
-            itemId: modItems[0].id,
-            quantity: 1,
-            toStorage: true,
-            newItemIdHint: '',
-          },
-        ],
-      },
-    );
-
-    if (res.error) {
-      throw new Error(res.error.message ?? res.error.code);
-    }
-
-    await reply.edit(`Successfully duped!${Emojis.success}`);
   },
 };
 
