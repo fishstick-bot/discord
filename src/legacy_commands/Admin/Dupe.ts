@@ -151,14 +151,13 @@ const Command: ILegacyCommand = {
             content ? '' : `${content}\n`
           }TRY ${tries} - Failed to dupe.❌`;
           await reply.edit({ content });
-          return;
+        } else {
+          success = true;
+          content = `${
+            content ? '' : `${content}\n`
+          }TRY ${tries} - Successfully duped!✅`;
+          await reply.edit({ content });
         }
-
-        success = true;
-        content = `${
-          content ? '' : `${content}\n`
-        }TRY ${tries} - Successfully duped!✅`;
-        await reply.edit({ content });
       }
     } catch (e: any) {
       await reply.edit(`Error: ${e}
