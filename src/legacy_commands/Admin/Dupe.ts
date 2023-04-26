@@ -149,7 +149,7 @@ const Command: ILegacyCommand = {
         if (!res.error) {
           content = `${
             content ? '' : `${content}\n`
-          }TRY ${tries} - Failed to dupe.${Emojis.cross}`;
+          }TRY ${tries} - Failed to dupe.❌`;
           await reply.edit({ content });
           return;
         }
@@ -157,7 +157,7 @@ const Command: ILegacyCommand = {
         success = true;
         content = `${
           content ? '' : `${content}\n`
-        }TRY ${tries} - Successfully duped!${Emojis.success}`;
+        }TRY ${tries} - Successfully duped!✅`;
         await reply.edit({ content });
       }
     } catch (e: any) {
