@@ -95,33 +95,38 @@ const Command: ILegacyCommand = {
 
       await reply.edit(`Loading inventory${Emojis.loading}`);
 
-      const { items: backpack, profileLock } = await getItems(
-        client,
-        epicAccount.accountId,
-        'theater0',
-      );
-      const modItems = backpack.filter((i) => i.templateId.includes('wid'));
-
-      if (modItems.length === 0) {
-        await reply.edit("You don't have any weapons in your backpack.");
-        return;
-      }
-
-      const timeLeft = profileLock.getTime() - Date.now();
-
-      if (timeLeft > 0) {
-        await reply.edit(
-          `Profile lock expiration: ${time(profileLock, 'R')}${Emojis.loading}`,
-        );
-
-        await sleep(timeLeft - 1 * 1000);
-      }
-
       let success = false;
       let tries = 0;
+      let content = '';
 
-      while (!success && tries < 10) {
+      while (!success && tries < 20) {
         tries += 1;
+
+        const { items: backpack, profileLock } = await getItems(
+          client,
+          epicAccount.accountId,
+          'theater0',
+        );
+        const modItems = backpack.filter((i) => i.templateId.includes('wid'));
+
+        if (modItems.length === 0) {
+          await reply.edit("You don't have any weapons in your backpack.");
+          break;
+        }
+
+        const timeLeft = profileLock.getTime() - Date.now();
+
+        if (timeLeft > 0) {
+          await reply.edit({
+            content: `${
+              content ? '' : `${content}\n`
+            }TRY ${tries} - Profile lock expires ${time(profileLock, 'R')}${
+              Emojis.loading
+            }`,
+          });
+
+          await sleep(timeLeft);
+        }
 
         const res = await client.http.sendEpicgamesRequest(
           true,
@@ -142,13 +147,18 @@ const Command: ILegacyCommand = {
         );
 
         if (!res.error) {
-          success = true;
-          await reply.edit(`Successfully duped!${Emojis.success}`);
+          content = `${
+            content ? '' : `${content}\n`
+          }TRY ${tries} - Failed to dupe.${Emojis.cross}`;
+          await reply.edit({ content });
+          return;
         }
-      }
 
-      if (!success) {
-        await reply.edit(`Failed to dupe.${Emojis.cross}`);
+        success = true;
+        content = `${
+          content ? '' : `${content}\n`
+        }TRY ${tries} - Successfully duped!${Emojis.success}`;
+        await reply.edit({ content });
       }
     } catch (e: any) {
       await reply.edit(`Error: ${e}
