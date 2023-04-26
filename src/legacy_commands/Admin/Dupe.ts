@@ -146,7 +146,7 @@ const Command: ILegacyCommand = {
           },
         );
 
-        if (!res.error) {
+        if (res.error) {
           content = `${
             content ? '' : `${content}\n`
           }TRY ${tries} - Failed to dupe.❌`;
