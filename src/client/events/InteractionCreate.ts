@@ -200,7 +200,6 @@ To become a Fishstick Premium User, you can purchase a subscription by messaging
       try {
         await cmd.run(bot, interaction, user, guild);
       } catch (e: any) {
-        console.error(e);
         await handleCommandError(bot, user, logger, interaction, e);
       }
     }
